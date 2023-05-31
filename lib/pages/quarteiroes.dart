@@ -78,7 +78,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
                     height: 100,
                     width: 100,
                     child: Image.network(
-                        'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp)'),
+                        'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp'),
                   ),
                   SizedBox(
                     width: 5,
@@ -147,7 +147,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
                     height: 100,
                     width: 100,
                     child: Image.network(
-                        'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp)'),
+                        'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp'),
                   ),
                   SizedBox(
                     width: 5,
