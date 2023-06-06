@@ -34,7 +34,7 @@ List<String> list_piso = <String>[
 
 class DropdownCobertura extends StatefulWidget {
   const DropdownCobertura({super.key});
-
+  
   @override
   State<DropdownCobertura> createState() => _DropdownCoberturaState();
 }
