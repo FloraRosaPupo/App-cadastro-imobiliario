@@ -16,7 +16,10 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: appBarDinamica(),
       drawer: menuLateralDinamico(),
-      body: Form(
+      body: Container(
+        padding: EdgeInsets.only(top: 300, left: 40, right: 40),
+        alignment: Alignment.center,
+        color: Colors.transparent,
         child: ListView(
           children: <Widget>[
             Text(
