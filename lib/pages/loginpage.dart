@@ -16,10 +16,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: appBarDinamica(),
       drawer: menuLateralDinamico(),
-      body: Container(
-        padding: EdgeInsets.only(top: 300, left: 40, right: 40),
-        alignment: Alignment.center,
-        color: Colors.transparent,
+      body: Form(
         child: ListView(
           children: <Widget>[
             Text(
@@ -38,7 +35,7 @@ class LoginPage extends StatelessWidget {
             ),
             Espacamento10(),
             TextField(
-                style: TextStyle(   
+                style: TextStyle(
                   fontSize: 20,
                 ),
                 decoration: InputDecoration(
