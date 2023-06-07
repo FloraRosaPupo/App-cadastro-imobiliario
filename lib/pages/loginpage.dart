@@ -14,8 +14,8 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      //appBar: appBarDinamica(),
+      //drawer: menuLateralDinamico(),
       body: Container(
         padding: EdgeInsets.only(top: 300, left: 40, right: 40),
         alignment: Alignment.center,
