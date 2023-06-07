@@ -36,7 +36,8 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Image.asset(
                         "assets/image/brasao.png",
-                        height: 135,
+                        height: 125,
+                        width: 125,
                         alignment: Alignment.center,
                       ),
                       Espacamento10(),
