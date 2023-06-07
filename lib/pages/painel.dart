@@ -6,6 +6,7 @@ import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:projeto_prefeitura/pages/forms/imovel.dart';
 import 'package:projeto_prefeitura/pages/quarteiroes.dart';
@@ -18,7 +19,6 @@ class Painel extends StatefulWidget {
 }
 
 class _PainelState extends State<Painel> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +60,15 @@ class _PainelState extends State<Painel> {
         ),
       ),
     );
+  }
+
+  Future<bool> verificarToken() async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    if (sharedPreference.getString('token') != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

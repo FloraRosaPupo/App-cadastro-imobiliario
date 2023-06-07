@@ -37,7 +37,7 @@ void main() {
 
     supportedLocales: [Locale('pt', 'BR')],
     
-    home: LoginPage(),
+    home: Painel(),
     theme: ThemeData(
       fontFamily: 'Montserrat',
       //primarySwatch: Colors.white10,
