@@ -88,5 +88,4 @@ flutter:
 
   assets:
     - assets/image/logo.png
-    - assets/image/fundo.png
     - assets/image/brasao.png

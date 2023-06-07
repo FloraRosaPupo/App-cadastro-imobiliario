@@ -16,6 +16,7 @@ class BoasVindasPage extends StatefulWidget {
 
 class _BoasVindasPageState extends State<BoasVindasPage> {
   @override
+  //verifica se o usuario esta logado
   void initState() {
     super.initState();
     verificarToken().then((value) {
@@ -38,6 +39,7 @@ class _BoasVindasPageState extends State<BoasVindasPage> {
     );
   }
 
+  //funcao que confere o token do usuario
   Future<bool> verificarToken() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     if (sharedPreference.getString('token') != null) {
