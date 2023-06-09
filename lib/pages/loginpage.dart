@@ -2,12 +2,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto_prefeitura/main.dart';
+import 'package:http/http.dart';
 
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
 import 'package:projeto_prefeitura/pages/registerpage.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -124,5 +126,14 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   )))),
     );
+  }
+
+  Future<bool> login() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse('https://localhost/login');
+    var resposta = await http.post(url, body: {
+      'username': _inscricaoController.text,
+      'password': _passwordController.text
+    });
   }
 }
