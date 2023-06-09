@@ -206,17 +206,10 @@ class _ImovelState extends State<Imovel> {
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2025),
-                    /*builder: (context, child) => Theme(
-                      data: ThemeData().copyWith(
-                        colorScheme: ColorScheme.light(
-                          primary: Color.fromARGB(190, 7, 62, 77),
-                        ),
-                      ),
-                      child: child,
-                    ),*/
                   );
                   if (pickedDate != null) {
-                    String formattedDate = DateFormat.yMd().format(pickedDate);
+                    String formattedDate =
+                        DateFormat('dd/MM/yyyy').format(pickedDate);
                     dateController.text = formattedDate.toString();
                   }
                 }),
