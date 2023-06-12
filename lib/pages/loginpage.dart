@@ -117,14 +117,14 @@ class _LoginPageState extends State<LoginPage> {
                           FocusScopeNode currentFocus = FocusScope.of(context);
                           //verificando se os campos do forms foram preenchidos
                           if (_formkey.currentState!.validate()) {
-                            bool logo = await login();
+                            bool logou = await login();
 
                             //fecho o teclado
                             if (!currentFocus.hasPrimaryFocus) {
                               currentFocus.unfocus();
                             }
 
-                            if (logo) {
+                            if (logou) {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             }
-                          } else {}
+                          }
                         },
                         child: Text('Entrar'),
                       ),
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> login() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('https://localhost:8080/login');
+    var url = Uri.parse('https://255.255.255.0/login');
     var resposta = await http.post(
       url,
       body: {
