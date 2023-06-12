@@ -68,6 +68,8 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (inscricao) {
                           if (inscricao == null || inscricao.isEmpty) {
                             return 'Por favor, digite sua inscrição na prefeitura';
+                          } else if (inscricao == TextInputType.number) {
+                            return 'Por favor, digite os numeros da inscrição na prefeitura';
                           }
                           return null;
                         },
@@ -90,6 +92,8 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (senha) {
                           if (senha == null || senha.isEmpty) {
                             return 'Por favor, digite sua senha';
+                          } else if (senha.length < 6) {
+                            return 'Por favor, digite uma senha maior';
                           }
                           return null;
                         },
@@ -163,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> login() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('https://localhost/login');
+    var url = Uri.parse('https://localhost:8080/login');
     var resposta = await http.post(
       url,
       body: {
