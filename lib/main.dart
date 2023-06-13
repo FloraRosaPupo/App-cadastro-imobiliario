@@ -27,7 +27,15 @@ import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+//bibliotecas do servidor
+import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
+
 void main() {
+  //criando um servidor
+  final server = shelf_io.serve((request) => Response(200), 'localhost', 8080);
+  print('Nosso servidor foi iniciado http://localhost:8080');
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     localizationsDelegates: [

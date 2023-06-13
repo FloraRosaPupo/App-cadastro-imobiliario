@@ -42,13 +42,14 @@ dependencies:
 
   get: 
 
-  intl: 0.17.0 
+  intl: 0.18.0 
 
   flutter_native_splash: ^2.2.19
   flutter_launcher_icons: ^0.13.1
   localization: ^2.1.0
   http: ^0.13.6 
   shared_preferences: ^2.1.1
+  shelf: ^1.4.1
 
 dev_dependencies:
   flutter_test:
