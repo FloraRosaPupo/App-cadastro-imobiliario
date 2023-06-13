@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> login() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://localhost:10/login');
+    var url = Uri.parse('http://127.0.0.1:54601/login');
     var resposta = await http.post(
       url,
       body: {
