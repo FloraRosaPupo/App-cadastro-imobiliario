@@ -33,8 +33,8 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 
 void main() {
   //criando um servidor
-  final server = shelf_io.serve((request) => Response(200), 'localhost', 8080);
-  print('Nosso servidor foi iniciado http://localhost:8080');
+  final server = shelf_io.serve((request) => Response(200), 'localhost', 10);
+  print('Nosso servidor foi iniciado http://localhost:10');
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

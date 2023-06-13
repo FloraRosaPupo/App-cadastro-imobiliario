@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> login() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://localhost:8080/login');
+    var url = Uri.parse('http://localhost:10/login');
     var resposta = await http.post(
       url,
       body: {
@@ -178,6 +178,9 @@ class _LoginPageState extends State<LoginPage> {
 
     if (resposta.statusCode == 200) {
       print(jsonDecode(resposta.body)['token']);
+      if (resposta.body.isNotEmpty) {
+        json.decode(resposta.body);
+      }
       return true;
     } else {
       print(jsonDecode(resposta.body));
