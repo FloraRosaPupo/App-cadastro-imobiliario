@@ -29,8 +29,6 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-  
-  
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     localizationsDelegates: [
