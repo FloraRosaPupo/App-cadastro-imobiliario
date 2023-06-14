@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unused_local_variable
+
 import 'dart:convert';
 
 import 'package:flutter/src/widgets/framework.dart';

@@ -1,5 +1,7 @@
 //import 'dart:io';
 
+// ignore_for_file: unused_import, unused_field
+
 import 'dart:io';
 
 import 'package:flutter/src/widgets/framework.dart';
@@ -13,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
 import 'package:projeto_prefeitura/pages/previewpage.dart';
 import 'package:projeto_prefeitura/pages/registerpage.dart';
-import 'package:projeto_prefeitura/pages/previewpage.dart';
 
 import 'package:camera_camera/camera_camera.dart';
 

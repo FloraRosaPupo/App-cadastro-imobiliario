@@ -1,7 +1,8 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:projeto_prefeitura/main.dart';
-
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/pages/loginpage.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';

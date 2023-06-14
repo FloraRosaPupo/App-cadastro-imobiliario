@@ -1,13 +1,13 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:projeto_prefeitura/pages/forms/imovel.dart';
 import 'package:projeto_prefeitura/pages/quarteiroes.dart';
 

@@ -1,6 +1,7 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/main.dart';

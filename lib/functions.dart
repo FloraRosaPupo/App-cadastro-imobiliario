@@ -1,3 +1,6 @@
+
+// ignore_for_file: unused_import, duplicate_import
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
