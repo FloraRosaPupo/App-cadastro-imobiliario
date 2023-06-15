@@ -30,6 +30,7 @@ import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

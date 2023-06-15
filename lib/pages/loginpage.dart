@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
@@ -23,9 +24,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>(); //verificacao de erro
-  final _inscricaoController =
-      TextEditingController(); //recebe os dados do usuario
+  final _emailController = TextEditingController(); //recebe os dados do usuario
   final _passwordController = TextEditingController();
+  final _firebaseAuth = FirebaseAuth.instance;
 
   //recebe os dados do usuario
 
@@ -63,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Espacamento10(),
                       TextFormField(
-                        controller: _inscricaoController,
+                        controller: _emailController,
                         keyboardType: TextInputType.number,
 
                         //validar email
@@ -114,30 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                       Espacamento10(),
                       ElevatedButton(
                         style: raisedButtonStyle,
-                        onPressed: () async {
-                          //verifica o estado do teclado
-                          FocusScopeNode currentFocus = FocusScope.of(context);
-                          //verificando se os campos do forms foram preenchidos
-                          if (_formkey.currentState!.validate()) {
-                            bool logou = await login();
-
-                            //fecho o teclado
-                            if (!currentFocus.hasPrimaryFocus) {
-                              currentFocus.unfocus();
-                            }
-
-                            if (logou) {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Painel()));
-                            } else {
-                              _passwordController.clear();
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            }
-                          }
-                        },
+                        onPressed: () async {},
                         child: Text('Entrar'),
                       ),
                       TextButton(
@@ -159,34 +137,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final snackBar = SnackBar(
-    content: Text(
-      'Inscrição ou Senha são inválidos',
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
-
-  Future<bool> login() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://127.0.0.1:54601/login');
-    var resposta = await http.post(
-      url,
-      body: {
-        'username': _inscricaoController.text,
-        'password': _passwordController.text
-      },
-    );
-
-    if (resposta.statusCode == 200) {
-      print(jsonDecode(resposta.body)['token']);
-      if (resposta.body.isNotEmpty) {
-        json.decode(resposta.body);
+  login() async {
+    try {
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text);
+      if (userCredential != null) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Painel()));
       }
-      return true;
-    } else {
-      print(jsonDecode(resposta.body));
-      return false;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Usuário não encontrado"),
+          backgroundColor: Colors.redAccent,
+        ));
+      } else if (e.code == 'wrong-password') {
+        _passwordController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Senha errada, tente novamente"),
+          backgroundColor: Colors.redAccent,
+        ));
+      }
     }
   }
 }
