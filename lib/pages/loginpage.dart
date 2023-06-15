@@ -14,8 +14,6 @@ import 'package:projeto_prefeitura/pages/registerpage.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

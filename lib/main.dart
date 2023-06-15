@@ -30,12 +30,12 @@ import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'firebase_options.dart';
+import 'firebase_options.dart';
 
 void main() async {
-  /*await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );*/
+  );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     localizationsDelegates: [
