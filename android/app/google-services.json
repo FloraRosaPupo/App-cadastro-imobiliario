@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "129755676637",
+    "project_id": "app-de-cadastro-imobiliario",
+    "storage_bucket": "app-de-cadastro-imobiliario.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129755676637:android:57c76d8c1985f624940034",
+        "android_client_info": {
+          "package_name": "br.com.florarosa.projeto_prefeitura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129755676637-qe4rh0opkfuouhbqotr9bpp4n7dgtfq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRQpfnlr8Y06KZ_-teC6pSVE6ORW4KynQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129755676637-qe4rh0opkfuouhbqotr9bpp4n7dgtfq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
