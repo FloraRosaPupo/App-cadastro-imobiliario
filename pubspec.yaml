@@ -52,6 +52,7 @@ dependencies:
   shelf: ^1.4.1
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
+  firebase: ^9.0.3
 
 dev_dependencies:
   flutter_test:

@@ -15,13 +15,13 @@ import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>(); //verificacao de erro
   final _emailController = TextEditingController(); //recebe os dados do usuario
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                       Espacamento10(),
                       TextFormField(
                         controller: _emailController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.emailAddress,
 
                         //validar email
                         validator: (inscricao) {
@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                         decoration: InputDecoration(
-                          labelText: "Número de Inscrição:",
+                          labelText: "Email:",
                           labelStyle: TextStyle(
                             color: Colors.black38,
                           ),

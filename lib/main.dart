@@ -29,7 +29,7 @@ import 'package:flutter_launcher_icons/xml_templates.dart';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -49,5 +49,7 @@ void main() {
       errorColor: Colors.red,
       hoverColor: Colors.redAccent,
     ),
-  ));
+    
+  )
+  );
 }
