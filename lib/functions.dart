@@ -1,8 +1,8 @@
-
 // ignore_for_file: unused_import, duplicate_import
 
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/pages/loginpage.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
@@ -37,7 +37,7 @@ List<String> list_piso = <String>[
 
 class DropdownCobertura extends StatefulWidget {
   const DropdownCobertura({super.key});
-  
+
   @override
   State<DropdownCobertura> createState() => _DropdownCoberturaState();
 }
@@ -184,6 +184,8 @@ appBarDinamica() {
 }
 
 menuLateralDinamico() {
+  final _firebaseAuth = FirebaseAuth.instance;
+
   return Drawer(
     backgroundColor: Color.fromARGB(190, 7, 62, 77),
     child: Column(children: [
@@ -231,10 +233,14 @@ menuLateralDinamico() {
                       color: Color.fromARGB(255, 187, 187, 187),
                       fontWeight: FontWeight.bold),
                 ),
-                onTap: () {
-                  //Navigator.pop(exit(0));
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                onTap: () async {
+                  await _firebaseAuth
+                      .signOut()
+                      .then((user) => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          )));
                 },
               );
             }),
