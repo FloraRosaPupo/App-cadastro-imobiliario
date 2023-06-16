@@ -76,8 +76,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
 }
-/*
+
 plugins {
   id 'com.android.application'
   id 'com.google.gms.google-services'
-}*/
+}

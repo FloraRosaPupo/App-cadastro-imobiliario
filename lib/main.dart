@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:projeto_prefeitura/pages/boas_vindas.dart';
 import 'package:projeto_prefeitura/pages/loginpage.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
 import 'package:projeto_prefeitura/pages/registerpage.dart';
@@ -33,25 +32,35 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    localizationsDelegates: [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: [Locale('pt', 'BR')],
-    home: BoasVindasPage(),
-    theme: ThemeData(
-      fontFamily: 'Montserrat',
-      //primarySwatch: Colors.white10,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      brightness: Brightness.light,
-      errorColor: Colors.red,
-      hoverColor: Colors.redAccent,
-    ),
-  ));
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [Locale('pt', 'BR')],
+      home: LoginPage(),
+      theme: ThemeData(
+        fontFamily: 'Montserrat',
+        //primarySwatch: Colors.white10,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: Brightness.light,
+        errorColor: Colors.red,
+        hoverColor: Colors.redAccent,
+      ),
+    );
+  }
 }
