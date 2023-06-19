@@ -126,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void login() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
       if (userCredential != null) {
         Navigator.pushReplacement(

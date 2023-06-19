@@ -116,8 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ElevatedButton(
                 style: raisedButtonStyle,
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Painel()));
+                  cadastrar();
                 },
                 child: Text('Cadastrar'),
               ),
@@ -142,16 +141,34 @@ class _RegisterPageState extends State<RegisterPage> {
     ));
   }
 
-  cadastrar() async {
-    _firebaseAuth
-        .createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text)
-        .then((UserCredential userCredential) {
-      userCredential.user!.updateDisplayName(_nomeController.text);
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-          (route) => false);
-    }).catchError((FirebaseAuthException firebaseAuthException) {});
+  void cadastrar() async {
+    try {
+      UserCredential userCredential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text);
+      if (userCredential != null) {
+        userCredential.user!.updateDisplayName(_nomeController.text);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (route) => false);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Crie uma senha mais forte"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Este email ja foi cadastrado"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    }
   }
 }
