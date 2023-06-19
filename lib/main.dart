@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: [Locale('pt', 'BR')],
       home: HomePage(),
       theme: ThemeData(
+        //useMaterial3: true,
         fontFamily: 'Montserrat',
         //primarySwatch: Colors.white10,
         visualDensity: VisualDensity.adaptivePlatformDensity,

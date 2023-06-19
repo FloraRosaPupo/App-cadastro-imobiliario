@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, unused_local_variable
+// ignore_for_file: unused_import, unused_local_variable, unnecessary_null_comparison
 
 import 'dart:convert';
 
@@ -23,18 +23,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formkey = GlobalKey<FormState>(); //verificacao de erro
+  //final _formkey = GlobalKey<FormState>(); //verificacao de erro
   final _emailController = TextEditingController(); //recebe os dados do usuario
   final _passwordController = TextEditingController();
   final _firebaseAuth = FirebaseAuth.instance;
-
-  //recebe os dados do usuario
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-          key: _formkey,
           child: Center(
               child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 40),
@@ -65,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       Espacamento10(),
                       TextFormField(
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
+                        //keyboardType: TextInputType.emailAddress,
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -121,10 +118,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  login() async {
+  void login() async {
     try {
-      UserCredential userCredential =
-          await _firebaseAuth.signInWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
       if (userCredential != null) {
         Navigator.pushReplacement(
@@ -132,16 +129,19 @@ class _LoginPageState extends State<LoginPage> {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Usuário não encontrado"),
-          backgroundColor: Colors.redAccent,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Usuário não encontrado"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
       } else if (e.code == 'wrong-password') {
-        _passwordController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Senha errada, tente novamente"),
-          backgroundColor: Colors.redAccent,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Senha errada, tente novamente"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
       }
     }
   }

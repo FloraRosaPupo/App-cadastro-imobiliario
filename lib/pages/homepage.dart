@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     streamSubscription!.cancel();
     super.dispose();
   }
