@@ -23,7 +23,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //final _formkey = GlobalKey<FormState>(); //verificacao de erro
   final _emailController = TextEditingController(); //recebe os dados do usuario
   final _passwordController = TextEditingController();
   final _firebaseAuth = FirebaseAuth.instance;
@@ -62,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                       Espacamento10(),
                       TextFormField(
                         controller: _emailController,
-                        //keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.emailAddress,
                         style: TextStyle(
                           fontSize: 20,
                         ),
