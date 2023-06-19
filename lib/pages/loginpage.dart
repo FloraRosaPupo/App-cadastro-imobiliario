@@ -132,13 +132,13 @@ class _LoginPageState extends State<LoginPage> {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Usuário não encontrado"),
           backgroundColor: Colors.redAccent,
         ));
       } else if (e.code == 'wrong-password') {
         _passwordController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Senha errada, tente novamente"),
           backgroundColor: Colors.redAccent,
         ));
