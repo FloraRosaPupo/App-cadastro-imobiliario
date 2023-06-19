@@ -162,6 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
             backgroundColor: Colors.redAccent,
           ),
         );
+        _passwordController.clear();
       } else if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
