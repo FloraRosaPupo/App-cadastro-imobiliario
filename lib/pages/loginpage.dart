@@ -73,6 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           focusedBorder: FocusedBorder(),
                           enabledBorder: EnableBorder(),
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: Color.fromARGB(190, 7, 62, 77),
+                          ),
                         ),
                       ),
                       Espacamento10(),
@@ -83,13 +87,16 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                         decoration: InputDecoration(
-                          labelText: "Senha:",
-                          labelStyle: TextStyle(
-                            color: Colors.black38,
-                          ),
-                          focusedBorder: FocusedBorder(),
-                          enabledBorder: EnableBorder(),
-                        ),
+                            labelText: "Senha:",
+                            labelStyle: TextStyle(
+                              color: Colors.black38,
+                            ),
+                            focusedBorder: FocusedBorder(),
+                            enabledBorder: EnableBorder(),
+                            prefixIcon: Icon(
+                              Icons.password_sharp,
+                              color: Color.fromARGB(190, 7, 62, 77),
+                            )),
                       ),
                       Espacamento10(),
                       ElevatedButton(
