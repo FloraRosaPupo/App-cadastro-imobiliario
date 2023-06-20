@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
@@ -19,21 +20,36 @@ class Painel extends StatefulWidget {
 }
 
 class _PainelState extends State<Painel> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String nome = '';
+
+  @override
+  initState() {
+    chamarUsuario();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDinamica(),
       drawer: menuLateralDinamico(),
       body: Container(
-        //padding: EdgeInsets.only(top: 400, left: 40, right: 40),
         alignment: Alignment.center,
-        color: Colors.white,
         child: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                Text(
+                  'Ola ' + nome,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500),
+                ),
+                Espacamento10(),
                 ElevatedButton(
                   style: raisedButtonStyle,
                   onPressed: () {
@@ -74,6 +90,15 @@ class _PainelState extends State<Painel> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  chamarUsuario() async {
+    User? usuario = await _firebaseAuth.currentUser;
+    if (usuario != null) {
+      setState(() {
+        nome = usuario.displayName!;
+      });
     }
   }
 }

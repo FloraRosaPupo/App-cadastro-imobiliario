@@ -24,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController(); //recebe os dados do usuario
   final _passwordController = TextEditingController();
   final _firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
