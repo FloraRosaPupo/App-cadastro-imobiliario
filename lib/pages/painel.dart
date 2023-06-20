@@ -25,38 +25,44 @@ class _PainelState extends State<Painel> {
       appBar: appBarDinamica(),
       drawer: menuLateralDinamico(),
       body: Container(
-        padding: EdgeInsets.only(top: 400, left: 40, right: 40),
+        //padding: EdgeInsets.only(top: 400, left: 40, right: 40),
         alignment: Alignment.center,
         color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Quarteiroes()));
-              },
-              child: Text('Atualizar Dados do Imóvel'),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ElevatedButton(
+                  style: raisedButtonStyle,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Quarteiroes()));
+                  },
+                  child: Text('Atualizar Dados do Imóvel'),
+                ),
+                Espacamento10(),
+                ElevatedButton(
+                  style: raisedButtonStyle,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Search2()));
+                  },
+                  child: Text('Atualizar Dados do Contribuinte'),
+                ),
+                Espacamento10(),
+                ElevatedButton(
+                  style: raisedButtonStyle,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Exportar()));
+                  },
+                  child: Text('Exportar Dados'),
+                ),
+              ],
             ),
-            Espacamento10(),
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Search2()));
-              },
-              child: Text('Atualizar Dados do Contribuinte'),
-            ),
-            Espacamento10(),
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Exportar()));
-              },
-              child: Text('Exportar Dados'),
-            ),
-          ],
+          ),
         ),
       ),
     );
