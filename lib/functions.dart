@@ -237,6 +237,7 @@ menuLateralDinamico() {
                       fontWeight: FontWeight.bold),
                 ),
                 onTap: () async {
+                  print('Usuário se desconectou');
                   await _firebaseAuth
                       .signOut()
                       .then((user) => Navigator.pushReplacement(
@@ -244,7 +245,6 @@ menuLateralDinamico() {
                           MaterialPageRoute(
                             builder: (context) => LoginPage(),
                           )));
-                  print('Usuário se desconectou');
                 },
               );
             }),
