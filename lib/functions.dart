@@ -189,6 +189,9 @@ menuLateralDinamico() {
   return Drawer(
     backgroundColor: Color.fromARGB(190, 7, 62, 77),
     child: Column(children: [
+      //como deixar o nome e email global na aplicação sem precisar receber apenas do painel
+      /* UserAccountsDrawerHeader(
+          accountName: Text(nome), accountEmail: Text(email)),*/
       SizedBox(
         height: 60,
       ),
@@ -241,6 +244,7 @@ menuLateralDinamico() {
                           MaterialPageRoute(
                             builder: (context) => LoginPage(),
                           )));
+                  print('Usuário se desconectou');
                 },
               );
             }),

@@ -22,6 +22,7 @@ class Painel extends StatefulWidget {
 class _PainelState extends State<Painel> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
+  String email = '';
 
   @override
   initState() {
@@ -42,7 +43,7 @@ class _PainelState extends State<Painel> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(
-                  'Ola ' + nome,
+                  'Ola ' + nome + ', qual atividade irá realizar hoje?',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black,
@@ -96,8 +97,10 @@ class _PainelState extends State<Painel> {
   chamarUsuario() async {
     User? usuario = await _firebaseAuth.currentUser;
     if (usuario != null) {
+      print(usuario);
       setState(() {
         nome = usuario.displayName!;
+        email = usuario.email!;
       });
     }
   }
@@ -110,7 +113,7 @@ class Search2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      //drawer: menuLateralDinamico(),
       body: Container(
         padding: EdgeInsets.only(top: 400, left: 40, right: 40),
         alignment: Alignment.center,

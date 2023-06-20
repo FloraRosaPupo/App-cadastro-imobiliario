@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
       } else if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Senha errada, tente novamente"),
+            content: Text("Senha incorreta, tente novamente"),
             backgroundColor: Colors.redAccent,
           ),
         );

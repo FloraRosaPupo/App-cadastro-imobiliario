@@ -152,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
         userCredential.user!.updateDisplayName(_nomeController.text);
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => LoginPage()),
             (route) => false);
       }
     } on FirebaseAuthException catch (e) {
