@@ -4,6 +4,7 @@
 
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,15 @@ class Imovel extends StatefulWidget {
 }
 
 class _ImovelState extends State<Imovel> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String nome = '';
+  String email = '';
+
+  @override
+  initState() {
+    chamarUsuario();
+  }
+
   late File arquivo;
   final String date = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
 
@@ -47,7 +57,7 @@ class _ImovelState extends State<Imovel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      drawer: menuLateralDinamico(nome, email),
       body: Container(
         padding: EdgeInsets.only(top: 20, left: 25, right: 25),
         color: Colors.transparent,
@@ -385,5 +395,15 @@ class _ImovelState extends State<Imovel> {
         ),
       ),
     );
+  }
+  chamarUsuario() async {
+    User? usuario = await _firebaseAuth.currentUser;
+    if (usuario != null) {
+      print(usuario);
+      setState(() {
+        nome = usuario.displayName!;
+        email = usuario.email!;
+      });
+    }
   }
 }

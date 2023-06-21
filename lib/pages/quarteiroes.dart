@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -14,11 +15,31 @@ class Quarteiroes extends StatefulWidget {
 }
 
 class _QuarteiroesState extends State<Quarteiroes> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String nome = '';
+  String email = '';
+
+  @override
+  initState() {
+    chamarUsuario();
+  }
+
+  chamarUsuario() async {
+    User? usuario = await _firebaseAuth.currentUser;
+    if (usuario != null) {
+      print(usuario);
+      setState(() {
+        nome = usuario.displayName!;
+        email = usuario.email!;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      drawer: menuLateralDinamico(nome, email),
       body: Container(
         padding: EdgeInsets.only(top: 5),
         child: ListView(

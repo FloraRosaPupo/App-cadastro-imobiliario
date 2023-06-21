@@ -2,7 +2,7 @@
 // ignore: unused_import
 import 'package:projeto_prefeitura/pages/exportar.dart';
 
-class User {
+class Dados {
   final int SIAT;
   final String nome;
   final String cpf_cnpj;
@@ -12,7 +12,7 @@ class User {
   final String data;
   final String horas;
 
-  const User(
+  const Dados(
       {required this.SIAT,
       required this.nome,
       required this.cpf_cnpj,
@@ -22,7 +22,7 @@ class User {
       required this.data,
       required this.horas});
 
-  User copy({
+  Dados copy({
     int? SIAT,
     String? nome,
     String? cpf_cnpj,
@@ -32,7 +32,7 @@ class User {
     String? data,
     String? horas,
   }) =>
-      User(
+      Dados(
         SIAT: SIAT ?? this.SIAT,
         nome: nome ?? this.nome,
         cpf_cnpj: cpf_cnpj ?? this.cpf_cnpj,
@@ -44,8 +44,8 @@ class User {
       );
 }
 
-final allUsers = <User>[
-  User(
+final allDados = <Dados>[
+  Dados(
     SIAT: 12345,
     nome: 'Fulano da Silva',
     cpf_cnpj: '123.123.123-56',
@@ -55,7 +55,7 @@ final allUsers = <User>[
     data: '11/11/2023',
     horas: '08:00',
   ),
-  User(
+  Dados(
     SIAT: 54321,
     nome: 'Beltrano Souza',
     cpf_cnpj: '456.456.456-89',
@@ -65,7 +65,7 @@ final allUsers = <User>[
     data: '12/12/2023',
     horas: '09:00',
   ),
-  User(
+  Dados(
     SIAT: 67890,
     nome: 'Ciclana Rocha',
     cpf_cnpj: '789.789.789-12',
@@ -75,7 +75,7 @@ final allUsers = <User>[
     data: '13/01/2024',
     horas: '10:00',
   ),
-  User(
+  Dados(
     SIAT: 09876,
     nome: 'Deltrano Santos',
     cpf_cnpj: '012.012.012-34',
@@ -85,7 +85,7 @@ final allUsers = <User>[
     data: '14/02/2024',
     horas: '11:00',
   ),
-  User(
+  Dados(
     SIAT: 13579,
     nome: 'Eutrano Lima',
     cpf_cnpj: '345.345.345-67',
@@ -95,7 +95,7 @@ final allUsers = <User>[
     data: '15/03/2024',
     horas: '12:00',
   ),
-  User(
+  Dados(
     SIAT: 24680,
     nome: 'Fulana Oliveira',
     cpf_cnpj: '678.678.678-90',
@@ -105,7 +105,7 @@ final allUsers = <User>[
     data: '16/04/2024',
     horas: '13:00',
   ),
-  User(
+  Dados(
     SIAT: 36912,
     nome: 'Beltrana Souza',
     cpf_cnpj: '901.901.901-23',
@@ -115,7 +115,7 @@ final allUsers = <User>[
     data: '17/05/2024',
     horas: '14:00',
   ),
-  User(
+  Dados(
     SIAT: 48246,
     nome: 'Ciclano Rocha',
     cpf_cnpj: '234.234.234-56',
@@ -125,7 +125,7 @@ final allUsers = <User>[
     data: '18/06/2024',
     horas: '15:00',
   ),
-  User(
+  Dados(
     SIAT: 59013,
     nome: 'Deltrana Santos',
     cpf_cnpj: '567.567.567-89',
@@ -135,7 +135,7 @@ final allUsers = <User>[
     data: '19/07/2024',
     horas: '16:00',
   ),
-  User(
+  Dados(
     SIAT: 61029,
     nome: 'Eutrana Lima',
     cpf_cnpj: '890.890.890-12',
@@ -145,7 +145,7 @@ final allUsers = <User>[
     data: '20/08/2024',
     horas: '17:00',
   ),
-  User(
+  Dados(
     SIAT: 73248,
     nome: 'Fulano Oliveira',
     cpf_cnpj: '123.123.123-45',
@@ -155,7 +155,7 @@ final allUsers = <User>[
     data: '21/09/2024',
     horas: '18:00',
   ),
-  User(
+  Dados(
       SIAT: 12345,
       nome: 'Fulano da Silva',
       cpf_cnpj: '123.123.123-56',
@@ -164,7 +164,7 @@ final allUsers = <User>[
       quarteirao: 1,
       data: '11/11/2023',
       horas: '08:00'),
-  User(
+  Dados(
       SIAT: 23456,
       nome: 'Ciclano Santos',
       cpf_cnpj: '456.456.456-78',
@@ -173,7 +173,7 @@ final allUsers = <User>[
       quarteirao: 2,
       data: '12/12/2023',
       horas: '09:00'),
-  User(
+  Dados(
       SIAT: 34567,
       nome: 'Deltrano Oliveira',
       cpf_cnpj: '789.789.789-01',
@@ -182,7 +182,7 @@ final allUsers = <User>[
       quarteirao: 3,
       data: '13/01/2024',
       horas: '10:00'),
-  User(
+  Dados(
       SIAT: 45678,
       nome: 'Eutrano Lima',
       cpf_cnpj: '012.012.012-34',
@@ -191,7 +191,7 @@ final allUsers = <User>[
       quarteirao: 4,
       data: '14/02/2024',
       horas: '11:00'),
-  User(
+  Dados(
       SIAT: 56789,
       nome: 'Fulana da Silva',
       cpf_cnpj: '345.345.345-67',
@@ -200,7 +200,7 @@ final allUsers = <User>[
       quarteirao: 5,
       data: '15/03/2024',
       horas: '12:00'),
-  User(
+  Dados(
       SIAT: 67890,
       nome: 'Ciclana Santos',
       cpf_cnpj: '678.678.678-90',
@@ -209,7 +209,7 @@ final allUsers = <User>[
       quarteirao: 6,
       data: '16/04/2024',
       horas: '13:00'),
-  User(
+  Dados(
       SIAT: 78901,
       nome: 'Deltrana Oliveira',
       cpf_cnpj: '901.901.901-23',
@@ -218,7 +218,7 @@ final allUsers = <User>[
       quarteirao: 7,
       data: '17/05/2024',
       horas: '14:00'),
-  User(
+  Dados(
       SIAT: 89012,
       nome: 'Eutrano Lima',
       cpf_cnpj: '234.234.234-56',
@@ -227,7 +227,7 @@ final allUsers = <User>[
       quarteirao: 8,
       data: '18/06/2024',
       horas: '15:00'),
-  User(
+  Dados(
       SIAT: 90123,
       nome: 'Fulana da Silva',
       cpf_cnpj: '567.567.567-89',
@@ -236,7 +236,7 @@ final allUsers = <User>[
       quarteirao: 9,
       data: '19/07/2024',
       horas: '16:00'),
-  User(
+  Dados(
       SIAT: 01234,
       nome: 'Ciclano Santos',
       cpf_cnpj: '890.890.890-12',
@@ -245,7 +245,7 @@ final allUsers = <User>[
       quarteirao: 10,
       data: '20/08/2024',
       horas: '17:00'),
-  User(
+  Dados(
       SIAT: 12345,
       nome: 'Fulano da Silva',
       cpf_cnpj: '123.123.123-56',
@@ -254,7 +254,7 @@ final allUsers = <User>[
       quarteirao: 1,
       data: '11/11/2023',
       horas: '08:00'),
-  User(
+  Dados(
       SIAT: 23456,
       nome: 'Ciclano Santos',
       cpf_cnpj: '456.456.456-78',
@@ -263,7 +263,7 @@ final allUsers = <User>[
       quarteirao: 2,
       data: '12/12/2023',
       horas: '09:00'),
-  User(
+  Dados(
       SIAT: 34567,
       nome: 'Deltrano Oliveira',
       cpf_cnpj: '789.789.789-01',
@@ -272,7 +272,7 @@ final allUsers = <User>[
       quarteirao: 3,
       data: '13/01/2024',
       horas: '10:00'),
-  User(
+  Dados(
       SIAT: 45678,
       nome: 'Eutrano Lima',
       cpf_cnpj: '012.012.012-34',
@@ -281,7 +281,7 @@ final allUsers = <User>[
       quarteirao: 4,
       data: '14/02/2024',
       horas: '11:00'),
-  User(
+  Dados(
       SIAT: 56789,
       nome: 'Fulana da Silva',
       cpf_cnpj: '345.345.345-67',
@@ -290,7 +290,7 @@ final allUsers = <User>[
       quarteirao: 5,
       data: '15/03/2024',
       horas: '12:00'),
-  User(
+  Dados(
       SIAT: 67890,
       nome: 'Ciclana Santos',
       cpf_cnpj: '678.678.678-90',
@@ -299,7 +299,7 @@ final allUsers = <User>[
       quarteirao: 6,
       data: '16/04/2024',
       horas: '13:00'),
-  User(
+  Dados(
       SIAT: 78901,
       nome: 'Deltrana Oliveira',
       cpf_cnpj: '901.901.901-23',
@@ -308,7 +308,7 @@ final allUsers = <User>[
       quarteirao: 7,
       data: '17/05/2024',
       horas: '14:00'),
-  User(
+  Dados(
       SIAT: 89012,
       nome: 'Eutrano Lima',
       cpf_cnpj: '234.234.234-56',
@@ -317,7 +317,7 @@ final allUsers = <User>[
       quarteirao: 8,
       data: '18/06/2024',
       horas: '15:00'),
-  User(
+  Dados(
       SIAT: 90123,
       nome: 'Fulana da Silva',
       cpf_cnpj: '567.567.567-89',
@@ -326,7 +326,7 @@ final allUsers = <User>[
       quarteirao: 9,
       data: '19/07/2024',
       horas: '16:00'),
-  User(
+  Dados(
       SIAT: 01234,
       nome: 'Ciclano Santos',
       cpf_cnpj: '890.890.890-12',

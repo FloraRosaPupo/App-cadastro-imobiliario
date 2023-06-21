@@ -33,7 +33,7 @@ class _PainelState extends State<Painel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      drawer: menuLateralDinamico(nome, email),
       body: Container(
         alignment: Alignment.center,
         child: Center(
@@ -85,14 +85,14 @@ class _PainelState extends State<Painel> {
     );
   }
 
-  Future<bool> verificarToken() async {
+  /*Future<bool> verificarToken() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     if (sharedPreference.getString('token') != null) {
       return true;
     } else {
       return false;
     }
-  }
+  }*/
 
   chamarUsuario() async {
     User? usuario = await _firebaseAuth.currentUser;

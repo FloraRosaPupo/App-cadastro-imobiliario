@@ -8,16 +8,33 @@ import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
 import 'package:projeto_prefeitura/pages/registerpage.dart';
 import 'package:projeto_prefeitura/functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //import 'package:intl/date_symbol_data_local.dart';
 //import 'package:intl/intl.dart';
 
-class Contribuinte extends StatelessWidget {
+class Contribuinte extends StatefulWidget {
+  const Contribuinte({super.key});
+
+  @override
+  State<Contribuinte> createState() => _ContribuinteState();
+}
+
+class _ContribuinteState extends State<Contribuinte> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String nome = '';
+  String email = '';
+
+  @override
+  initState() {
+    chamarUsuario();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      drawer: menuLateralDinamico(nome, email),
       body: Container(
         padding: EdgeInsets.only(top: 50, left: 40, right: 40),
         alignment: Alignment.center,
@@ -163,5 +180,16 @@ class Contribuinte extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  chamarUsuario() async {
+    User? usuario = await _firebaseAuth.currentUser;
+    if (usuario != null) {
+      print(usuario);
+      setState(() {
+        nome = usuario.displayName!;
+        email = usuario.email!;
+      });
+    }
   }
 }

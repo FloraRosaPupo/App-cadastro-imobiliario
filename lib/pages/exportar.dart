@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
-
+import 'package:projeto_prefeitura/users.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_prefeitura/users.dart';
 
 class Exportar extends StatefulWidget {
@@ -17,6 +18,10 @@ class Exportar extends StatefulWidget {
 }
 
 class _Exportar extends State<Exportar> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String nome = '';
+  String email = '';
+
   void _showDialog() {
     showDialog(
         context: context,
@@ -71,7 +76,7 @@ class _Exportar extends State<Exportar> {
         });
   }
 
-  late List<User> users;
+  late List<Dados> dados;
 
   int? sortColumnIndex;
 
@@ -80,13 +85,14 @@ class _Exportar extends State<Exportar> {
   @override
   void initState() {
     super.initState();
-    this.users = List.of(allUsers);
+    this.dados = List.of(allDados);
+    chamarUsuario();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(),
+      drawer: menuLateralDinamico(nome, email),
       body: Container(
         child: ListView(
           children: [
@@ -141,7 +147,7 @@ class _Exportar extends State<Exportar> {
       sortAscending: isAscending,
       sortColumnIndex: sortColumnIndex,
       columns: getColumns(columns),
-      rows: getRows(users),
+      rows: getRows(dados),
     );
   }
 
@@ -152,16 +158,16 @@ class _Exportar extends State<Exportar> {
           ))
       .toList();
 
-  List<DataRow> getRows(List<User> users) => users.map((User user) {
+  List<DataRow> getRows(List<Dados> dados) => dados.map((Dados dados) {
         final cells = [
-          user.SIAT,
-          user.nome,
-          user.cpf_cnpj,
-          user.rua,
-          user.numero_casa,
-          user.quarteirao,
-          user.data,
-          user.horas,
+          dados.SIAT,
+          dados.nome,
+          dados.cpf_cnpj,
+          dados.rua,
+          dados.numero_casa,
+          dados.quarteirao,
+          dados.data,
+          dados.horas,
         ];
         return DataRow(cells: getCells(cells));
       }).toList();
@@ -171,41 +177,44 @@ class _Exportar extends State<Exportar> {
 
   void onSort(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
-      users.sort(
-        (user1, user2) => compareInt_siat(ascending, user1.SIAT, user2.SIAT),
+      dados.sort(
+        (dados1, dados2) =>
+            compareInt_siat(ascending, dados1.SIAT, dados2.SIAT),
       );
     } else if (columnIndex == 1) {
-      users.sort(
-        (user1, user2) => compareString_nome(ascending, user1.nome, user2.nome),
+      dados.sort(
+        (dados1, dados2) =>
+            compareString_nome(ascending, dados1.nome, dados2.nome),
       );
     } else if (columnIndex == 2) {
-      users.sort(
-        (user1, user2) =>
-            compareString_cpf_cnpj(ascending, user1.cpf_cnpj, user2.cpf_cnpj),
+      dados.sort(
+        (dados1, dados2) =>
+            compareString_cpf_cnpj(ascending, dados1.cpf_cnpj, dados2.cpf_cnpj),
       );
     } else if (columnIndex == 3) {
-      users.sort(
-        (user1, user2) => compareString_rua(ascending, user1.rua, user2.rua),
+      dados.sort(
+        (dados1, dados2) =>
+            compareString_rua(ascending, dados1.rua, dados2.rua),
       );
     } else if (columnIndex == 4) {
-      users.sort(
-        (user1, user2) =>
-            compareString_num(ascending, user1.numero_casa, user2.numero_casa),
+      dados.sort(
+        (dados1, dados2) => compareString_num(
+            ascending, dados1.numero_casa, dados2.numero_casa),
       );
     } else if (columnIndex == 5) {
-      users.sort(
-        (user1, user2) =>
-            compareInt_quart(ascending, user1.quarteirao, user2.quarteirao),
+      dados.sort(
+        (dados1, dados2) =>
+            compareInt_quart(ascending, dados1.quarteirao, dados2.quarteirao),
       );
     } else if (columnIndex == 6) {
-      users.sort(
-        (user1, user2) =>
-            comapareString_data(ascending, user1.data, user2.data),
+      dados.sort(
+        (dados1, dados2) =>
+            comapareString_data(ascending, dados1.data, dados2.data),
       );
     } else if (columnIndex == 7) {
-      users.sort(
-        (user1, user2) =>
-            comapareString_horario(ascending, user1.horas, user2.horas),
+      dados.sort(
+        (dados1, dados2) =>
+            comapareString_horario(ascending, dados1.horas, dados2.horas),
       );
     }
     setState(() {
@@ -245,6 +254,17 @@ class _Exportar extends State<Exportar> {
 
   int comapareString_horario(bool ascending, String horas1, String horas2) =>
       ascending ? horas1.compareTo(horas2) : horas2.compareTo(horas1);
+
+  chamarUsuario() async {
+    User? usuario = await _firebaseAuth.currentUser;
+    if (usuario != null) {
+      print(usuario);
+      setState(() {
+        nome = usuario.displayName!;
+        email = usuario.email!;
+      });
+    }
+  }
 }
 
 //personalização do botão
