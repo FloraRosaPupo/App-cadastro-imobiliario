@@ -27,6 +27,7 @@ class Imovel extends StatefulWidget {
 
 class _ImovelState extends State<Imovel> {
   late File arquivo;
+  final String date = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
 
   showPreview(file) async {
     file = await Get.to(() => PreviewPage(file: file));
@@ -60,15 +61,7 @@ class _ImovelState extends State<Imovel> {
                   size: 20,
                 ),
                 Text(
-                  '08:00',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 20,
-                  ),
-                ),
-                Icon(Icons.date_range_rounded, color: Colors.black54, size: 20),
-                Text(
-                  '12/12/2022',
+                  date,
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 20,
