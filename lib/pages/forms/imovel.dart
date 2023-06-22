@@ -1,6 +1,6 @@
 //import 'dart:io';
 
-// ignore_for_file: unused_import, unused_field
+// ignore_for_file: unused_import, unused_field, must_call_super
 
 import 'dart:io';
 
@@ -31,6 +31,7 @@ class _ImovelState extends State<Imovel> {
   String nome = '';
   String email = '';
 
+  
   @override
   initState() {
     chamarUsuario();

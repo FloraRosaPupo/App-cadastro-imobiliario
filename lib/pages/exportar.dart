@@ -8,6 +8,7 @@ import 'package:projeto_prefeitura/main.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/users.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// ignore: duplicate_import
 import 'package:projeto_prefeitura/users.dart';
 
 class Exportar extends StatefulWidget {

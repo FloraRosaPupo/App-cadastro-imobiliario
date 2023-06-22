@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, must_call_super
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +19,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
   String nome = '';
   String email = '';
 
+  //
   @override
   initState() {
     chamarUsuario();

@@ -148,6 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
+      // ignore: unnecessary_null_comparison
       if (userCredential != null) {
         userCredential.user!.updateDisplayName(_nomeController.text);
         Navigator.pushAndRemoveUntil(

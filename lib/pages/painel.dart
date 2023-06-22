@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, must_call_super
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -24,6 +24,7 @@ class _PainelState extends State<Painel> {
   String nome = '';
   String email = '';
 
+  // 
   @override
   initState() {
     chamarUsuario();
@@ -42,15 +43,6 @@ class _PainelState extends State<Painel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(
-                  'Ola ' + nome + ', qual atividade irá realizar hoje?',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500),
-                ),
-                Espacamento10(),
                 ElevatedButton(
                   style: raisedButtonStyle,
                   onPressed: () {

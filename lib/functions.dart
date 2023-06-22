@@ -191,11 +191,10 @@ menuLateralDinamico(nome, email) {
     child: Column(children: [
       //como deixar o nome e email global na aplicação sem precisar receber apenas do painel
       UserAccountsDrawerHeader(
-          
-          accountName: Text(nome), accountEmail: Text(email)),
-      SizedBox(
-        height: 60,
-      ),
+          decoration: BoxDecoration(color: Color.fromARGB(188, 0, 29, 37)),
+          accountName: Text(nome),
+          accountEmail: Text(email)),
+
       Container(
         decoration: BoxDecoration(
           border: Border(
