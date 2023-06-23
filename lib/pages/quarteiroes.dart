@@ -94,46 +94,43 @@ class _QuarteiroesState extends State<Quarteiroes> {
                 ),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 10,
-                  ),
                   Container(
-                    height: 100,
-                    width: 100,
-                    child: Image.network(
-                        'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp'),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(
-                          'Rua Joaquim Lopes',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          '123',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.right,
-                        ),
+                        Image.network(
+                            height: 100,
+                            width: 100,
+                            'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp'),
                         SizedBox(
-                          height: 20,
-                        )
+                          width: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rua Joaquim Lopes',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              '123',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 340,
                   ),
                   Container(
                     child: Column(
@@ -155,6 +152,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
                 ],
               ),
             ),
+            //------------------------------------------------------------------------
             Container(
               padding: EdgeInsets.only(left: 10, right: 10),
               decoration: BoxDecoration(
@@ -163,46 +161,43 @@ class _QuarteiroesState extends State<Quarteiroes> {
                 ),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 10,
-                  ),
                   Container(
-                    height: 100,
-                    width: 100,
-                    child: Image.network(
-                        'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp'),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(
-                          'Rua Joaquim Lopes',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          '123',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.right,
-                        ),
+                        Image.network(
+                            height: 100,
+                            width: 100,
+                            'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp'),
                         SizedBox(
-                          height: 20,
-                        )
+                          width: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rua Joaquim Lopes',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              '123',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 340,
                   ),
                   Container(
                     child: Column(
@@ -224,6 +219,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
                 ],
               ),
             ),
+            //--------------------------------------------
           ],
         ),
       ),
