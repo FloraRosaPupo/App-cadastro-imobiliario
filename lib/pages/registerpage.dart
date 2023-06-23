@@ -97,6 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Espacamento10(),
               TextField(
                 controller: _passwordController,
+                keyboardType: TextInputType.number,
                 obscureText: true,
                 style: TextStyle(
                   fontSize: 20,

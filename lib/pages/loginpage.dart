@@ -82,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                       Espacamento10(),
                       TextFormField(
                         controller: _passwordController,
+                        keyboardType: TextInputType.number,
                         obscureText: true,
                         style: TextStyle(
                           fontSize: 20,
