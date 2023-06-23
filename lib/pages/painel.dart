@@ -24,7 +24,7 @@ class _PainelState extends State<Painel> {
   String nome = '';
   String email = '';
 
-  // 
+  //
   @override
   initState() {
     chamarUsuario();
@@ -59,6 +59,12 @@ class _PainelState extends State<Painel> {
                         MaterialPageRoute(builder: (context) => Search2()));
                   },
                   child: Text('Atualizar Dados do Contribuinte'),
+                ),
+                Espacamento10(),
+                ElevatedButton(
+                  style: raisedButtonStyle,
+                  onPressed: () {},
+                  child: Text('Acessar Galeria de Quarteiroes'),
                 ),
                 Espacamento10(),
                 ElevatedButton(
