@@ -267,34 +267,3 @@ class _Exportar extends State<Exportar> {
     }
   }
 }
-
-//personalização do botão
-/*Text(
-              'Formato de Exportação',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color.fromARGB(190, 7, 62, 77),
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500),
-            ),
-            Espacamento5(),
-            ElevatedButton.icon(
-              style: raisedButtonStyle,
-              icon: Icon(Icons.download),
-              onPressed: () {},
-              label: Text('CSV'),
-            ),
-            Espacamento10(),
-            ElevatedButton.icon(
-              style: raisedButtonStyle,
-              icon: Icon(Icons.download),
-              onPressed: () {},
-              label: Text('TXT'),
-            ),
-            Espacamento10(),
-            ElevatedButton.icon(
-              style: raisedButtonStyle,
-              icon: Icon(Icons.download),
-              onPressed: () {},
-              label: Text('XML'),
-            ), */
