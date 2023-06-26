@@ -8,9 +8,11 @@ import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
 import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
+import 'package:projeto_prefeitura/pages/galeria.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:projeto_prefeitura/pages/forms/imovel.dart';
 import 'package:projeto_prefeitura/pages/quarteiroes.dart';
+import 'package:projeto_prefeitura/pages/galeria.dart';
 
 class Painel extends StatefulWidget {
   const Painel({super.key});
@@ -63,7 +65,10 @@ class _PainelState extends State<Painel> {
                 Espacamento10(),
                 ElevatedButton(
                   style: raisedButtonStyle,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Galeria()));
+                  },
                   child: Text('Acessar Galeria de Quarteiroes'),
                 ),
                 Espacamento10(),
