@@ -69,7 +69,7 @@ class _PainelState extends State<Painel> {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Galeria()));
                   },
-                  child: Text('Acessar Galeria de Quarteiroes'),
+                  child: Text('Acessar Galeria de Quarteirões'),
                 ),
                 Espacamento10(),
                 ElevatedButton(
