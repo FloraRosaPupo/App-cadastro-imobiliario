@@ -59,13 +59,14 @@ class _GaleriaState extends State<Galeria> {
       drawer: menuLateralDinamico(nome, email),
       body: FutureBuilder(
         future: getGridView(),
-        builder: (context, snapshot) {
+        builder: (contex, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
             return RefreshIndicator(
+              onRefresh: getRegresh,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3),
@@ -80,12 +81,11 @@ class _GaleriaState extends State<Galeria> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child:
-                          Image.network(ourData.data["img"], fit: BoxFit.cover),
+                          Image.network(ourData.data['img'], fit: BoxFit.cover),
                     ),
                   );
                 },
               ),
-              onRefresh: getRegresh,
             );
           }
         },
