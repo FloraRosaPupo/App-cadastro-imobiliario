@@ -38,10 +38,8 @@ class _GaleriaState extends State<Galeria> {
 
   Future getGridView() async {
     var firestore = FirebaseFirestore.instance;
-    QuerySnapshot snap =
-        await firestore.collection("gridData").get() /*Pode dar errado*/;
+    QuerySnapshot snap = await firestore.collection("gridData").get();
 
-    //pode ta errado
     return snap.docs;
   }
 
