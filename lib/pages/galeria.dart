@@ -70,7 +70,6 @@ class _GaleriaState extends State<Galeria> {
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3),
-                itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   var ourData = snapshot.data[index];
 
@@ -85,6 +84,7 @@ class _GaleriaState extends State<Galeria> {
                     ),
                   );
                 },
+                itemCount: snapshot.data.length,
               ),
             );
           }
