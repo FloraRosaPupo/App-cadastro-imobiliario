@@ -16,6 +16,8 @@ class Galeria extends StatefulWidget {
 
 class _GaleriaState extends State<Galeria> {
   final _firebaseAuth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
+
   String nome = '';
   String email = '';
 
@@ -37,10 +39,17 @@ class _GaleriaState extends State<Galeria> {
   }
 
   Future getGridView() async {
-    var firestore = FirebaseFirestore.instance;
-    QuerySnapshot snap = await firestore.collection("gridData").get();
+    //QuerySnapshot snap = await firestore.collection("gridData").get();
 
-    return snap.docs;
+    firestore.collection("gridData").get().then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          print('${docSnapshot.id} => ${docSnapshot.data()}');
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
   }
 
   Future<Null> getRegresh() async {
@@ -82,7 +91,8 @@ class _GaleriaState extends State<Galeria> {
                     ),
                   );
                 },
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data.lengt,
+                //data.length,
               ),
             );
           }
