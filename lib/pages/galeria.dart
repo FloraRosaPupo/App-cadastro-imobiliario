@@ -1,5 +1,3 @@
-// ignore_for_file: unused_import
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../functions.dart';
@@ -8,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart' as path;
 
 class Galeria extends StatefulWidget {
-  const Galeria({super.key});
+  const Galeria({Key? key}) : super(key: key);
 
   @override
   State<Galeria> createState() => _GaleriaState();
@@ -21,9 +19,9 @@ class _GaleriaState extends State<Galeria> {
   String nome = '';
   String email = '';
 
-  //
   @override
-  initState() {
+  void initState() {
+    super.initState();
     chamarUsuario();
   }
 
@@ -38,21 +36,11 @@ class _GaleriaState extends State<Galeria> {
     }
   }
 
-  Future getGridView() async {
-    //QuerySnapshot snap = await firestore.collection("gridData").get();
-
-    firestore.collection("gridData").get().then(
-      (querySnapshot) {
-        print("Successfully completed");
-        for (var docSnapshot in querySnapshot.docs) {
-          print('${docSnapshot.id} => ${docSnapshot.data()}');
-        }
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
+  Future<QuerySnapshot<Map<String, dynamic>>> getGridView() async {
+    return firestore.collection("gridData").get();
   }
 
-  Future<Null> getRegresh() async {
+  Future<Null> getRefresh() async {
     await Future.delayed(Duration(seconds: 3));
     setState(() {
       getGridView();
@@ -64,35 +52,38 @@ class _GaleriaState extends State<Galeria> {
     return Scaffold(
       appBar: appBarDinamica(),
       drawer: menuLateralDinamico(nome, email),
-      body: FutureBuilder(
+      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: getGridView(),
-        builder: (contex, snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
             return RefreshIndicator(
-              onRefresh: getRegresh,
+              onRefresh: getRefresh,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                  crossAxisCount: 3,
+                ),
                 itemBuilder: (context, index) {
-                  var ourData = snapshot.data[index];
+                  var ourData = snapshot.data!.docs[index];
 
                   return Card(
-                    elevation: 10.0,
+                    elevation: 10.0,  
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child:
-                          Image.network(ourData.data['img'], fit: BoxFit.cover),
+                      child: Image.network(
+                        ourData.data()['img'],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   );
                 },
-                itemCount: snapshot.data.lengt,
-                //data.length,
+                itemCount: snapshot.data!.docs.length,
               ),
             );
           }
