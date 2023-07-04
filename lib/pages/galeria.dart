@@ -70,16 +70,14 @@ class _GaleriaState extends State<Galeria> {
                   var ourData = snapshot.data!.docs[index];
 
                   return Card(
-                    elevation: 10.0,  
+                    elevation: 10.0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        ourData.data()['img'],
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.network(ourData.data()['img'],
+                          fit: BoxFit.cover),
                     ),
                   );
                 },

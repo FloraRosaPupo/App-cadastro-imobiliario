@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto_prefeitura/pages/galeria.dart';
 import 'package:projeto_prefeitura/pages/loginpage.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
 import 'package:projeto_prefeitura/pages/quarteiroes.dart';
@@ -302,10 +303,38 @@ menuLateralDinamico(nome, email) {
                 },
               );
             }),
-            Espacamento10(),
           ],
         ),
       ),
+      Container(
+        decoration: BoxDecoration(
+          border: Border(
+              //bottom: BorderSide(width: 2.0, color: Colors.white12),
+              ),
+        ),
+        padding: EdgeInsets.only(left: 7),
+        child: Column(
+          children: [
+            Espacamento10(),
+            Builder(builder: (BuildContext context) {
+              return ListTile(
+                  leading: Icon(
+                    Icons.art_track,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Quarteirões',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Galeria()));
+                  });
+            }),
+          ],
+        ),
+      ),
+
       Container(
         decoration: BoxDecoration(
           border: Border(
@@ -331,7 +360,6 @@ menuLateralDinamico(nome, email) {
                         MaterialPageRoute(builder: (context) => Exportar()));
                   });
             }),
-            Espacamento10(),
           ],
         ),
       )
