@@ -18,7 +18,6 @@ class _GaleriaState extends State<Galeria> {
 
   String nome = '';
   String email = '';
-  int hoverIndex = -1;
 
   @override
   void initState() {
@@ -38,7 +37,7 @@ class _GaleriaState extends State<Galeria> {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getGridView() async {
-    return firestore.collection("gridData").get();
+    return firestore.collection("gridData").orderBy("", "asc").get();
   }
 
   Future<Null> getRefresh() async {
@@ -70,50 +69,16 @@ class _GaleriaState extends State<Galeria> {
                 itemBuilder: (context, index) {
                   var ourData = snapshot.data!.docs[index];
 
-                  return MouseRegion(
-                    onEnter: (event) {
-                      setState(() {
-                        hoverIndex = index;
-                      });
-                    },
-                    onExit: (event) {
-                      setState(() {
-                        hoverIndex = -1;
-                      });
-                    },
-                    child: GestureDetector(
-                      onTap: () {
-                        // Abrir outra página
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Quarteirao(),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        elevation: 10.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                ourData.data()['img'],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            if (hoverIndex == index)
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ),
-                          ],
-                        ),
+                  return Card(
+                    elevation: 10.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        ourData.data()['img'],
+                        fit: BoxFit.cover,
                       ),
                     ),
                   );
@@ -125,49 +90,5 @@ class _GaleriaState extends State<Galeria> {
         },
       ),
     );
-  }
-}
-
-class Quarteirao extends StatefulWidget {
-  const Quarteirao({super.key});
-
-  @override
-  State<Quarteirao> createState() => _QuarteiraoState();
-}
-
-class _QuarteiraoState extends State<Quarteirao> {
-  final _firebaseAuth = FirebaseAuth.instance;
-  final firestore = FirebaseFirestore.instance;
-
-  String nome = '';
-  String email = '';
-
-  @override
-  void initState() {
-    super.initState();
-    chamarUsuario();
-  }
-
-  chamarUsuario() async {
-    User? usuario = await _firebaseAuth.currentUser;
-    if (usuario != null) {
-      print(usuario);
-      setState(() {
-        nome = usuario.displayName!;
-        email = usuario.email!;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: appBarDinamica(),
-        drawer: menuLateralDinamico(nome, email),
-        body: Column(
-          children: [
-            
-          ],
-        ));
   }
 }
