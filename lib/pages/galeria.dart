@@ -50,6 +50,46 @@ class _GaleriaState extends State<Galeria> {
     });
   }
 
+  void showImageDialog(String imageUrl, String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Espacamento10(),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.network(imageUrl),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Quarteirão ' + title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Fechar'),
+              ),
+              Espacamento10(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,21 +107,41 @@ class _GaleriaState extends State<Galeria> {
               onRefresh: getRefresh,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 5,
                 ),
                 itemBuilder: (context, index) {
                   var ourData = snapshot.data!.docs[index];
 
-                  return Card(
-                    elevation: 10.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        ourData.data()['img'],
-                        fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      String imageUrl = ourData.data()['img'];
+                      String title = ourData.data()['title'].toString();
+                      showImageDialog(imageUrl, title);
+                    },
+                    child: Card(
+                      elevation: 10.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.network(
+                                ourData.data()['img'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            ourData.data()['title'].toString(),
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   );
