@@ -39,12 +39,12 @@ class _GaleriaState extends State<Galeria> {
   Future<QuerySnapshot<Map<String, dynamic>>> getGridView() async {
     return firestore
         .collection("gridData")
-        .orderBy("", descending: false)
+        .orderBy('title', descending: false)
         .get();
   }
 
   Future<Null> getRefresh() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 2));
     setState(() {
       getGridView();
     });
