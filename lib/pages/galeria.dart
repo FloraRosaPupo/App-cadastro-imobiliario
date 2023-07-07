@@ -62,11 +62,19 @@ class _GaleriaState extends State<Galeria> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Espacamento10(),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Image.network(imageUrl),
-              ),
-              SizedBox(height: 10),
+              InteractiveViewer(
+                  clipBehavior: Clip.none,
+                  panEnabled: false,
+                  minScale: 1,
+                  maxScale: 4,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image.network(imageUrl),
+                    ),
+                  )),
+              Espacamento10(),
               Text(
                 'Quarteirão ' + title,
                 style: TextStyle(

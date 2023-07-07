@@ -1,23 +1,33 @@
-import pandas as pd
+import gspread
+from google.oauth2 import service_account
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+# Configurar as credenciais do Google Sheets
+credenciais_sheets = service_account.Credentials.from_service_account_file(
+    'caminho/para/arquivo-de-credenciais-sheets.json'
+)
+
+# Configurar as credenciais do Firestore
+credenciais_firestore = credentials.Certificate(
+    'caminho/para/arquivo-de-credenciais-firestore.json')
+
 # Inicializar o aplicativo do Firebase
-cred = credentials.Certificate(
-    r'C:\Users\flora\OneDrive\Documentos\Aplicativo de Cadastro\projeto_prefeitura\app-de-cadastro-imobiliario-firebase-adminsdk-cbx4e-5399b5b3ed.json')
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(credenciais_firestore)
 db = firestore.client()
 
-# Definir o caminho para o arquivo CSV contendo os dados dos imóveis
-caminho_arquivo = r'C:\Users\flora\OneDrive\Documentos\Aplicativo de Cadastro\projeto_prefeitura\teste.csv'
+# Configurações da planilha do Google Sheets
+nome_planilha = 'Nome da Planilha'
+# Coloque os nomes das abas que deseja importar
+nome_abas = ['Aba1', 'Aba2', 'Aba3']
 
 # Função para carregar os dados no Firestore
 
 
 def carregar_dados_firestore(dados):
     # Percorrer cada registro
-    for _, registro in dados.iterrows():
+    for registro in dados:
         # Extrair os dados do registro
         nome_proprietario = registro['Nome do proprietario']
         numero_imovel = registro['Numero do imovel']
@@ -40,16 +50,20 @@ def carregar_dados_firestore(dados):
 
 def main():
     try:
-        # Ler os dados da planilha usando a biblioteca pandas
-        dados_imoveis = pd.read_csv(caminho_arquivo)
+        # Abrir a planilha do Google Sheets
+        cliente_sheets = gspread.authorize(credenciais_sheets)
+        planilha = cliente_sheets.open(nome_planilha)
 
-        # Chamar a função para carregar os dados no Firestore
-        carregar_dados_firestore(dados_imoveis)
+        # Percorrer cada aba e carregar os dados
+        for aba in nome_abas:
+            # Obter os dados da aba
+            dados_aba = planilha.worksheet(aba).get_all_records()
+
+            # Chamar a função para carregar os dados no Firestore
+            carregar_dados_firestore(dados_aba)
 
         print('Importação concluída.')
 
-    except FileNotFoundError:
-        print(f"Arquivo não encontrado: {caminho_arquivo}")
     except Exception as e:
         print(f"Ocorreu um erro durante a importação: {str(e)}")
 
