@@ -75,21 +75,21 @@ class _GaleriaState extends State<Galeria> {
                     ),
                   )),
               Espacamento10(),
-              Text(
+              /*Text(
                 'Quarteirão ' + title,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              SizedBox(height: 10),
+              Espacamento10(),
               ElevatedButton(
                 style: raisedButtonStyle,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
                 child: Text('Fechar'),
-              ),
+              ),*/
               Espacamento10(),
             ],
           ),
