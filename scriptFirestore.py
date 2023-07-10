@@ -24,10 +24,10 @@ google_credentials = service_account.Credentials.from_service_account_info(
     {
         'type': 'service_account',
         'project_id': 'seu_project_id',
-        'private_key_id': 'sua_private_key_id',
-        'private_key': 'sua_private_key',
+        'private_key_id': '108762943338431382138',
+        'private_key': 'firebase-adminsdk-cbx4e@app-de-cadastro-imobiliario.iam.gserviceaccount.com',  # pode dar erro
         'client_email': google_sheets_email,
-        'client_id': 'seu_client_id',
+        'client_id': '108762943338431382138',
         'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
         'token_uri': 'https://accounts.google.com/o/oauth2/token',
         'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs',
@@ -36,6 +36,8 @@ google_credentials = service_account.Credentials.from_service_account_info(
 )
 
 # Ler os dados do Google Sheets e atualizar o Firebase
+
+
 def read_data_from_google_sheets():
     gc = gspread.authorize(google_credentials)
     sheet = gc.open_by_key(spreadsheet_id).worksheet(range_name)
