@@ -1,73 +1,56 @@
 import gspread
 from google.oauth2 import service_account
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_admin import credentials, firestore
+
+# Caminho para o arquivo JSON da chave de serviço do Firebase
+firebase_credentials_path = r'C:\Users\flora\OneDrive\Documentos\Aplicativo de Cadastro\projeto_prefeitura\app-de-cadastro-imobiliario-firebase-adminsdk-cbx4e-8803d80bff.json'
+
+# Email da conta de serviço do Google Sheets
+google_sheets_email = 'firebase-adminsdk-cbx4e@app-de-cadastro-imobiliario.iam.gserviceaccount.com'
+
+# ID da planilha do Google Sheets
+spreadsheet_id = '1uSK1R1QG1fKvjNjdDwnuzSA9vliDxtpAFQLAdLKRlEc'
+
+# Intervalo de células da planilha que deseja importar
+range_name = 'Pagina!A1:AA1'  # Exemplo de intervalo de células
+
+# Configurar as credenciais do Firebase
+firebase_credentials = credentials.Certificate(firebase_credentials_path)
+firebase_admin.initialize_app(firebase_credentials)
 
 # Configurar as credenciais do Google Sheets
-credenciais_sheets = service_account.Credentials.from_service_account_file(
-    'caminho/para/arquivo-de-credenciais-sheets.json'
+google_credentials = service_account.Credentials.from_service_account_info(
+    {
+        'type': 'service_account',
+        'project_id': 'seu_project_id',
+        'private_key_id': 'sua_private_key_id',
+        'private_key': 'sua_private_key',
+        'client_email': google_sheets_email,
+        'client_id': 'seu_client_id',
+        'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
+        'token_uri': 'https://accounts.google.com/o/oauth2/token',
+        'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs',
+        'client_x509_cert_url': 'seu_client_x509_cert_url'
+    }
 )
 
-# Configurar as credenciais do Firestore
-credenciais_firestore = credentials.Certificate(
-    'caminho/para/arquivo-de-credenciais-firestore.json')
+# Ler os dados do Google Sheets e atualizar o Firebase
+def read_data_from_google_sheets():
+    gc = gspread.authorize(google_credentials)
+    sheet = gc.open_by_key(spreadsheet_id).worksheet(range_name)
+    values = sheet.get_all_values()
 
-# Inicializar o aplicativo do Firebase
-firebase_admin.initialize_app(credenciais_firestore)
-db = firestore.client()
+    if len(values) > 1:
+        headers = values[0]
+        records = [dict(zip(headers, row)) for row in values[1:]]
 
-# Configurações da planilha do Google Sheets
-nome_planilha = 'Nome da Planilha'
-# Coloque os nomes das abas que deseja importar
-nome_abas = ['Aba1', 'Aba2', 'Aba3']
-
-# Função para carregar os dados no Firestore
-
-
-def carregar_dados_firestore(dados):
-    # Percorrer cada registro
-    for registro in dados:
-        # Extrair os dados do registro
-        nome_proprietario = registro['Nome do proprietario']
-        numero_imovel = registro['Numero do imovel']
-        # ...
-
-        # Criar um novo documento na coleção 'imoveis'
-        novo_documento = db.collection('imoveis').document()
-
-        # Definir os campos do documento
-        novo_documento.set({
-            'Nome do proprietario': nome_proprietario,
-            'Numero do imovel': numero_imovel,
-            # (Definir os outros campos conforme necessário)
-        })
-
-        print('Imóvel adicionado:', novo_documento.id)
-
-# Função principal para carregar os dados da planilha
+        # Atualizar o Firebase com os dados
+        db = firestore.client()
+        collection_ref = db.collection('imoveis')
+        for record in records:
+            collection_ref.add(record)
 
 
-def main():
-    try:
-        # Abrir a planilha do Google Sheets
-        cliente_sheets = gspread.authorize(credenciais_sheets)
-        planilha = cliente_sheets.open(nome_planilha)
-
-        # Percorrer cada aba e carregar os dados
-        for aba in nome_abas:
-            # Obter os dados da aba
-            dados_aba = planilha.worksheet(aba).get_all_records()
-
-            # Chamar a função para carregar os dados no Firestore
-            carregar_dados_firestore(dados_aba)
-
-        print('Importação concluída.')
-
-    except Exception as e:
-        print(f"Ocorreu um erro durante a importação: {str(e)}")
-
-
-# Chamar a função principal para iniciar o processo de importação
-if __name__ == '__main__':
-    main()
+read_data_from_google_sheets()
+print('Dados importados com sucesso para o Firebase')
