@@ -129,6 +129,24 @@ class _QuarteiroesState extends State<Quarteiroes> {
                   icon: Icon(Icons.filter_list),
                   label: Text('Filtrar'),
                 ),
+                SizedBox(width: 10),
+                if (minQuartosSelecionados != null ||
+                    maxQuartosSelecionados != null)
+                  Text(
+                    '${minQuartosSelecionados ?? 'Mínimo'} - ${maxQuartosSelecionados ?? 'Máximo'}',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                if (minQuartosSelecionados != null ||
+                    maxQuartosSelecionados != null)
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        minQuartosSelecionados = null;
+                        maxQuartosSelecionados = null;
+                      });
+                    },
+                    icon: Icon(Icons.clear),
+                  ),
               ],
             ),
             Espacamento10(),
