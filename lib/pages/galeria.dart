@@ -143,7 +143,7 @@ class _GaleriaState extends State<Galeria> {
                             ),
                           ),
                           Text(
-                            ourData.data()['title'].toString(),
+                            'Quarteirão: ' + ourData.data()['title'].toString(),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,
