@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/pages/forms/imovel.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Quarteiroes extends StatefulWidget {
   const Quarteiroes({Key? key}) : super(key: key);
@@ -13,6 +15,8 @@ class Quarteiroes extends StatefulWidget {
 }
 
 class _QuarteiroesState extends State<Quarteiroes> {
+  //chamando realtime
+  FirebaseDatabase database = FirebaseDatabase.instance;
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
@@ -34,6 +38,33 @@ class _QuarteiroesState extends State<Quarteiroes> {
         email = usuario.email!;
       });
     }
+  }
+
+  Future<int> calcularQuarteiroes() async {
+    DatabaseReference ref = FirebaseDatabase.instance.reference();
+
+    int totalQuarteiroes = 0;
+
+    ref.child('imoveis').onValue.listen((event) {
+      DataSnapshot snapshot = event.snapshot;
+
+      if (snapshot.value != null) {
+        Map<dynamic, dynamic> data =
+            Map<dynamic, dynamic>.from(snapshot.value as Map<dynamic, dynamic>);
+
+        totalQuarteiroes = 0;
+
+        data.forEach((key, value) {
+          if (value['2'] != null && value['2'] is num) {
+            totalQuarteiroes += (value['2'] as num).toInt();
+          }
+        });
+      } else {
+        totalQuarteiroes = 0;
+      }
+    });
+
+    return totalQuarteiroes;
   }
 
   @override
@@ -222,6 +253,21 @@ class _QuarteiroesState extends State<Quarteiroes> {
                         Text(
                           'Fulano da Silva',
                           style: TextStyle(fontSize: 20),
+                        ),
+                        FutureBuilder<int>(
+                          future: calcularQuarteiroes(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                'Quantidade de Quarteirões: ${snapshot.data}',
+                                style: TextStyle(fontSize: 18),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Erro ao calcular quarteirões');
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
                         ),
                         IconButton(
                           onPressed: () {
