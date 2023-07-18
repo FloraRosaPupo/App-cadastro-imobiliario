@@ -42,12 +42,12 @@ class _QuarteiroesState extends State<Quarteiroes> {
 
   Future<int> calcularQuarteiroes() async {
     DatabaseReference ref =
-        FirebaseDatabase.instance.reference().child('imoveis');
+        FirebaseDatabaseWeb.instance.reference().child('imoveis');
 
-    DataSnapshot snapshot = await ref.once();
+    DataSnapshotWeb snapshot = await ref.once();
 
     if (snapshot.value != null) {
-      Map<dynamic, dynamic> data = snapshot.value;
+      Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(snapshot.value);
 
       Map<int, int> quarteiroesCount = {};
 
