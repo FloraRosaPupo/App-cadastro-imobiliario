@@ -41,30 +41,34 @@ class _QuarteiroesState extends State<Quarteiroes> {
   }
 
   Future<int> calcularQuarteiroes() async {
-    DatabaseReference ref = FirebaseDatabase.instance.reference();
+    DatabaseReference ref =
+        FirebaseDatabase.instance.reference().child('imoveis');
 
-    int totalQuarteiroes = 0;
+    DataSnapshot snapshot = await ref.once();
 
-    ref.child('imoveis').onValue.listen((event) {
-      DataSnapshot snapshot = event.snapshot;
+    if (snapshot.value != null) {
+      Map<dynamic, dynamic> data = snapshot.value;
 
-      if (snapshot.value != null) {
-        Map<dynamic, dynamic> data =
-            Map<dynamic, dynamic>.from(snapshot.value as Map<dynamic, dynamic>);
+      Map<int, int> quarteiroesCount = {};
 
-        totalQuarteiroes = 0;
-
-        data.forEach((key, value) {
-          if (value['2'] != null && value['2'] is num) {
-            totalQuarteiroes += (value['2'] as num).toInt();
+      data.forEach((key, value) {
+        if (value['2'] != null && value['2'] is int) {
+          int quarteiroes = value['2'];
+          if (quarteiroesCount.containsKey(quarteiroes)) {
+            quarteiroesCount[quarteiroes]++;
+          } else {
+            quarteiroesCount[quarteiroes] = 1;
           }
-        });
-      } else {
-        totalQuarteiroes = 0;
-      }
-    });
+        }
+      });
 
-    return totalQuarteiroes;
+      int maxQuarteiroes =
+          quarteiroesCount.values.reduce((a, b) => a > b ? a : b);
+
+      return maxQuarteiroes;
+    } else {
+      return 0;
+    }
   }
 
   @override
