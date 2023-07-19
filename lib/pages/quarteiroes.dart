@@ -40,37 +40,6 @@ class _QuarteiroesState extends State<Quarteiroes> {
     }
   }
 
-  Future<int> calcularQuarteiroes() async {
-    DatabaseReference ref =
-        FirebaseDatabaseWeb.instance.reference().child('imoveis');
-
-    DataSnapshotWeb snapshot = await ref.once();
-
-    if (snapshot.value != null) {
-      Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(snapshot.value);
-
-      Map<int, int> quarteiroesCount = {};
-
-      data.forEach((key, value) {
-        if (value['2'] != null && value['2'] is int) {
-          int quarteiroes = value['2'];
-          if (quarteiroesCount.containsKey(quarteiroes)) {
-            quarteiroesCount[quarteiroes]++;
-          } else {
-            quarteiroesCount[quarteiroes] = 1;
-          }
-        }
-      });
-
-      int maxQuarteiroes =
-          quarteiroesCount.values.reduce((a, b) => a > b ? a : b);
-
-      return maxQuarteiroes;
-    } else {
-      return 0;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,21 +226,6 @@ class _QuarteiroesState extends State<Quarteiroes> {
                         Text(
                           'Fulano da Silva',
                           style: TextStyle(fontSize: 20),
-                        ),
-                        FutureBuilder<int>(
-                          future: calcularQuarteiroes(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(
-                                'Quantidade de Quarteirões: ${snapshot.data}',
-                                style: TextStyle(fontSize: 18),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Erro ao calcular quarteirões');
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
                         ),
                         IconButton(
                           onPressed: () {
