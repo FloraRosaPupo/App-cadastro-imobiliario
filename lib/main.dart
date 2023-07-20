@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:projeto_prefeitura/pages/loginpage.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
+import 'package:projeto_prefeitura/pages/realtime.dart';
 import 'package:projeto_prefeitura/pages/registerpage.dart';
 import 'package:projeto_prefeitura/pages/homepage.dart';
 
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [Locale('pt', 'BR')],
-      home: HomePage(),
+      home: Realtime(),
       theme: ThemeData(
         //useMaterial3: true,
         fontFamily: 'Montserrat',

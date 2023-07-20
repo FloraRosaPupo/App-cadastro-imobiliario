@@ -16,14 +16,14 @@ class Realtime extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-              child:
-                  FirebaseAnimatedList(query: ref, itemBuilder: (context, snapshot, animation, index){
+              child: FirebaseAnimatedList(
+                  query: ref,
+                  itemBuilder: (context, snapshot, animation, index) {
                     return ListTile(
-                      title: Text(snapshot.child(path))
+                      title: Text(snapshot.child('Nome').value.toString()),
+                      subtitle: Text(snapshot.child('CPF').value.toString()),
                     );
-                  }
-                
-                  ))
+                  }))
         ],
       ),
     );
