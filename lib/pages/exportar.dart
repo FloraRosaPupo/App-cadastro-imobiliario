@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_prefeitura/functions.dart';
+import 'dart:async';
 
 class Dados {
   final int SIAT;
@@ -84,7 +85,7 @@ class ExportarState extends State<ExportarPage> {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
-    _dadosSubscription = databaseReference.onValue.listen((Event event) {
+    _dadosSubscription = databaseReference.onValue.listen((event) {
       final data = event.snapshot.value;
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
