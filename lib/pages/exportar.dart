@@ -1,33 +1,102 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/functions.dart';
-import 'package:projeto_prefeitura/main.dart';
-import 'package:projeto_prefeitura/users.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:projeto_prefeitura/users.dart';
+import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/pages/exportar.dart';
 
-class Exportar extends StatefulWidget {
-  const Exportar({Key? key}) : super(key: key);
+class Dados {
+  final int SIAT;
+  final String nome;
+  final String cpf_cnpj;
+  final String rua;
+  final String numero_casa;
+  final int quarteirao;
+  final String data;
+  final String horas;
 
-  @override
-  State<Exportar> createState() => _ExportarState();
+  const Dados({
+    required this.SIAT,
+    required this.nome,
+    required this.cpf_cnpj,
+    required this.rua,
+    required this.numero_casa,
+    required this.quarteirao,
+    required this.data,
+    required this.horas,
+  });
+
+  Dados copy({
+    int? SIAT,
+    String? nome,
+    String? cpf_cnpj,
+    String? rua,
+    String? numero_casa,
+    int? quarteirao,
+    String? data,
+    String? horas,
+  }) =>
+      Dados(
+        SIAT: SIAT ?? this.SIAT,
+        nome: nome ?? this.nome,
+        cpf_cnpj: cpf_cnpj ?? this.cpf_cnpj,
+        rua: rua ?? this.rua,
+        numero_casa: numero_casa ?? this.numero_casa,
+        quarteirao: quarteirao ?? this.quarteirao,
+        data: data ?? this.data,
+        horas: horas ?? this.horas,
+      );
 }
 
-class _ExportarState extends State<Exportar> {
+class ExportarPage extends StatefulWidget {
+  const ExportarPage({Key? key}) : super(key: key);
+
+  @override
+  State<ExportarPage> createState() => ExportarState();
+}
+
+class ExportarState extends State<ExportarPage> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
+  late List<Dados> dados;
+  int? sortColumnIndex;
+  bool isAscending = false;
 
   @override
   void initState() {
     super.initState();
+    dados = [];
     buscarDadosEmTempoReal();
     chamarUsuario();
   }
 
-  late List<Dados> dados;
-  int? sortColumnIndex;
-  bool isAscending = false;
+  void buscarDadosEmTempoReal() {
+    final databaseReference =
+        FirebaseDatabase.instance.reference().child('imoveis');
+
+    databaseReference.onValue.listen((event) {
+      final data = event.snapshot.value;
+      if (data != null && data is Map<dynamic, dynamic>) {
+        List<Dados> dadosList = [];
+        data.forEach((key, value) {
+          dadosList.add(Dados(
+            SIAT: value['SIAT'],
+            nome: value['nome'],
+            cpf_cnpj: value['cpf_cnpj'],
+            rua: value['rua'],
+            numero_casa: value['numero_casa'],
+            quarteirao: value['quarteirao'],
+            data: value['data'],
+            horas: value['horas'],
+          ));
+        });
+
+        setState(() {
+          dados = dadosList;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -108,7 +177,7 @@ class _ExportarState extends State<Exportar> {
           dados.numero_casa,
           dados.quarteirao,
           dados.data,
-          //dados.horas,
+          dados.horas,
         ];
         return DataRow(cells: getCells(cells));
       }).toList();
@@ -150,17 +219,17 @@ class _ExportarState extends State<Exportar> {
     } else if (columnIndex == 6) {
       dados.sort(
         (dados1, dados2) =>
-            compareString_data(ascending, dados1.data, dados2.data),
+            comapareString_data(ascending, dados1.data, dados2.data),
       );
-    } /*else if (columnIndex == 7) {
+    } else if (columnIndex == 7) {
       dados.sort(
         (dados1, dados2) =>
-            compareString_horario(ascending, dados1.horas, dados2.horas),
+            comapareString_horario(ascending, dados1.horas, dados2.horas),
       );
-    }*/
+    }
     setState(() {
-      this.sortColumnIndex = columnIndex;
-      this.isAscending = ascending;
+      sortColumnIndex = columnIndex;
+      isAscending = ascending;
     });
   }
 
@@ -190,10 +259,10 @@ class _ExportarState extends State<Exportar> {
           ? quarteirao1.compareTo(quarteirao2)
           : quarteirao2.compareTo(quarteirao1);
 
-  int compareString_data(bool ascending, String data1, String data2) =>
+  int comapareString_data(bool ascending, String data1, String data2) =>
       ascending ? data1.compareTo(data2) : data2.compareTo(data1);
 
-  int compareString_horario(bool ascending, String horas1, String horas2) =>
+  int comapareString_horario(bool ascending, String horas1, String horas2) =>
       ascending ? horas1.compareTo(horas2) : horas2.compareTo(horas1);
 
   void chamarUsuario() async {
