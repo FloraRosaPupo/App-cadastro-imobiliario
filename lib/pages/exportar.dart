@@ -168,7 +168,7 @@ class _Exportar extends State<Exportar> {
           dados.numero_casa,
           dados.quarteirao,
           dados.data,
-          dados.horas,
+          //dados.horas,
         ];
         return DataRow(cells: getCells(cells));
       }).toList();
@@ -212,12 +212,12 @@ class _Exportar extends State<Exportar> {
         (dados1, dados2) =>
             comapareString_data(ascending, dados1.data, dados2.data),
       );
-    } else if (columnIndex == 7) {
+    } /*else if (columnIndex == 7) {
       dados.sort(
         (dados1, dados2) =>
             comapareString_horario(ascending, dados1.horas, dados2.horas),
       );
-    }
+    }*/
     setState(() {
       this.sortColumnIndex = columnIndex;
       this.isAscending = ascending;

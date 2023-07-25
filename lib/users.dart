@@ -8,7 +8,7 @@ class Dados {
   final String numero_casa;
   final int quarteirao;
   final String data;
-  final String horas;
+  //final String horas;
 
   const Dados({
     required this.SIAT,
@@ -18,7 +18,7 @@ class Dados {
     required this.numero_casa,
     required this.quarteirao,
     required this.data,
-    required this.horas,
+    //required this.horas,
   });
 
   Dados copy({
@@ -29,7 +29,7 @@ class Dados {
     String? numero_casa,
     int? quarteirao,
     String? data,
-    String? horas,
+   // String? horas,
   }) =>
       Dados(
         SIAT: SIAT ?? this.SIAT,
@@ -39,7 +39,7 @@ class Dados {
         numero_casa: numero_casa ?? this.numero_casa,
         quarteirao: quarteirao ?? this.quarteirao,
         data: data ?? this.data,
-        horas: horas ?? this.horas,
+        //horas: horas ?? this.horas,
       );
 }
 
@@ -56,14 +56,14 @@ void buscarDadosEmTempoReal() {
 
     data.forEach((key, value) {
       allDados.add(Dados(
-        SIAT: value['SIAT'],
-        nome: value['nome'],
-        cpf_cnpj: value['cpf_cnpj'],
-        rua: value['rua'],
-        numero_casa: value['numero_casa'],
-        quarteirao: value['quarteirao'],
-        data: value['data'],
-        horas: value['horas'],
+        SIAT: value['Inscrição Siat'],
+        nome: value['Nome'],
+        cpf_cnpj: value['CPF'],
+        rua: value['Rua'],
+        numero_casa: value['Nº'],
+        quarteirao: value['Quarteirão'],
+        data: value['Data 1'],
+        //horas: value['horas'],
       ));
     });
   });

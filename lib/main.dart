@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [Locale('pt', 'BR')],
-      home: Realtime(),
+      home: HomePage(),
       theme: ThemeData(
         //useMaterial3: true,
         fontFamily: 'Montserrat',
