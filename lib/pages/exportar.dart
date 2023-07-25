@@ -47,14 +47,14 @@ class Dados {
       );
 }
 
-class ExportarPage extends StatefulWidget {
-  const ExportarPage({Key? key}) : super(key: key);
+class Exportar extends StatefulWidget {
+  const Exportar({Key? key}) : super(key: key);
 
   @override
-  State<ExportarPage> createState() => ExportarState();
+  State<Exportar> createState() => ExportarState();
 }
 
-class ExportarState extends State<ExportarPage> {
+class ExportarState extends State<Exportar> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
