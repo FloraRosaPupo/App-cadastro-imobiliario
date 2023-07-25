@@ -75,8 +75,8 @@ class _PainelState extends State<Painel> {
                 ElevatedButton(
                   style: raisedButtonStyle,
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Exportar()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ExportarPage()));
                   },
                   child: Text('Exportar Dados'),
                 ),

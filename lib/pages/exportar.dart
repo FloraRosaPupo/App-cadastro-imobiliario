@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_prefeitura/functions.dart';
-import 'package:projeto_prefeitura/pages/exportar.dart';
 
 class Dados {
   final int SIAT;
@@ -47,34 +46,45 @@ class Dados {
       );
 }
 
-class Exportar extends StatefulWidget {
-  const Exportar({Key? key}) : super(key: key);
+class ExportarPage extends StatefulWidget {
+  const ExportarPage({Key? key}) : super(key: key);
 
   @override
-  State<Exportar> createState() => ExportarState();
+  State<ExportarPage> createState() => ExportarState();
 }
 
-class ExportarState extends State<Exportar> {
+class ExportarState extends State<ExportarPage> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
-  late List<Dados> dados;
+
+  late StreamSubscription<Event> _dadosSubscription;
+  late StreamController<List<Dados>> _dadosController;
+
+  List<Dados> dados = [];
   int? sortColumnIndex;
   bool isAscending = false;
 
   @override
   void initState() {
     super.initState();
-    dados = [];
+    _dadosController = StreamController<List<Dados>>();
     buscarDadosEmTempoReal();
     chamarUsuario();
+  }
+
+  @override
+  void dispose() {
+    _dadosSubscription.cancel();
+    _dadosController.close();
+    super.dispose();
   }
 
   void buscarDadosEmTempoReal() {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
-    databaseReference.onValue.listen((event) {
+    _dadosSubscription = databaseReference.onValue.listen((Event event) {
       final data = event.snapshot.value;
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
@@ -91,17 +101,14 @@ class ExportarState extends State<Exportar> {
           ));
         });
 
-        setState(() {
-          dados = dadosList;
-        });
+        _dadosController.add(dadosList);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: appBarDinamica(),
-        drawer: menuLateralDinamico(nome, email),
+        appBar: AppBar(title: Text('Tabela de Dados')),
         body: Container(
           child: ListView(
             children: [
@@ -134,7 +141,17 @@ class ExportarState extends State<Exportar> {
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: buildDataTable(),
+                  child: StreamBuilder<List<Dados>>(
+                    stream: _dadosController.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        dados = snapshot.data!;
+                        return buildDataTable();
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
                 ),
               ),
             ],
@@ -157,7 +174,7 @@ class ExportarState extends State<Exportar> {
       sortAscending: isAscending,
       sortColumnIndex: sortColumnIndex,
       columns: getColumns(columns),
-      rows: getRows(dados),
+      rows: getRows(),
     );
   }
 
@@ -168,7 +185,7 @@ class ExportarState extends State<Exportar> {
           ))
       .toList();
 
-  List<DataRow> getRows(List<Dados> dados) => dados.map((Dados dados) {
+  List<DataRow> getRows() => dados.map((Dados dados) {
         final cells = [
           dados.SIAT,
           dados.nome,
@@ -186,47 +203,41 @@ class ExportarState extends State<Exportar> {
       cells.map((data) => DataCell(Text('$data'))).toList();
 
   void onSort(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      dados.sort(
-        (dados1, dados2) =>
-            compareInt_siat(ascending, dados1.SIAT, dados2.SIAT),
-      );
-    } else if (columnIndex == 1) {
-      dados.sort(
-        (dados1, dados2) =>
-            compareString_nome(ascending, dados1.nome, dados2.nome),
-      );
-    } else if (columnIndex == 2) {
-      dados.sort(
-        (dados1, dados2) =>
-            compareString_cpf_cnpj(ascending, dados1.cpf_cnpj, dados2.cpf_cnpj),
-      );
-    } else if (columnIndex == 3) {
-      dados.sort(
-        (dados1, dados2) =>
-            compareString_rua(ascending, dados1.rua, dados2.rua),
-      );
-    } else if (columnIndex == 4) {
-      dados.sort(
-        (dados1, dados2) => compareString_num(
-            ascending, dados1.numero_casa, dados2.numero_casa),
-      );
-    } else if (columnIndex == 5) {
-      dados.sort(
-        (dados1, dados2) =>
-            compareInt_quart(ascending, dados1.quarteirao, dados2.quarteirao),
-      );
-    } else if (columnIndex == 6) {
-      dados.sort(
-        (dados1, dados2) =>
-            comapareString_data(ascending, dados1.data, dados2.data),
-      );
-    } else if (columnIndex == 7) {
-      dados.sort(
-        (dados1, dados2) =>
-            comapareString_horario(ascending, dados1.horas, dados2.horas),
-      );
+    switch (columnIndex) {
+      case 0:
+        dados.sort((dados1, dados2) =>
+            compareInt_siat(ascending, dados1.SIAT, dados2.SIAT));
+        break;
+      case 1:
+        dados.sort((dados1, dados2) =>
+            compareString_nome(ascending, dados1.nome, dados2.nome));
+        break;
+      case 2:
+        dados.sort((dados1, dados2) => compareString_cpf_cnpj(
+            ascending, dados1.cpf_cnpj, dados2.cpf_cnpj));
+        break;
+      case 3:
+        dados.sort((dados1, dados2) =>
+            compareString_rua(ascending, dados1.rua, dados2.rua));
+        break;
+      case 4:
+        dados.sort((dados1, dados2) => compareString_num(
+            ascending, dados1.numero_casa, dados2.numero_casa));
+        break;
+      case 5:
+        dados.sort((dados1, dados2) =>
+            compareInt_quart(ascending, dados1.quarteirao, dados2.quarteirao));
+        break;
+      case 6:
+        dados.sort((dados1, dados2) =>
+            compareString_data(ascending, dados1.data, dados2.data));
+        break;
+      case 7:
+        dados.sort((dados1, dados2) =>
+            compareString_horario(ascending, dados1.horas, dados2.horas));
+        break;
     }
+
     setState(() {
       sortColumnIndex = columnIndex;
       isAscending = ascending;
@@ -259,19 +270,18 @@ class ExportarState extends State<Exportar> {
           ? quarteirao1.compareTo(quarteirao2)
           : quarteirao2.compareTo(quarteirao1);
 
-  int comapareString_data(bool ascending, String data1, String data2) =>
+  int compareString_data(bool ascending, String data1, String data2) =>
       ascending ? data1.compareTo(data2) : data2.compareTo(data1);
 
-  int comapareString_horario(bool ascending, String horas1, String horas2) =>
+  int compareString_horario(bool ascending, String horas1, String horas2) =>
       ascending ? horas1.compareTo(horas2) : horas2.compareTo(horas1);
 
   void chamarUsuario() async {
     User? usuario = await _firebaseAuth.currentUser;
     if (usuario != null) {
-      print(usuario);
       setState(() {
-        nome = usuario.displayName!;
-        email = usuario.email!;
+        nome = usuario.displayName ?? '';
+        email = usuario.email ?? '';
       });
     }
   }
@@ -286,7 +296,7 @@ class ExportarState extends State<Exportar> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           actions: [
-            Espacamento10(),
+            SizedBox(height: 10),
             Center(
               child: Text(
                 'Formato de Exportação',
@@ -298,35 +308,28 @@ class ExportarState extends State<Exportar> {
                 ),
               ),
             ),
-            Espacamento10(),
-            Espacamento10(),
-            Center(
-              child: ElevatedButton.icon(
-                style: raisedButtonStyle,
-                icon: Icon(Icons.download),
-                onPressed: () {},
-                label: Text('CSV'),
-              ),
+            SizedBox(height: 10),
+            ElevatedButton.icon(
+              style: raisedButtonStyle,
+              icon: Icon(Icons.download),
+              onPressed: () {},
+              label: Text('CSV'),
             ),
-            Espacamento5(),
-            Center(
-              child: ElevatedButton.icon(
-                style: raisedButtonStyle,
-                icon: Icon(Icons.download),
-                onPressed: () {},
-                label: Text('TXT'),
-              ),
+            SizedBox(height: 5),
+            ElevatedButton.icon(
+              style: raisedButtonStyle,
+              icon: Icon(Icons.download),
+              onPressed: () {},
+              label: Text('TXT'),
             ),
-            Espacamento5(),
-            Center(
-              child: ElevatedButton.icon(
-                style: raisedButtonStyle,
-                icon: Icon(Icons.download),
-                onPressed: () {},
-                label: Text('XML'),
-              ),
+            SizedBox(height: 5),
+            ElevatedButton.icon(
+              style: raisedButtonStyle,
+              icon: Icon(Icons.download),
+              onPressed: () {},
+              label: Text('XML'),
             ),
-            Espacamento10(),
+            SizedBox(height: 10),
           ],
         );
       },

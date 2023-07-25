@@ -357,7 +357,7 @@ menuLateralDinamico(nome, email) {
                   ),
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Exportar()));
+                        MaterialPageRoute(builder: (context) => ExportarPage()));
                   });
             }),
           ],
