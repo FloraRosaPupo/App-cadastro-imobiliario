@@ -1,6 +1,4 @@
-//importar database
-// ignore: unused_import
-import 'package:projeto_prefeitura/pages/exportar.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Dados {
   final int SIAT;
@@ -12,15 +10,16 @@ class Dados {
   final String data;
   final String horas;
 
-  const Dados(
-      {required this.SIAT,
-      required this.nome,
-      required this.cpf_cnpj,
-      required this.rua,
-      required this.numero_casa,
-      required this.quarteirao,
-      required this.data,
-      required this.horas});
+  const Dados({
+    required this.SIAT,
+    required this.nome,
+    required this.cpf_cnpj,
+    required this.rua,
+    required this.numero_casa,
+    required this.quarteirao,
+    required this.data,
+    required this.horas,
+  });
 
   Dados copy({
     int? SIAT,
@@ -44,295 +43,35 @@ class Dados {
       );
 }
 
-final allDados = <Dados>[
-  Dados(
-    SIAT: 12345,
-    nome: 'Fulano da Silva',
-    cpf_cnpj: '123.123.123-56',
-    rua: 'Joao Leandro',
-    numero_casa: '1F',
-    quarteirao: 1,
-    data: '11/11/2023',
-    horas: '08:00',
-  ),
-  Dados(
-    SIAT: 54321,
-    nome: 'Beltrano Souza',
-    cpf_cnpj: '456.456.456-89',
-    rua: 'Rua das Flores',
-    numero_casa: '2A',
-    quarteirao: 2,
-    data: '12/12/2023',
-    horas: '09:00',
-  ),
-  Dados(
-    SIAT: 67890,
-    nome: 'Ciclana Rocha',
-    cpf_cnpj: '789.789.789-12',
-    rua: 'Avenida Central',
-    numero_casa: '3B',
-    quarteirao: 3,
-    data: '13/01/2024',
-    horas: '10:00',
-  ),
-  Dados(
-    SIAT: 09876,
-    nome: 'Deltrano Santos',
-    cpf_cnpj: '012.012.012-34',
-    rua: 'Rua dos Ipês',
-    numero_casa: '4C',
-    quarteirao: 4,
-    data: '14/02/2024',
-    horas: '11:00',
-  ),
-  Dados(
-    SIAT: 13579,
-    nome: 'Eutrano Lima',
-    cpf_cnpj: '345.345.345-67',
-    rua: 'Rua do Sol',
-    numero_casa: '5D',
-    quarteirao: 5,
-    data: '15/03/2024',
-    horas: '12:00',
-  ),
-  Dados(
-    SIAT: 24680,
-    nome: 'Fulana Oliveira',
-    cpf_cnpj: '678.678.678-90',
-    rua: 'Rua das Palmeiras',
-    numero_casa: '6E',
-    quarteirao: 6,
-    data: '16/04/2024',
-    horas: '13:00',
-  ),
-  Dados(
-    SIAT: 36912,
-    nome: 'Beltrana Souza',
-    cpf_cnpj: '901.901.901-23',
-    rua: 'Rua dos Pinheiros',
-    numero_casa: '7F',
-    quarteirao: 7,
-    data: '17/05/2024',
-    horas: '14:00',
-  ),
-  Dados(
-    SIAT: 48246,
-    nome: 'Ciclano Rocha',
-    cpf_cnpj: '234.234.234-56',
-    rua: 'Avenida das Flores',
-    numero_casa: '8G',
-    quarteirao: 8,
-    data: '18/06/2024',
-    horas: '15:00',
-  ),
-  Dados(
-    SIAT: 59013,
-    nome: 'Deltrana Santos',
-    cpf_cnpj: '567.567.567-89',
-    rua: 'Rua dos Lírios',
-    numero_casa: '9H',
-    quarteirao: 9,
-    data: '19/07/2024',
-    horas: '16:00',
-  ),
-  Dados(
-    SIAT: 61029,
-    nome: 'Eutrana Lima',
-    cpf_cnpj: '890.890.890-12',
-    rua: 'Rua das Orquídeas',
-    numero_casa: '10I',
-    quarteirao: 10,
-    data: '20/08/2024',
-    horas: '17:00',
-  ),
-  Dados(
-    SIAT: 73248,
-    nome: 'Fulano Oliveira',
-    cpf_cnpj: '123.123.123-45',
-    rua: 'Rua do Mar',
-    numero_casa: '11J',
-    quarteirao: 11,
-    data: '21/09/2024',
-    horas: '18:00',
-  ),
-  Dados(
-      SIAT: 12345,
-      nome: 'Fulano da Silva',
-      cpf_cnpj: '123.123.123-56',
-      rua: 'Joao Leandro',
-      numero_casa: '1F',
-      quarteirao: 1,
-      data: '11/11/2023',
-      horas: '08:00'),
-  Dados(
-      SIAT: 23456,
-      nome: 'Ciclano Santos',
-      cpf_cnpj: '456.456.456-78',
-      rua: 'Rua dos Girassóis',
-      numero_casa: '2G',
-      quarteirao: 2,
-      data: '12/12/2023',
-      horas: '09:00'),
-  Dados(
-      SIAT: 34567,
-      nome: 'Deltrano Oliveira',
-      cpf_cnpj: '789.789.789-01',
-      rua: 'Rua das Margaridas',
-      numero_casa: '3H',
-      quarteirao: 3,
-      data: '13/01/2024',
-      horas: '10:00'),
-  Dados(
-      SIAT: 45678,
-      nome: 'Eutrano Lima',
-      cpf_cnpj: '012.012.012-34',
-      rua: 'Rua das Tulipas',
-      numero_casa: '4I',
-      quarteirao: 4,
-      data: '14/02/2024',
-      horas: '11:00'),
-  Dados(
-      SIAT: 56789,
-      nome: 'Fulana da Silva',
-      cpf_cnpj: '345.345.345-67',
-      rua: 'Rua das Hortênsias',
-      numero_casa: '5J',
-      quarteirao: 5,
-      data: '15/03/2024',
-      horas: '12:00'),
-  Dados(
-      SIAT: 67890,
-      nome: 'Ciclana Santos',
-      cpf_cnpj: '678.678.678-90',
-      rua: 'Rua dos Lírios',
-      numero_casa: '6K',
-      quarteirao: 6,
-      data: '16/04/2024',
-      horas: '13:00'),
-  Dados(
-      SIAT: 78901,
-      nome: 'Deltrana Oliveira',
-      cpf_cnpj: '901.901.901-23',
-      rua: 'Rua das Orquídeas',
-      numero_casa: '7L',
-      quarteirao: 7,
-      data: '17/05/2024',
-      horas: '14:00'),
-  Dados(
-      SIAT: 89012,
-      nome: 'Eutrano Lima',
-      cpf_cnpj: '234.234.234-56',
-      rua: 'Rua dos Crisântemos',
-      numero_casa: '8M',
-      quarteirao: 8,
-      data: '18/06/2024',
-      horas: '15:00'),
-  Dados(
-      SIAT: 90123,
-      nome: 'Fulana da Silva',
-      cpf_cnpj: '567.567.567-89',
-      rua: 'Rua das Violetas',
-      numero_casa: '9N',
-      quarteirao: 9,
-      data: '19/07/2024',
-      horas: '16:00'),
-  Dados(
-      SIAT: 01234,
-      nome: 'Ciclano Santos',
-      cpf_cnpj: '890.890.890-12',
-      rua: 'Rua dos Lírios',
-      numero_casa: '10O',
-      quarteirao: 10,
-      data: '20/08/2024',
-      horas: '17:00'),
-  Dados(
-      SIAT: 12345,
-      nome: 'Fulano da Silva',
-      cpf_cnpj: '123.123.123-56',
-      rua: 'Joao Leandro',
-      numero_casa: '1F',
-      quarteirao: 1,
-      data: '11/11/2023',
-      horas: '08:00'),
-  Dados(
-      SIAT: 23456,
-      nome: 'Ciclano Santos',
-      cpf_cnpj: '456.456.456-78',
-      rua: 'Rua dos Girassóis',
-      numero_casa: '2G',
-      quarteirao: 2,
-      data: '12/12/2023',
-      horas: '09:00'),
-  Dados(
-      SIAT: 34567,
-      nome: 'Deltrano Oliveira',
-      cpf_cnpj: '789.789.789-01',
-      rua: 'Rua das Margaridas',
-      numero_casa: '3H',
-      quarteirao: 3,
-      data: '13/01/2024',
-      horas: '10:00'),
-  Dados(
-      SIAT: 45678,
-      nome: 'Eutrano Lima',
-      cpf_cnpj: '012.012.012-34',
-      rua: 'Rua das Tulipas',
-      numero_casa: '4I',
-      quarteirao: 4,
-      data: '14/02/2024',
-      horas: '11:00'),
-  Dados(
-      SIAT: 56789,
-      nome: 'Fulana da Silva',
-      cpf_cnpj: '345.345.345-67',
-      rua: 'Rua das Hortênsias',
-      numero_casa: '5J',
-      quarteirao: 5,
-      data: '15/03/2024',
-      horas: '12:00'),
-  Dados(
-      SIAT: 67890,
-      nome: 'Ciclana Santos',
-      cpf_cnpj: '678.678.678-90',
-      rua: 'Rua dos Lírios',
-      numero_casa: '6K',
-      quarteirao: 6,
-      data: '16/04/2024',
-      horas: '13:00'),
-  Dados(
-      SIAT: 78901,
-      nome: 'Deltrana Oliveira',
-      cpf_cnpj: '901.901.901-23',
-      rua: 'Rua das Orquídeas',
-      numero_casa: '7L',
-      quarteirao: 7,
-      data: '17/05/2024',
-      horas: '14:00'),
-  Dados(
-      SIAT: 89012,
-      nome: 'Eutrano Lima',
-      cpf_cnpj: '234.234.234-56',
-      rua: 'Rua dos Crisântemos',
-      numero_casa: '8M',
-      quarteirao: 8,
-      data: '18/06/2024',
-      horas: '15:00'),
-  Dados(
-      SIAT: 90123,
-      nome: 'Fulana da Silva',
-      cpf_cnpj: '567.567.567-89',
-      rua: 'Rua das Violetas',
-      numero_casa: '9N',
-      quarteirao: 9,
-      data: '19/07/2024',
-      horas: '16:00'),
-  Dados(
-      SIAT: 01234,
-      nome: 'Ciclano Santos',
-      cpf_cnpj: '890.890.890-12',
-      rua: 'Rua dos Lírios',
-      numero_casa: '10O',
-      quarteirao: 10,
-      data: '20/08/2024',
-      horas: '17:00'),
-];
+List<Dados> allDados = []; // Inicializa a lista vazia
+
+void buscarDadosEmTempoReal() {
+  final databaseReference =
+      FirebaseDatabase.instance.reference().child('imoveis');
+
+  databaseReference.onValue.listen((event) {
+    final data = event.snapshot.value as Map<dynamic, dynamic>;
+    allDados
+        .clear(); // Limpa a lista para atualizar com novos dados em tempo real
+
+    data.forEach((key, value) {
+      allDados.add(Dados(
+        SIAT: value['SIAT'],
+        nome: value['nome'],
+        cpf_cnpj: value['cpf_cnpj'],
+        rua: value['rua'],
+        numero_casa: value['numero_casa'],
+        quarteirao: value['quarteirao'],
+        data: value['data'],
+        horas: value['horas'],
+      ));
+    });
+  });
+}
+
+// Para utilizar os dados em tempo real, basta chamar a função buscarDadosEmTempoReal() no arquivo desejado.
+// Por exemplo:
+// main() {
+//   buscarDadosEmTempoReal();
+//   print(allDados);
+// }
