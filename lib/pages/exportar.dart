@@ -85,8 +85,8 @@ class ExportarState extends State<ExportarPage> {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
-    _dadosSubscription = databaseReference.onValue.listen((event) {
-      final data = event.snapshot.value;
+    _dadosSubscription = databaseReference.onValue.listen((DataSnapshot event) {
+      final data = event.value;
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
         data.forEach((key, value) {
@@ -311,21 +311,48 @@ class ExportarState extends State<ExportarPage> {
             ),
             SizedBox(height: 10),
             ElevatedButton.icon(
-              style: raisedButtonStyle,
+              style: ElevatedButton.styleFrom(
+                onPrimary: Color.fromARGB(221, 255, 255, 255),
+                primary: Color.fromARGB(191, 18, 108, 133),
+                minimumSize: Size(100, 45),
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                textStyle: TextStyle(fontSize: 20),
+              ),
               icon: Icon(Icons.download),
               onPressed: () {},
               label: Text('CSV'),
             ),
             SizedBox(height: 5),
             ElevatedButton.icon(
-              style: raisedButtonStyle,
+              style: ElevatedButton.styleFrom(
+                onPrimary: Color.fromARGB(221, 255, 255, 255),
+                primary: Color.fromARGB(191, 18, 108, 133),
+                minimumSize: Size(100, 45),
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                textStyle: TextStyle(fontSize: 20),
+              ),
               icon: Icon(Icons.download),
               onPressed: () {},
               label: Text('TXT'),
             ),
             SizedBox(height: 5),
             ElevatedButton.icon(
-              style: raisedButtonStyle,
+              style: ElevatedButton.styleFrom(
+                onPrimary: Color.fromARGB(221, 255, 255, 255),
+                primary: Color.fromARGB(191, 18, 108, 133),
+                minimumSize: Size(100, 45),
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                textStyle: TextStyle(fontSize: 20),
+              ),
               icon: Icon(Icons.download),
               onPressed: () {},
               label: Text('XML'),
