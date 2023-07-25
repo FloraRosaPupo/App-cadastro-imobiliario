@@ -1,137 +1,77 @@
-// ignore_for_file: unused_import
-
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
-import 'package:projeto_prefeitura/pages/exportar.dart';
 import 'package:projeto_prefeitura/users.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// ignore: duplicate_import
 import 'package:projeto_prefeitura/users.dart';
 
 class Exportar extends StatefulWidget {
-  const Exportar({super.key});
+  const Exportar({Key? key}) : super(key: key);
 
   @override
-  State<Exportar> createState() => _Exportar();
+  State<Exportar> createState() => _ExportarState();
 }
 
-class _Exportar extends State<Exportar> {
+class _ExportarState extends State<Exportar> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
 
-  void _showDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              backgroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              actions: [
-                Espacamento10(),
-                Center(
-                  child: Text(
-                    'Formato de Exportação',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Espacamento10(),
-                Espacamento10(),
-                Center(
-                  child: ElevatedButton.icon(
-                    style: raisedButtonStyle,
-                    icon: Icon(Icons.download),
-                    onPressed: () {},
-                    label: Text('CSV'),
-                  ),
-                ),
-                Espacamento5(),
-                Center(
-                  child: ElevatedButton.icon(
-                    style: raisedButtonStyle,
-                    icon: Icon(Icons.download),
-                    onPressed: () {},
-                    label: Text('TXT'),
-                  ),
-                ),
-                Espacamento5(),
-                Center(
-                  child: ElevatedButton.icon(
-                    style: raisedButtonStyle,
-                    icon: Icon(Icons.download),
-                    onPressed: () {},
-                    label: Text('XML'),
-                  ),
-                ),
-                Espacamento10()
-              ]);
-        });
-  }
-
-  late List<Dados> dados;
-
-  int? sortColumnIndex;
-
-  bool isAscending = false;
-
   @override
   void initState() {
     super.initState();
-    this.dados = List.of(allDados);
+    buscarDadosEmTempoReal();
     chamarUsuario();
   }
 
+  late List<Dados> dados;
+  int? sortColumnIndex;
+  bool isAscending = false;
+
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: appBarDinamica(),
-      drawer: menuLateralDinamico(nome, email),
-      body: Container(
-        child: ListView(
-          children: [
-            Espacamento10(),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: ElevatedButton.icon(
-                    onPressed: _showDialog,
-                    icon: Icon(Icons.import_export),
-                    label: Text('Exportar'),
-                    style: ElevatedButton.styleFrom(
-                      onPrimary: Color.fromARGB(221, 255, 255, 255),
-                      primary: Color.fromARGB(191, 18, 108, 133),
-                      minimumSize: Size(100, 45),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+        appBar: appBarDinamica(),
+        drawer: menuLateralDinamico(nome, email),
+        body: Container(
+          child: ListView(
+            children: [
+              Espacamento10(),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Container(
+                    alignment: Alignment.topCenter,
+                    child: ElevatedButton.icon(
+                      onPressed: _showDialog,
+                      icon: Icon(Icons.import_export),
+                      label: Text('Exportar'),
+                      style: ElevatedButton.styleFrom(
+                        onPrimary: Color.fromARGB(221, 255, 255, 255),
+                        primary: Color.fromARGB(191, 18, 108, 133),
+                        minimumSize: Size(100, 45),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        textStyle: TextStyle(fontSize: 20),
                       ),
-                      textStyle: TextStyle(fontSize: 20),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Espacamento10(),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: buildDataTable(),
+                ],
               ),
-            ),
-          ],
+              Espacamento10(),
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: buildDataTable(),
+                ),
+              ),
+            ],
+          ),
         ),
-      ));
+      );
 
   Widget buildDataTable() {
     final columns = [
@@ -210,12 +150,12 @@ class _Exportar extends State<Exportar> {
     } else if (columnIndex == 6) {
       dados.sort(
         (dados1, dados2) =>
-            comapareString_data(ascending, dados1.data, dados2.data),
+            compareString_data(ascending, dados1.data, dados2.data),
       );
     } /*else if (columnIndex == 7) {
       dados.sort(
         (dados1, dados2) =>
-            comapareString_horario(ascending, dados1.horas, dados2.horas),
+            compareString_horario(ascending, dados1.horas, dados2.horas),
       );
     }*/
     setState(() {
@@ -250,13 +190,13 @@ class _Exportar extends State<Exportar> {
           ? quarteirao1.compareTo(quarteirao2)
           : quarteirao2.compareTo(quarteirao1);
 
-  int comapareString_data(bool ascending, String data1, String data2) =>
+  int compareString_data(bool ascending, String data1, String data2) =>
       ascending ? data1.compareTo(data2) : data2.compareTo(data1);
 
-  int comapareString_horario(bool ascending, String horas1, String horas2) =>
+  int compareString_horario(bool ascending, String horas1, String horas2) =>
       ascending ? horas1.compareTo(horas2) : horas2.compareTo(horas1);
 
-  chamarUsuario() async {
+  void chamarUsuario() async {
     User? usuario = await _firebaseAuth.currentUser;
     if (usuario != null) {
       print(usuario);
@@ -265,5 +205,62 @@ class _Exportar extends State<Exportar> {
         email = usuario.email!;
       });
     }
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          actions: [
+            Espacamento10(),
+            Center(
+              child: Text(
+                'Formato de Exportação',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Espacamento10(),
+            Espacamento10(),
+            Center(
+              child: ElevatedButton.icon(
+                style: raisedButtonStyle,
+                icon: Icon(Icons.download),
+                onPressed: () {},
+                label: Text('CSV'),
+              ),
+            ),
+            Espacamento5(),
+            Center(
+              child: ElevatedButton.icon(
+                style: raisedButtonStyle,
+                icon: Icon(Icons.download),
+                onPressed: () {},
+                label: Text('TXT'),
+              ),
+            ),
+            Espacamento5(),
+            Center(
+              child: ElevatedButton.icon(
+                style: raisedButtonStyle,
+                icon: Icon(Icons.download),
+                onPressed: () {},
+                label: Text('XML'),
+              ),
+            ),
+            Espacamento10(),
+          ],
+        );
+      },
+    );
   }
 }
