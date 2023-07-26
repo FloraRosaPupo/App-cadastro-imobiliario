@@ -111,8 +111,6 @@ class ExportarState extends State<ExportarPage> {
     });
   }
 
-  // Restante do código
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: appBarDinamica(),
