@@ -85,30 +85,30 @@ class ExportarState extends State<ExportarPage> {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
-    _dadosSubscription =
-        databaseReference.onValue.listen((DatabaseEvent event) {
-      DataSnapshot dataSnapshot = event.snapshot;
-      final data = dataSnapshot.value;
-      if (data != null && data is Map<dynamic, dynamic>) {
+    _dadosSubscription = databaseReference.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> data =
+            event.snapshot.value as Map<dynamic, dynamic>;
         List<Dados> dadosList = [];
         data.forEach((key, value) {
           dadosList.add(Dados(
-            SIAT: value['Inscrição Siat'],
+           SIAT: value['Inscrição Siat'],
             nome: value['Nome'],
             cpf_cnpj: value['CPF'],
             rua: value['Rua'],
-            numero_casa: value['numero_casa'],
+            numero_casa: value['Nº'],
             quarteirao: value['Quarteirão'],
             data: value['Data 1'],
             horas: value['Horario 1'],
           ));
         });
 
-        print(
-            dadosList);
-
-        _dadosController.add(dadosList);
+        setState(() {
+          dados = dadosList;
+        });
       }
+    }, onError: (error) {
+      print('Error fetching data: $error');
     });
   }
 
