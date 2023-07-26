@@ -113,7 +113,8 @@ class ExportarState extends State<ExportarPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text('Tabela de Dados')),
+        appBar: appBarDinamica(),
+        drawer: menuLateralDinamico(nome, email),
         body: Container(
           child: ListView(
             children: [
