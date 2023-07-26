@@ -104,6 +104,9 @@ class ExportarState extends State<ExportarPage> {
           ));
         });
 
+        print(
+            dadosList);
+
         _dadosController.add(dadosList);
       }
     });
