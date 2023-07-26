@@ -86,13 +86,12 @@ class ExportarState extends State<ExportarPage> {
         FirebaseDatabase.instance.reference().child('imoveis');
 
     _dadosSubscription = databaseReference.onValue.listen((event) {
-      if (event.snapshot.value != null) {
-        Map<dynamic, dynamic> data =
-            event.snapshot.value as Map<dynamic, dynamic>;
+      final dynamic data = event.snapshot.value;
+      if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
         data.forEach((key, value) {
           dadosList.add(Dados(
-           SIAT: value['Inscrição Siat'],
+            SIAT: value['Inscrição Siat'],
             nome: value['Nome'],
             cpf_cnpj: value['CPF'],
             rua: value['Rua'],
