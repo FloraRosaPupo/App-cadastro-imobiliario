@@ -59,7 +59,7 @@ class ExportarState extends State<ExportarPage> {
   String nome = '';
   String email = '';
 
-  late StreamSubscription<Event> _dadosSubscription;
+  late StreamSubscription<DatabaseEvent> _dadosSubscription;
   late StreamController<List<Dados>> _dadosController;
 
   List<Dados> dados = [];
@@ -85,20 +85,22 @@ class ExportarState extends State<ExportarPage> {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
-    _dadosSubscription = databaseReference.onValue.listen((DataSnapshot event) {
-      final data = event.value;
+    _dadosSubscription =
+        databaseReference.onValue.listen((DatabaseEvent event) {
+      DataSnapshot dataSnapshot = event.snapshot;
+      final data = dataSnapshot.value;
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
         data.forEach((key, value) {
           dadosList.add(Dados(
-            SIAT: value['SIAT'],
-            nome: value['nome'],
-            cpf_cnpj: value['cpf_cnpj'],
-            rua: value['rua'],
+            SIAT: value['Inscrição Siat'],
+            nome: value['Nome'],
+            cpf_cnpj: value['CPF'],
+            rua: value['Rua'],
             numero_casa: value['numero_casa'],
-            quarteirao: value['quarteirao'],
-            data: value['data'],
-            horas: value['horas'],
+            quarteirao: value['Quarteirão'],
+            data: value['Data 1'],
+            horas: value['Horario 1'],
           ));
         });
 
@@ -106,6 +108,8 @@ class ExportarState extends State<ExportarPage> {
       }
     });
   }
+
+  // Restante do código
 
   @override
   Widget build(BuildContext context) => Scaffold(
