@@ -82,24 +82,31 @@ class ExportarState extends State<ExportarPage> {
   }
 
   void buscarDadosEmTempoReal() {
-    final databaseReference = FirebaseDatabase.instance.ref('imoveis');
+    final databaseReference =
+        FirebaseDatabase.instance.reference().child('imoveis');
 
     _dadosSubscription = databaseReference.onValue.listen((event) {
       final dataSnapshot = event.snapshot;
       final data = dataSnapshot.value;
+
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
-        data.forEach((key, value) {
-          dadosList.add(Dados(
-            SIAT: value['Inscrição Siat'],
-            nome: value['Nome'],
-            cpf_cnpj: value['CPF'],
-            rua: value['Rua'],
-            numero_casa: value['Nº'],
-            quarteirao: value['Quarteirão'],
-            data: value['Data 1'],
-            horas: value['Horario 1'],
-          ));
+
+        // Aqui percorremos os índices dentro do nó "imoveis"
+        data.forEach((index, value) {
+          // Verificamos se o índice tem um nó válido com os campos que precisamos
+          if (value != null && value is Map<dynamic, dynamic>) {
+            dadosList.add(Dados(
+              SIAT: value['Inscrição Siat'] ?? 0,
+              nome: value['Nome'] ?? '',
+              cpf_cnpj: value['CPF'] ?? '',
+              rua: value['Rua'] ?? '',
+              numero_casa: value['Nº'] ?? '',
+              quarteirao: value['Quarteirão'] ?? 0,
+              data: value['Data 1'] ?? '',
+              horas: value['Horario 1'] ?? '',
+            ));
+          }
         });
 
         setState(() {
@@ -115,6 +122,10 @@ class ExportarState extends State<ExportarPage> {
             'Error fetching data: Dados inválidos ou permissão insuficiente.');
       }
     }, onError: (error) {
+      setState(() {
+        dados =
+            []; // Definimos a lista como vazia para evitar problemas de null
+      });
       print('Error fetching data: $error');
     });
   }
