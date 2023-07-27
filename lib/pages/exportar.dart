@@ -88,6 +88,7 @@ class ExportarState extends State<ExportarPage> {
     _dadosSubscription = databaseReference.onValue.listen((event) {
       final dataSnapshot = event.snapshot;
       final data = dataSnapshot.value;
+      print("Data from Firebase: $data");
 
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
@@ -112,6 +113,7 @@ class ExportarState extends State<ExportarPage> {
         setState(() {
           dados = dadosList;
         });
+        print(dados); // Adicione esta linha
       } else {
         // Caso não haja dados ou ocorra um problema de permissão
         setState(() {
@@ -169,11 +171,13 @@ class ExportarState extends State<ExportarPage> {
                   child: StreamBuilder<List<Dados>>(
                     stream: _dadosController.stream,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data != null) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasData && snapshot.data != null) {
                         dados = snapshot.data!;
                         return buildDataTable();
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return Center(child: Text('Nenhum dado encontrado.'));
                       }
                     },
                   ),
@@ -337,48 +341,21 @@ class ExportarState extends State<ExportarPage> {
               ),
               SizedBox(height: 10),
               ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Color.fromARGB(221, 255, 255, 255),
-                  primary: Color.fromARGB(191, 18, 108, 133),
-                  minimumSize: Size(100, 45),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
+                style: raisedButtonStyle,
                 icon: Icon(Icons.download),
                 onPressed: () {},
                 label: Text('CSV'),
               ),
               SizedBox(height: 5),
               ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Color.fromARGB(221, 255, 255, 255),
-                  primary: Color.fromARGB(191, 18, 108, 133),
-                  minimumSize: Size(100, 45),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
+                style: raisedButtonStyle,
                 icon: Icon(Icons.download),
                 onPressed: () {},
                 label: Text('TXT'),
               ),
               SizedBox(height: 5),
               ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Color.fromARGB(221, 255, 255, 255),
-                  primary: Color.fromARGB(191, 18, 108, 133),
-                  minimumSize: Size(100, 45),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
+                style: raisedButtonStyle,
                 icon: Icon(Icons.download),
                 onPressed: () {},
                 label: Text('XML'),
