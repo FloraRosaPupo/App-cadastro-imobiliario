@@ -320,69 +320,72 @@ class ExportarState extends State<ExportarPage> {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          actions: [
-            SizedBox(height: 10),
-            Center(
-              child: Text(
-                'Formato de Exportação',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
+          content: Column(
+            mainAxisSize: MainAxisSize
+                .min, // Ajusta a altura do AlertDialog conforme o conteúdo
+            children: [
+              Center(
+                child: Text(
+                  'Formato de Exportação',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                onPrimary: Color.fromARGB(221, 255, 255, 255),
-                primary: Color.fromARGB(191, 18, 108, 133),
-                minimumSize: Size(100, 45),
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+              SizedBox(height: 10),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Color.fromARGB(221, 255, 255, 255),
+                  primary: Color.fromARGB(191, 18, 108, 133),
+                  minimumSize: Size(100, 45),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  textStyle: TextStyle(fontSize: 20),
                 ),
-                textStyle: TextStyle(fontSize: 20),
+                icon: Icon(Icons.download),
+                onPressed: () {},
+                label: Text('CSV'),
               ),
-              icon: Icon(Icons.download),
-              onPressed: () {},
-              label: Text('CSV'),
-            ),
-            SizedBox(height: 5),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                onPrimary: Color.fromARGB(221, 255, 255, 255),
-                primary: Color.fromARGB(191, 18, 108, 133),
-                minimumSize: Size(100, 45),
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+              SizedBox(height: 5),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Color.fromARGB(221, 255, 255, 255),
+                  primary: Color.fromARGB(191, 18, 108, 133),
+                  minimumSize: Size(100, 45),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  textStyle: TextStyle(fontSize: 20),
                 ),
-                textStyle: TextStyle(fontSize: 20),
+                icon: Icon(Icons.download),
+                onPressed: () {},
+                label: Text('TXT'),
               ),
-              icon: Icon(Icons.download),
-              onPressed: () {},
-              label: Text('TXT'),
-            ),
-            SizedBox(height: 5),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                onPrimary: Color.fromARGB(221, 255, 255, 255),
-                primary: Color.fromARGB(191, 18, 108, 133),
-                minimumSize: Size(100, 45),
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+              SizedBox(height: 5),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Color.fromARGB(221, 255, 255, 255),
+                  primary: Color.fromARGB(191, 18, 108, 133),
+                  minimumSize: Size(100, 45),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  textStyle: TextStyle(fontSize: 20),
                 ),
-                textStyle: TextStyle(fontSize: 20),
+                icon: Icon(Icons.download),
+                onPressed: () {},
+                label: Text('XML'),
               ),
-              icon: Icon(Icons.download),
-              onPressed: () {},
-              label: Text('XML'),
-            ),
-            SizedBox(height: 10),
-          ],
+              SizedBox(height: 10),
+            ],
+          ),
         );
       },
     );
