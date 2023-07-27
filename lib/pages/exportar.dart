@@ -82,11 +82,11 @@ class ExportarState extends State<ExportarPage> {
   }
 
   void buscarDadosEmTempoReal() {
-    final databaseReference =
-        FirebaseDatabase.instance.reference().child('imoveis');
+    final databaseReference = FirebaseDatabase.instance.ref('imoveis');
 
     _dadosSubscription = databaseReference.onValue.listen((event) {
-      final dynamic data = event.snapshot.value;
+      final dataSnapshot = event.snapshot;
+      final data = dataSnapshot.value;
       if (data != null && data is Map<dynamic, dynamic>) {
         List<Dados> dadosList = [];
         data.forEach((key, value) {
@@ -105,6 +105,14 @@ class ExportarState extends State<ExportarPage> {
         setState(() {
           dados = dadosList;
         });
+      } else {
+        // Caso não haja dados ou ocorra um problema de permissão
+        setState(() {
+          dados =
+              []; // Definimos a lista como vazia para evitar problemas de null
+        });
+        print(
+            'Error fetching data: Dados inválidos ou permissão insuficiente.');
       }
     }, onError: (error) {
       print('Error fetching data: $error');
