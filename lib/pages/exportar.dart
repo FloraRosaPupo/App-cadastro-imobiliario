@@ -132,6 +132,16 @@ class ExportarState extends State<ExportarPage> {
     });
   }
 
+  void chamarUsuario() async {
+    User? usuario = await _firebaseAuth.currentUser;
+    if (usuario != null) {
+      setState(() {
+        nome = usuario.displayName ?? '';
+        email = usuario.email ?? '';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: appBarDinamica(),
@@ -304,16 +314,6 @@ class ExportarState extends State<ExportarPage> {
 
   int compareString_horario(bool ascending, String horas1, String horas2) =>
       ascending ? horas1.compareTo(horas2) : horas2.compareTo(horas1);
-
-  void chamarUsuario() async {
-    User? usuario = await _firebaseAuth.currentUser;
-    if (usuario != null) {
-      setState(() {
-        nome = usuario.displayName ?? '';
-        email = usuario.email ?? '';
-      });
-    }
-  }
 
   void _showDialog() {
     showDialog(
