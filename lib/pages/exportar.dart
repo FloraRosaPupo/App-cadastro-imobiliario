@@ -647,6 +647,12 @@ class ExportarState extends State<ExportarPage> {
   }
 }
 
-void exportarCSV(dados) {}
-void exportarTXT(dados) {}
-void exportarXML(dados) {}
+void exportarCSV(dados) {
+
+}
+void exportarTXT(dados) {
+
+}
+void exportarXML(dados) {
+  
+}
