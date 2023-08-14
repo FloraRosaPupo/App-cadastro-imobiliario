@@ -1,49 +1,129 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import '../functions.dart';
 import 'dart:async';
 
 class Dados {
-  final int SIAT;
+  final String SIAT;
   final String nome;
-  final String cpf_cnpj;
+  final String cpf;
+  final String caracterizacao;
+  final String celular;
+  final String cobertura;
+  final String contribuinte;
+  final String coordenadas;
+  final String data1;
+  final String data2;
+  final String data3;
+  final String dataNascimento;
+  final String fotoAerea;
+  final String fotoFrontal;
+  final String horario1;
+  final String horario2;
+  final String horario3;
+  final String numero;
+  final String numPavimentos;
+  final String observacao;
+  final String piso;
+  final String quarteirao;
+  final String responsavelCadastro;
   final String rua;
-  final String numero_casa;
-  final int quarteirao;
-  final String data;
-  final String horas;
+  //final int sequencia;
+  final String situacao;
+  final String visita;
+  final String id;
 
   const Dados({
     required this.SIAT,
     required this.nome,
-    required this.cpf_cnpj,
-    required this.rua,
-    required this.numero_casa,
+    required this.cpf,
+    required this.caracterizacao,
+    required this.celular,
+    required this.cobertura,
+    required this.contribuinte,
+    required this.coordenadas,
+    required this.data1,
+    required this.data2,
+    required this.data3,
+    required this.dataNascimento,
+    required this.fotoAerea,
+    required this.fotoFrontal,
+    required this.horario1,
+    required this.horario2,
+    required this.horario3,
+    required this.numero,
+    required this.numPavimentos,
+    required this.observacao,
+    required this.piso,
     required this.quarteirao,
-    required this.data,
-    required this.horas,
+    required this.responsavelCadastro,
+    required this.rua,
+    //required this.sequencia,
+    required this.situacao,
+    required this.visita,
+    required this.id,
   });
 
   Dados copy({
-    int? SIAT,
+    String? SIAT,
     String? nome,
-    String? cpf_cnpj,
+    String? cpf,
+    String? caracterizacao,
+    String? celular,
+    String? cobertura,
+    String? contribuinte,
+    String? coordenadas,
+    String? data1,
+    String? data2,
+    String? data3,
+    String? dataNascimento,
+    String? fotoAerea,
+    String? fotoFrontal,
+    String? horario1,
+    String? horario2,
+    String? horario3,
+    String? numero,
+    String? numPavimentos,
+    String? observacao,
+    String? piso,
+    String? quarteirao,
+    String? responsavelCadastro,
     String? rua,
-    String? numero_casa,
-    int? quarteirao,
-    String? data,
-    String? horas,
+    //int? sequencia,
+    String? situacao,
+    String? visita,
+    String? id,
   }) =>
       Dados(
         SIAT: SIAT ?? this.SIAT,
         nome: nome ?? this.nome,
-        cpf_cnpj: cpf_cnpj ?? this.cpf_cnpj,
-        rua: rua ?? this.rua,
-        numero_casa: numero_casa ?? this.numero_casa,
+        cpf: cpf ?? this.cpf,
+        caracterizacao: caracterizacao ?? this.caracterizacao,
+        celular: celular ?? this.celular,
+        cobertura: cobertura ?? this.cobertura,
+        contribuinte: contribuinte ?? this.contribuinte,
+        coordenadas: coordenadas ?? this.coordenadas,
+        data1: data1 ?? this.data1,
+        data2: data2 ?? this.data2,
+        data3: data3 ?? this.data3,
+        dataNascimento: dataNascimento ?? this.dataNascimento,
+        fotoAerea: fotoAerea ?? this.fotoAerea,
+        fotoFrontal: fotoFrontal ?? this.fotoFrontal,
+        horario1: horario1 ?? this.horario1,
+        horario2: horario2 ?? this.horario2,
+        horario3: horario3 ?? this.horario3,
+        numero: numero ?? this.numero,
+        numPavimentos: numPavimentos ?? this.numPavimentos,
+        observacao: observacao ?? this.observacao,
+        piso: piso ?? this.piso,
         quarteirao: quarteirao ?? this.quarteirao,
-        data: data ?? this.data,
-        horas: horas ?? this.horas,
+        responsavelCadastro: responsavelCadastro ?? this.responsavelCadastro,
+        rua: rua ?? this.rua,
+        //sequencia: sequencia ?? this.sequencia,
+        situacao: situacao ?? this.situacao,
+        visita: visita ?? this.visita,
+        id: id ?? this.id,
       );
 }
 
@@ -60,8 +140,6 @@ class ExportarState extends State<ExportarPage> {
   String email = '';
 
   late StreamSubscription<DatabaseEvent> _dadosSubscription;
-  late StreamController<List<Dados>> _dadosController;
-
   List<Dados> dados = [];
   int? sortColumnIndex;
   bool isAscending = false;
@@ -69,7 +147,6 @@ class ExportarState extends State<ExportarPage> {
   @override
   void initState() {
     super.initState();
-    _dadosController = StreamController<List<Dados>>();
     buscarDadosEmTempoReal();
     chamarUsuario();
   }
@@ -77,7 +154,6 @@ class ExportarState extends State<ExportarPage> {
   @override
   void dispose() {
     _dadosSubscription.cancel();
-    _dadosController.close();
     super.dispose();
   }
 
@@ -85,61 +161,114 @@ class ExportarState extends State<ExportarPage> {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
+    print('Iniciando busca de dados em tempo real...');
+
     _dadosSubscription = databaseReference.onValue.listen((event) {
       final dataSnapshot = event.snapshot;
       final data = dataSnapshot.value;
-      print("Data from Firebase: $data");
 
-      if (data != null && data is Map<dynamic, dynamic>) {
-        List<Dados> dadosList = [];
+      print('DataSnapshot: $dataSnapshot');
+      print('Data: $data');
 
-        // Aqui percorremos os índices dentro do nó "imoveis"
-        data.forEach((index, value) {
-          // Verificamos se o índice tem um nó válido com os campos que precisamos
-          if (value != null && value is Map<dynamic, dynamic>) {
-            dadosList.add(Dados(
-              SIAT: value['Inscrição Siat'] ?? 0,
-              nome: value['Nome'] ?? '',
-              cpf_cnpj: value['CPF'] ?? '',
-              rua: value['Rua'] ?? '',
-              numero_casa: value['Nº'] ?? '',
-              quarteirao: value['Quarteirão'] ?? 0,
-              data: value['Data 1'] ?? '',
-              horas: value['Horario 1'] ?? '',
-            ));
+      try {
+        if (data != null && data is List) {
+          // Verifica se os dados são uma lista
+          List<Dados> dadosList = [];
+
+          for (var i = 0; i < data.length; i++) {
+            final imovel = data[i];
+
+            if (imovel != null && imovel is Map<dynamic, dynamic>) {
+              final String siat = imovel['SIAT'].toString() ?? '';
+              final String nome = imovel['Nome'] ?? '';
+              final String cpf = imovel['CPF'] ?? '';
+              final String caracterizacao = imovel['Caracterização'] ?? '';
+              final String celular = imovel['Celular'] ?? '';
+              final String cobertura = imovel['Cobertura'] ?? '';
+              final String contribuinte = imovel['Contribuinte'] ?? '';
+              final String coordenadas = imovel['Coordenadas'] ?? '';
+              final String data1 = imovel['Data 1'] ?? '';
+              final String data2 = imovel['Data 2'] ?? '';
+              final String data3 = imovel['Data 3'] ?? '';
+              final String dataNascimento = imovel['Data de Nascimento'] ?? '';
+              final String fotoAerea = imovel['Foto Aérea'] ?? '';
+              final String fotoFrontal = imovel['Foto Frontal'] ?? '';
+              final String horario1 = imovel['Horario 1'] ?? '';
+              final String horario2 = imovel['Horario 2'] ?? '';
+              final String horario3 = imovel['Horario 3'] ?? '';
+              final String numero = imovel['Nº'].toString() ?? '';
+              final String numPavimentos =
+                  imovel['Nº de Pavimentos'].toString() ??
+                      ''; // Converte para String
+              final String observacao = imovel['Observação'] ?? '';
+              final String piso = imovel['Piso'] ?? '';
+              final String quarteirao = imovel['Quarteirão'].toString() ?? '';
+              final String responsavelCadastro =
+                  imovel['Responsavel Cadastro'] ?? '';
+              final String rua = imovel['Rua'] ?? '';
+              //final int sequencia = imovel['Sequência'] ?? 0;
+              final String situacao = imovel['Situação'] ?? '';
+              final String visita = imovel['Visita'].toString() ?? '';
+              final String id = i
+                  .toString(); // Use i como ID (pode ser ajustado conforme necessário)
+
+              dadosList.add(Dados(
+                SIAT: siat,
+                nome: nome,
+                cpf: cpf,
+                caracterizacao: caracterizacao,
+                celular: celular,
+                cobertura: cobertura,
+                contribuinte: contribuinte,
+                coordenadas: coordenadas,
+                data1: data1,
+                data2: data2,
+                data3: data3,
+                dataNascimento: dataNascimento,
+                fotoAerea: fotoAerea,
+                fotoFrontal: fotoFrontal,
+                horario1: horario1,
+                horario2: horario2,
+                horario3: horario3,
+                numero: numero,
+                numPavimentos: numPavimentos,
+                observacao: observacao,
+                piso: piso,
+                quarteirao: quarteirao,
+                responsavelCadastro: responsavelCadastro,
+                rua: rua,
+                // sequencia: sequencia,
+                situacao: situacao,
+                visita: visita,
+                id: id,
+              ));
+            }
           }
-        });
 
+          setState(() {
+            dados = dadosList;
+          });
+
+          print('Dados buscados com sucesso: $dadosList');
+        } else {
+          setState(() {
+            dados = [];
+          });
+          print(
+              'Erro ao buscar dados: Dados inválidos ou permissão insuficiente.');
+        }
+      } catch (e) {
         setState(() {
-          dados = dadosList;
+          dados = [];
         });
-        print(dados); // Adicione esta linha
-      } else {
-        // Caso não haja dados ou ocorra um problema de permissão
-        setState(() {
-          dados =
-              []; // Definimos a lista como vazia para evitar problemas de null
-        });
-        print(
-            'Error fetching data: Dados inválidos ou permissão insuficiente.');
+        print('Erro ao buscar dados: $e');
       }
     }, onError: (error) {
       setState(() {
-        dados =
-            []; // Definimos a lista como vazia para evitar problemas de null
+        dados = [];
       });
-      print('Error fetching data: $error');
+      print('Erro ao buscar dados: $error');
     });
-  }
-
-  void chamarUsuario() async {
-    User? usuario = await _firebaseAuth.currentUser;
-    if (usuario != null) {
-      setState(() {
-        nome = usuario.displayName ?? '';
-        email = usuario.email ?? '';
-      });
-    }
   }
 
   @override
@@ -178,19 +307,7 @@ class ExportarState extends State<ExportarPage> {
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: StreamBuilder<List<Dados>>(
-                    stream: _dadosController.stream,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasData && snapshot.data != null) {
-                        dados = snapshot.data!;
-                        return buildDataTable();
-                      } else {
-                        return Center(child: Text('Nenhum dado encontrado.'));
-                      }
-                    },
-                  ),
+                  child: buildDataTable(),
                 ),
               ),
             ],
@@ -202,12 +319,32 @@ class ExportarState extends State<ExportarPage> {
     final columns = [
       'SIAT',
       'Nome',
-      'CPF/CNPJ',
-      'Rua',
-      'Numero',
+      'CPF',
+      'Caracterização',
+      'Celular',
+      'Cobertura',
+      'Contribuinte',
+      'Coordenadas',
+      'Data 1',
+      'Data 2',
+      'Data 3',
+      'Data de Nascimento',
+      'Foto Aérea',
+      'Foto Frontal',
+      'Horario 1',
+      'Horario 2',
+      'Horario 3',
+      'Nº',
+      'Nº de Pavimentos',
+      'Observação',
+      'Piso',
       'Quarteirão',
-      'Data',
-      'Horario',
+      'Responsavel Cadastro',
+      'Rua',
+      //'Sequência',
+      'Situação',
+      'Visita',
+      'id',
     ];
     return DataTable(
       sortAscending: isAscending,
@@ -228,12 +365,32 @@ class ExportarState extends State<ExportarPage> {
         final cells = [
           dados.SIAT,
           dados.nome,
-          dados.cpf_cnpj,
-          dados.rua,
-          dados.numero_casa,
+          dados.cpf,
+          dados.caracterizacao,
+          dados.celular,
+          dados.cobertura,
+          dados.contribuinte,
+          dados.coordenadas,
+          dados.data1,
+          dados.data2,
+          dados.data3,
+          dados.dataNascimento,
+          dados.fotoAerea,
+          dados.fotoFrontal,
+          dados.horario1,
+          dados.horario2,
+          dados.horario3,
+          dados.numero,
+          dados.numPavimentos,
+          dados.observacao,
+          dados.piso,
           dados.quarteirao,
-          dados.data,
-          dados.horas,
+          dados.responsavelCadastro,
+          dados.rua,
+          //  dados.sequencia,
+          dados.situacao,
+          dados.visita,
+          dados.id,
         ];
         return DataRow(cells: getCells(cells));
       }).toList();
@@ -245,35 +402,115 @@ class ExportarState extends State<ExportarPage> {
     switch (columnIndex) {
       case 0:
         dados.sort((dados1, dados2) =>
-            compareInt_siat(ascending, dados1.SIAT, dados2.SIAT));
+            compareString_siat(ascending, dados1.SIAT, dados2.SIAT));
         break;
       case 1:
         dados.sort((dados1, dados2) =>
             compareString_nome(ascending, dados1.nome, dados2.nome));
         break;
       case 2:
-        dados.sort((dados1, dados2) => compareString_cpf_cnpj(
-            ascending, dados1.cpf_cnpj, dados2.cpf_cnpj));
+        dados.sort((dados1, dados2) =>
+            compareString_cpf(ascending, dados1.cpf, dados2.cpf));
         break;
       case 3:
+        dados.sort((dados1, dados2) => compareString_caracterizacao(
+            ascending, dados1.caracterizacao, dados2.caracterizacao));
+        break;
+      case 4:
+        dados.sort((dados1, dados2) =>
+            compareString_celular(ascending, dados1.celular, dados2.celular));
+        break;
+      case 5:
+        dados.sort((dados1, dados2) => compareString_cobertura(
+            ascending, dados1.cobertura, dados2.cobertura));
+        break;
+      case 6:
+        dados.sort((dados1, dados2) => compareString_contribuinte(
+            ascending, dados1.contribuinte, dados2.contribuinte));
+        break;
+      case 7:
+        dados.sort((dados1, dados2) => compareString_coordenadas(
+            ascending, dados1.coordenadas, dados2.coordenadas));
+        break;
+      case 8:
+        dados.sort((dados1, dados2) =>
+            compareString_data(ascending, dados1.data1, dados2.data1));
+        break;
+      case 9:
+        dados.sort((dados1, dados2) =>
+            compareString_data(ascending, dados1.data2, dados2.data2));
+        break;
+      case 10:
+        dados.sort((dados1, dados2) =>
+            compareString_data(ascending, dados1.data3, dados2.data3));
+        break;
+      case 11:
+        dados.sort((dados1, dados2) => compareString_data(
+            ascending, dados1.dataNascimento, dados2.dataNascimento));
+        break;
+      case 12:
+        dados.sort((dados1, dados2) =>
+            compareString_data(ascending, dados1.fotoAerea, dados2.fotoAerea));
+        break;
+      case 13:
+        dados.sort((dados1, dados2) => compareString_data(
+            ascending, dados1.fotoFrontal, dados2.fotoFrontal));
+        break;
+      case 14:
+        dados.sort((dados1, dados2) =>
+            compareString_horario(ascending, dados1.horario1, dados2.horario1));
+        break;
+      case 15:
+        dados.sort((dados1, dados2) =>
+            compareString_horario(ascending, dados1.horario2, dados2.horario2));
+        break;
+      case 16:
+        dados.sort((dados1, dados2) =>
+            compareString_horario(ascending, dados1.horario3, dados2.horario3));
+        break;
+      case 17:
+        dados.sort((dados1, dados2) =>
+            compareString_num(ascending, dados1.numero, dados2.numero));
+        break;
+      case 18:
+        dados.sort((dados1, dados2) => compareString_numPavimentos(
+            ascending, dados1.numPavimentos, dados2.numPavimentos));
+        break;
+      case 19:
+        dados.sort((dados1, dados2) => compareString_observacao(
+            ascending, dados1.observacao, dados2.observacao));
+        break;
+      case 20:
+        dados.sort((dados1, dados2) =>
+            compareString_piso(ascending, dados1.piso, dados2.piso));
+        break;
+      case 21:
+        dados.sort((dados1, dados2) => compareString_quart(
+            ascending, dados1.quarteirao, dados2.quarteirao));
+        break;
+      case 22:
+        dados.sort((dados1, dados2) => compareString_responsavelCadastro(
+            ascending, dados1.responsavelCadastro, dados2.responsavelCadastro));
+        break;
+      case 23:
         dados.sort((dados1, dados2) =>
             compareString_rua(ascending, dados1.rua, dados2.rua));
         break;
-      case 4:
-        dados.sort((dados1, dados2) => compareString_num(
-            ascending, dados1.numero_casa, dados2.numero_casa));
+      case 24:
+      /*dados.sort((dados1, dados2) => compareInt_sequencia(
+            ascending, dados1.sequencia, dados2.sequencia));
+        break;*/
+      case 25:
+        dados.sort((dados1, dados2) => compareString_situacao(
+            ascending, dados1.situacao, dados2.situacao));
         break;
-      case 5:
+      case 26:
         dados.sort((dados1, dados2) =>
-            compareInt_quart(ascending, dados1.quarteirao, dados2.quarteirao));
+            compareString_visita(ascending, dados1.visita, dados2.visita));
         break;
-      case 6:
+      case 27:
         dados.sort((dados1, dados2) =>
-            compareString_data(ascending, dados1.data, dados2.data));
-        break;
-      case 7:
-        dados.sort((dados1, dados2) =>
-            compareString_horario(ascending, dados1.horas, dados2.horas));
+            compareString_id(ascending, dados1.id, dados2.id));
         break;
     }
 
@@ -286,34 +523,76 @@ class ExportarState extends State<ExportarPage> {
   int compareString_nome(bool ascending, String nome1, String nome2) =>
       ascending ? nome1.compareTo(nome2) : nome2.compareTo(nome1);
 
-  int compareInt_siat(bool ascending, int siat1, int siat2) =>
+  int compareString_siat(bool ascending, String siat1, String siat2) =>
       ascending ? siat1.compareTo(siat2) : siat2.compareTo(siat1);
 
-  int compareString_cpf_cnpj(
-          bool ascending, String cpf_cnpj1, String cpf_cnpj2) =>
-      ascending
-          ? cpf_cnpj1.compareTo(cpf_cnpj2)
-          : cpf_cnpj2.compareTo(cpf_cnpj1);
+  int compareString_cpf(bool ascending, String cpf1, String cpf2) =>
+      ascending ? cpf1.compareTo(cpf2) : cpf2.compareTo(cpf1);
 
-  int compareString_rua(bool ascending, String rua1, String rua2) =>
-      ascending ? rua1.compareTo(rua2) : rua2.compareTo(rua1);
+  int compareString_caracterizacao(
+          bool ascending, String carac1, String carac2) =>
+      ascending ? carac1.compareTo(carac2) : carac2.compareTo(carac1);
 
-  int compareString_num(
-          bool ascending, String numero_casa1, String numero_casa2) =>
-      ascending
-          ? numero_casa1.compareTo(numero_casa2)
-          : numero_casa2.compareTo(numero_casa1);
+  int compareString_celular(bool ascending, String cel1, String cel2) =>
+      ascending ? cel1.compareTo(cel2) : cel2.compareTo(cel1);
 
-  int compareInt_quart(bool ascending, int quarteirao1, int quarteirao2) =>
-      ascending
-          ? quarteirao1.compareTo(quarteirao2)
-          : quarteirao2.compareTo(quarteirao1);
+  int compareString_cobertura(bool ascending, String cob1, String cob2) =>
+      ascending ? cob1.compareTo(cob2) : cob2.compareTo(cob1);
+
+  int compareString_contribuinte(
+          bool ascending, String contr1, String contr2) =>
+      ascending ? contr1.compareTo(contr2) : contr2.compareTo(contr1);
+
+  int compareString_coordenadas(bool ascending, String coord1, String coord2) =>
+      ascending ? coord1.compareTo(coord2) : coord2.compareTo(coord1);
 
   int compareString_data(bool ascending, String data1, String data2) =>
       ascending ? data1.compareTo(data2) : data2.compareTo(data1);
 
   int compareString_horario(bool ascending, String horas1, String horas2) =>
       ascending ? horas1.compareTo(horas2) : horas2.compareTo(horas1);
+
+  int compareString_num(bool ascending, String num1, String num2) =>
+      ascending ? num1.compareTo(num2) : num2.compareTo(num1);
+
+  int compareString_numPavimentos(bool ascending, String pav1, String pav2) =>
+      ascending ? pav1.compareTo(pav2) : pav2.compareTo(pav1);
+
+  int compareString_observacao(bool ascending, String obs1, String obs2) =>
+      ascending ? obs1.compareTo(obs2) : obs2.compareTo(obs1);
+
+  int compareString_piso(bool ascending, String piso1, String piso2) =>
+      ascending ? piso1.compareTo(piso2) : piso2.compareTo(piso1);
+
+  int compareString_quart(bool ascending, String quart1, String quart2) =>
+      ascending ? quart1.compareTo(quart2) : quart2.compareTo(quart1);
+
+  int compareString_responsavelCadastro(
+          bool ascending, String resp1, String resp2) =>
+      ascending ? resp1.compareTo(resp2) : resp2.compareTo(resp1);
+
+  int compareString_rua(bool ascending, String rua1, String rua2) =>
+      ascending ? rua1.compareTo(rua2) : rua2.compareTo(rua1);
+
+  /*int compareInt_sequencia(bool ascending, int seq1, int seq2) =>
+      ascending ? seq1.compareTo(seq2) : seq2.compareTo(seq1);*/
+
+  int compareString_situacao(bool ascending, String sit1, String sit2) =>
+      ascending ? sit1.compareTo(sit2) : sit2.compareTo(sit1);
+
+  int compareString_visita(bool ascending, String vis1, String vis2) =>
+      ascending ? vis1.compareTo(vis2) : vis2.compareTo(vis1);
+
+  int compareString_id(bool ascending, String id1, String id2) =>
+      ascending ? id1.compareTo(id2) : id2.compareTo(id1);
+
+  void chamarUsuario() {
+    final User? user = _firebaseAuth.currentUser;
+    if (user != null) {
+      nome = user.displayName ?? '';
+      email = user.email ?? '';
+    }
+  }
 
   void _showDialog() {
     showDialog(
@@ -325,8 +604,7 @@ class ExportarState extends State<ExportarPage> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           content: Column(
-            mainAxisSize: MainAxisSize
-                .min, // Ajusta a altura do AlertDialog conforme o conteúdo
+            mainAxisSize: MainAxisSize.min,
             children: [
               Center(
                 child: Text(
@@ -343,21 +621,21 @@ class ExportarState extends State<ExportarPage> {
               ElevatedButton.icon(
                 style: raisedButtonStyle,
                 icon: Icon(Icons.download),
-                onPressed: () {},
+                onPressed: () => exportarCSV(dados),
                 label: Text('CSV'),
               ),
               SizedBox(height: 5),
               ElevatedButton.icon(
                 style: raisedButtonStyle,
                 icon: Icon(Icons.download),
-                onPressed: () {},
+                onPressed: () => exportarTXT(dados),
                 label: Text('TXT'),
               ),
               SizedBox(height: 5),
               ElevatedButton.icon(
                 style: raisedButtonStyle,
                 icon: Icon(Icons.download),
-                onPressed: () {},
+                onPressed: () => exportarXML(dados),
                 label: Text('XML'),
               ),
               SizedBox(height: 10),
@@ -368,3 +646,7 @@ class ExportarState extends State<ExportarPage> {
     );
   }
 }
+
+void exportarCSV(dados) {}
+void exportarTXT(dados) {}
+void exportarXML(dados) {}
