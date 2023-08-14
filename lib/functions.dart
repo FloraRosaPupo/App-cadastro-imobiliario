@@ -287,22 +287,6 @@ menuLateralDinamico(nome, email) {
                 },
               );
             }),
-            Builder(builder: (BuildContext context) {
-              return ListTile(
-                leading: Icon(
-                  Icons.person_pin_circle_sharp,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Contribuinte',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Search2()));
-                },
-              );
-            }),
           ],
         ),
       ),
@@ -356,8 +340,8 @@ menuLateralDinamico(nome, email) {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ExportarPage()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ExportarPage()));
                   });
             }),
           ],

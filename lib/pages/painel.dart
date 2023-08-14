@@ -58,15 +58,6 @@ class _PainelState extends State<Painel> {
                   style: raisedButtonStyle,
                   onPressed: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Search2()));
-                  },
-                  child: Text('Atualizar Dados do Contribuinte'),
-                ),
-                Espacamento10(),
-                ElevatedButton(
-                  style: raisedButtonStyle,
-                  onPressed: () {
-                    Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Galeria()));
                   },
                   child: Text('Acessar Galeria de Quarteirões'),
