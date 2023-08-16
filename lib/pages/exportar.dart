@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../functions.dart';
 import 'dart:async';
+import 'package:csv/csv.dart';
+import 'dart:io';
 
 class Dados {
   final String SIAT;
@@ -138,7 +140,6 @@ class ExportarState extends State<ExportarPage> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
-
   late StreamSubscription<DatabaseEvent> _dadosSubscription;
   List<Dados> dados = [];
   int? sortColumnIndex;
@@ -179,7 +180,7 @@ class ExportarState extends State<ExportarPage> {
             final imovel = data[i];
 
             if (imovel != null && imovel is Map<dynamic, dynamic>) {
-              final String siat = imovel['Inscrição Siat'].toString() ?? '';
+              final String siat = imovel['Inscrição Siat'] ?? '';
               final String nome = imovel['Nome'] ?? '';
               final String cpf = imovel['CPF'] ?? '';
               final String caracterizacao = imovel['Caracterização'] ?? '';
@@ -196,19 +197,18 @@ class ExportarState extends State<ExportarPage> {
               final String horario1 = imovel['Horario 1'] ?? '';
               final String horario2 = imovel['Horario 2'] ?? '';
               final String horario3 = imovel['Horario 3'] ?? '';
-              final String numero = imovel['Nº'].toString() ?? '';
+              final String numero = imovel['Nº'] ?? '';
               final String numPavimentos =
-                  imovel['Nº de Pavimentos'].toString() ??
-                      ''; // Converte para String
+                  imovel['Nº de Pavimentos'] ?? ''; // Converte para String
               final String observacao = imovel['Observação'] ?? '';
               final String piso = imovel['Piso'] ?? '';
-              final String quarteirao = imovel['Quarteirão'].toString() ?? '';
+              final String quarteirao = imovel['Quarteirão'] ?? '';
               final String responsavelCadastro =
                   imovel['Responsavel Cadastro'] ?? '';
               final String rua = imovel['Rua'] ?? '';
               //final int sequencia = imovel['Sequência'] ?? 0;
               final String situacao = imovel['Situação'] ?? '';
-              final String visita = imovel['Visita'].toString() ?? '';
+              final String visita = imovel['Visita'] ?? '';
               final String id = i
                   .toString(); // Use i como ID (pode ser ajustado conforme necessário)
 
@@ -645,8 +645,31 @@ class ExportarState extends State<ExportarPage> {
       },
     );
   }
+
+  void exportarCSV(List<Dados> dados) async {
+    String csv = const ListToCsvConverter().convert(dados);
+
+    final downloadsDirectory = Directory('/storage/emulated/0/Download');
+
+    if (await downloadsDirectory.exists()) {
+      final file = File('${downloadsDirectory.path}/dados_exportados.csv');
+      await file.writeAsString(csv);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Arquivo CSV exportado para a pasta de Download'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Erro ao exportar arquivo CSV: Pasta de Download não encontrada'),
+        ),
+      );
+    }
+  }
 }
 
-void exportarCSV(dados) {}
 void exportarTXT(dados) {}
 void exportarXML(dados) {}
