@@ -179,7 +179,7 @@ class ExportarState extends State<ExportarPage> {
             final imovel = data[i];
 
             if (imovel != null && imovel is Map<dynamic, dynamic>) {
-              final String siat = imovel['SIAT'].toString() ?? '';
+              final String siat = imovel['Inscrição Siat'].toString() ?? '';
               final String nome = imovel['Nome'] ?? '';
               final String cpf = imovel['CPF'] ?? '';
               final String caracterizacao = imovel['Caracterização'] ?? '';
@@ -647,12 +647,6 @@ class ExportarState extends State<ExportarPage> {
   }
 }
 
-void exportarCSV(dados) {
-
-}
-void exportarTXT(dados) {
-
-}
-void exportarXML(dados) {
-  
-}
+void exportarCSV(dados) {}
+void exportarTXT(dados) {}
+void exportarXML(dados) {}
