@@ -144,23 +144,59 @@ class ExportarState extends State<ExportarPage> {
   List<Dados> dados = [];
   int? sortColumnIndex;
   bool isAscending = false;
+  final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
+  int _dataPerPage = 20; // Number of items to load per page
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     buscarDadosEmTempoReal();
-    chamarUsuario();
+    //chamarUsuario();
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
+
     _dadosSubscription.cancel();
     super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      _loadMoreData();
+    }
+  }
+
+  void _loadMoreData() {
+    if (_isLoading) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    _currentPage++;
+
+    buscarDadosEmTempoReal();
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void buscarDadosEmTempoReal() {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
+
+    // Calcular o índice inicial dos dados a buscar com base na página atual e itens por página
+    int startIndex = (_currentPage - 1) * _dataPerPage;
 
     print('Iniciando busca de dados em tempo real...');
 
@@ -180,7 +216,7 @@ class ExportarState extends State<ExportarPage> {
             final imovel = data[i];
 
             if (imovel != null && imovel is Map<dynamic, dynamic>) {
-              final String siat = imovel['Inscrição Siat'] ?? '';
+              final String siat = imovel['Inscrição Siat'].toString() ?? '';
               final String nome = imovel['Nome'] ?? '';
               final String cpf = imovel['CPF'] ?? '';
               final String caracterizacao = imovel['Caracterização'] ?? '';
@@ -208,7 +244,7 @@ class ExportarState extends State<ExportarPage> {
               final String rua = imovel['Rua'] ?? '';
               //final int sequencia = imovel['Sequência'] ?? 0;
               final String situacao = imovel['Situação'] ?? '';
-              final String visita = imovel['Visita'] ?? '';
+              final String visita = imovel['Visita'].toString() ?? '';
               final String id = i
                   .toString(); // Use i como ID (pode ser ajustado conforme necessário)
 
