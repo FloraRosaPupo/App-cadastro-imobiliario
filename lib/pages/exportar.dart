@@ -750,7 +750,7 @@ void exportarCSV(List<Dados> dados, BuildContext context) async {
   }
 }
 
-void exportarTXT(List<Dados> dados) async {
+void exportarTXT(List<Dados> dados, BuildContext context) async {
   String txtData =
       ''; // Inicializa uma string vazia para armazenar os dados de texto
 
