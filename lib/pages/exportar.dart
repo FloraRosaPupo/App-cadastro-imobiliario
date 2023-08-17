@@ -621,7 +621,7 @@ class ExportarState extends State<ExportarPage> {
               ElevatedButton.icon(
                 style: raisedButtonStyle,
                 icon: Icon(Icons.download),
-                onPressed: () => exportarCSV(dados),
+                onPressed: () => exportarCSV(dados, context),
                 label: Text('CSV'),
               ),
               SizedBox(height: 5),
@@ -645,29 +645,63 @@ class ExportarState extends State<ExportarPage> {
       },
     );
   }
+}
 
-  void exportarCSV(List<Dados> dados) async {
-    String csv = const ListToCsvConverter().convert(dados);
+void exportarCSV(List<Dados> dados, BuildContext context) async {
+  List<List<dynamic>> csvData = [];
 
-    final downloadsDirectory = Directory('/storage/emulated/0/Download');
+  for (var dado in dados) {
+    csvData.add([
+      dado.SIAT,
+      dado.nome,
+      dado.cpf,
+      dado.caracterizacao,
+      dado.celular,
+      dado.cobertura,
+      dado.contribuinte,
+      dado.coordenadas,
+      dado.data1,
+      dado.data2,
+      dado.data3,
+      dado.dataNascimento,
+      dado.fotoAerea,
+      dado.fotoFrontal,
+      dado.horario1,
+      dado.horario2,
+      dado.horario3,
+      dado.numero,
+      dado.numPavimentos,
+      dado.observacao,
+      dado.piso,
+      dado.quarteirao,
+      dado.responsavelCadastro,
+      dado.rua,
+      dado.situacao,
+      dado.visita,
+      dado.id,
+    ]);
+  }
 
-    if (await downloadsDirectory.exists()) {
-      final file = File('${downloadsDirectory.path}/dados_exportados.csv');
-      await file.writeAsString(csv);
+  String csv = const ListToCsvConverter().convert(csvData);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Arquivo CSV exportado para a pasta de Download'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              'Erro ao exportar arquivo CSV: Pasta de Download não encontrada'),
-        ),
-      );
-    }
+  final downloadsDirectory = Directory('/storage/emulated/0/Download');
+
+  if (await downloadsDirectory.exists()) {
+    final file = File('${downloadsDirectory.path}/dados_exportados.csv');
+    await file.writeAsString(csv);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Arquivo CSV exportado para a pasta de Download'),
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            'Erro ao exportar arquivo CSV: Pasta de Download não encontrada'),
+      ),
+    );
   }
 }
 
