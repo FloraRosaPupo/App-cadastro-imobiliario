@@ -392,7 +392,10 @@ class ExportarState extends State<ExportarPage> {
 
   List<DataColumn> getColumns(List<String> columns) => columns
       .map((String column) => DataColumn(
-            label: Text(column),
+            label: Container(
+              width: 100.0, // Defina a largura fixa para todas as colunas
+              child: Text(column),
+            ),
             onSort: onSort,
           ))
       .toList();
@@ -431,8 +434,14 @@ class ExportarState extends State<ExportarPage> {
         return DataRow(cells: getCells(cells));
       }).toList();
 
-  List<DataCell> getCells(List<dynamic> cells) =>
-      cells.map((data) => DataCell(Text('$data'))).toList();
+  List<DataCell> getCells(List<dynamic> cells) => cells
+      .map((data) => DataCell(
+            Container(
+              width: 100.0, // Mesma largura que definida nas colunas
+              child: Text('$data'),
+            ),
+          ))
+      .toList();
 
   void onSort(int columnIndex, bool ascending) {
     switch (columnIndex) {
