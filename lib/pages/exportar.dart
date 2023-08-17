@@ -673,14 +673,14 @@ class ExportarState extends State<ExportarPage> {
               ElevatedButton.icon(
                 style: raisedButtonStyle,
                 icon: Icon(Icons.download),
-                onPressed: () => exportarTXT(dados),
+                onPressed: () => exportarTXT(dados, context),
                 label: Text('TXT'),
               ),
               SizedBox(height: 5),
               ElevatedButton.icon(
                 style: raisedButtonStyle,
                 icon: Icon(Icons.download),
-                onPressed: () => exportarXML(dados),
+                onPressed: () => exportarXML(dados, context),
                 label: Text('XML'),
               ),
               SizedBox(height: 10),
@@ -750,5 +750,61 @@ void exportarCSV(List<Dados> dados, BuildContext context) async {
   }
 }
 
-void exportarTXT(dados) {}
-void exportarXML(dados) {}
+void exportarTXT(List<Dados> dados, BuildContext context) async {
+  String txtData =
+      ''; // Inicializa uma string vazia para armazenar os dados de texto
+
+  // Percorre a lista 'dados' e adiciona cada registro à string 'txtData'
+  for (var dadosItem in dados) {
+    txtData += 'SIAT: ${dadosItem.SIAT}\n';
+    txtData += 'Nome: ${dadosItem.nome}\n';
+    txtData += 'CPF: ${dadosItem.cpf}\n';
+    txtData += 'Caracterização: ${dadosItem.caracterizacao}\n';
+    txtData += 'Celular: ${dadosItem.celular}\n';
+    txtData += 'Cobertura: ${dadosItem.cobertura}\n';
+    txtData += 'Contribuinte: ${dadosItem.contribuinte}\n';
+    txtData += 'Coordenadas: ${dadosItem.coordenadas}\n';
+    txtData += 'Data 1: ${dadosItem.data1}\n';
+    txtData += 'Data 2: ${dadosItem.data2}\n';
+    txtData += 'Data 3: ${dadosItem.data3}\n';
+    txtData += 'Data de Nascimento: ${dadosItem.dataNascimento}\n';
+    txtData += 'Foto Aérea: ${dadosItem.fotoAerea}\n';
+    txtData += 'Foto Frontal: ${dadosItem.fotoFrontal}\n';
+    txtData += 'Horario 1: ${dadosItem.horario1}\n';
+    txtData += 'Horario 2: ${dadosItem.horario2}\n';
+    txtData += 'Horario 3: ${dadosItem.horario3}\n';
+    txtData += 'Nº: ${dadosItem.numero}\n';
+    txtData += 'Nº de Pavimentos: ${dadosItem.numPavimentos}\n';
+    txtData += 'Observação: ${dadosItem.observacao}\n';
+    txtData += 'Piso: ${dadosItem.piso}\n';
+    txtData += 'Quarteirão: ${dadosItem.quarteirao}\n';
+    txtData += 'Responsavel Cadastro: ${dadosItem.responsavelCadastro}\n';
+    txtData += 'Rua: ${dadosItem.rua}\n';
+    txtData += 'Situação: ${dadosItem.situacao}\n';
+    txtData += 'Visita: ${dadosItem.visita}\n';
+    txtData += 'ID: ${dadosItem.id}\n';
+    txtData += '\n'; // Adiciona um separador entre os registros
+  }
+
+  final downloadsDirectory = Directory('/storage/emulated/0/Download');
+
+  if (await downloadsDirectory.exists()) {
+    final file = File('${downloadsDirectory.path}/dados_exportados.txt');
+    await file.writeAsString(txtData);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Arquivo TXT exportado para a pasta de Download'),
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            'Erro ao exportar arquivo TXT: Pasta de Download não encontrada'),
+      ),
+    );
+  }
+}
+
+void exportarXML(dados, BuildContext context) {}
