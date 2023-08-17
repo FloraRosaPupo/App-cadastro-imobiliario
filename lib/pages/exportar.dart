@@ -750,7 +750,7 @@ void exportarCSV(List<Dados> dados, BuildContext context) async {
   }
 }
 
-void exportarTXT(List<Dados> dados, BuildContext context) async {
+void exportarTXT(List<Dados> dados) async {
   String txtData =
       ''; // Inicializa uma string vazia para armazenar os dados de texto
 
@@ -783,7 +783,8 @@ void exportarTXT(List<Dados> dados, BuildContext context) async {
     txtData += 'Situação: ${dadosItem.situacao}\n';
     txtData += 'Visita: ${dadosItem.visita}\n';
     txtData += 'ID: ${dadosItem.id}\n';
-    txtData += '\n'; // Adiciona um separador entre os registros
+    txtData +=
+        '--------------------------------------------------\n'; // Adiciona um separador entre os registros
   }
 
   final downloadsDirectory = Directory('/storage/emulated/0/Download');
