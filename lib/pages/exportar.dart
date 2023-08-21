@@ -393,7 +393,7 @@ class ExportarState extends State<ExportarPage> {
   List<DataColumn> getColumns(List<String> columns) => columns
       .map((String column) => DataColumn(
             label: Container(
-              width: 100.0, // Defina a largura fixa para todas as colunas
+              width: 300.0, // Defina a largura fixa para todas as colunas
               child: Text(column),
             ),
             onSort: onSort,
