@@ -148,6 +148,7 @@ class ExportarState extends State<ExportarPage> {
   int _currentPage = 1;
   int _dataPerPage = 20; // Number of items to load per page
   bool _isLoading = false;
+  String? _lastKey;
 
   @override
   void initState() {
@@ -155,6 +156,7 @@ class ExportarState extends State<ExportarPage> {
     buscarDadosEmTempoReal();
     //chamarUsuario();
     _scrollController.addListener(_scrollListener);
+    _lastKey = null; // Inicialize _lastKey como null
   }
 
   @override
@@ -198,11 +200,13 @@ class ExportarState extends State<ExportarPage> {
     // Calcular o índice inicial dos dados a buscar com base na página atual e itens por página
     int startIndex = (_currentPage - 1) * _dataPerPage;
 
+    String startKey = _currentPage.toString();
+
     print('Iniciando busca de dados em tempo real...');
 
     _dadosSubscription = databaseReference
         .orderByKey()
-        .startAt('$startIndex')
+        .limitToFirst(_dataPerPage)
         .onValue
         .listen((event) {
       final dataSnapshot = event.snapshot;
@@ -282,6 +286,9 @@ class ExportarState extends State<ExportarPage> {
                 visita: visita,
                 id: id,
               ));
+
+              // Atualize a última chave usada
+              _lastKey = dataSnapshot.key;
             }
           }
 
