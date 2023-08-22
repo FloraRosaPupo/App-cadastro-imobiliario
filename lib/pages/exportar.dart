@@ -200,7 +200,11 @@ class ExportarState extends State<ExportarPage> {
 
     print('Iniciando busca de dados em tempo real...');
 
-    _dadosSubscription = databaseReference.onValue.listen((event) {
+    _dadosSubscription = databaseReference
+        .orderByKey()
+        .startAt('$startIndex')
+        .onValue
+        .listen((event) {
       final dataSnapshot = event.snapshot;
       final data = dataSnapshot.value;
 
