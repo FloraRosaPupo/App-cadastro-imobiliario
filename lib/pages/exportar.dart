@@ -437,7 +437,7 @@ class ExportarState extends State<ExportarPage> {
   List<DataCell> getCells(List<dynamic> cells) => cells
       .map((data) => DataCell(
             Container(
-              width: 100.0, // Mesma largura que definida nas colunas
+              width: 200.0, // Mesma largura que definida nas colunas
               child: Text('$data'),
             ),
           ))
