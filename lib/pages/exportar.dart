@@ -144,16 +144,16 @@ class ExportarState extends State<ExportarPage> {
   List<Dados> dados = [];
   int? sortColumnIndex;
   bool isAscending = false;
-  final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   int _dataPerPage = 20; // Number of items to load per page
   bool _isLoading = false;
   String? _lastKey;
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    buscarDadosEmTempoReal();
     //chamarUsuario();
     _scrollController.addListener(_scrollListener);
     _lastKey = null; // Inicialize _lastKey como null
@@ -186,7 +186,7 @@ class ExportarState extends State<ExportarPage> {
 
     _currentPage++;
 
-    buscarDadosEmTempoReal();
+    buscarDadosEmTempoReal(); // Chame sua função de busca de dados aqui
 
     setState(() {
       _isLoading = false;
@@ -204,11 +204,13 @@ class ExportarState extends State<ExportarPage> {
 
     print('Iniciando busca de dados em tempo real...');
 
-    _dadosSubscription = databaseReference
+    // Atualize a consulta para usar startAt() com a chave de início
+    Query query = databaseReference
         .orderByKey()
-        .limitToFirst(_dataPerPage)
-        .onValue
-        .listen((event) {
+        .startAt(startKey)
+        .limitToFirst(_dataPerPage);
+
+    _dadosSubscription = databaseReference.onValue.listen((event) {
       final dataSnapshot = event.snapshot;
       final data = dataSnapshot.value;
 
