@@ -145,10 +145,10 @@ class ExportarState extends State<ExportarPage> {
   int? sortColumnIndex;
   bool isAscending = false;
   int _currentPage = 1;
-  int _dataPerPage = 20; // Number of items to load per page
+  int _dataPerPage = 20; // Número de itens a serem carregados por página
   bool _isLoading = false;
+  bool _loadingMore = false;
   String? _lastKey;
-
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -157,31 +157,25 @@ class ExportarState extends State<ExportarPage> {
     //chamarUsuario();
     _scrollController.addListener(_scrollListener);
     _lastKey = null; // Inicialize _lastKey como null
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-
-    _dadosSubscription.cancel();
-    super.dispose();
+    buscarDadosEmTempoReal();
   }
 
   void _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+        !_scrollController.position.outOfRange &&
+        !_loadingMore) {
       _loadMoreData();
     }
   }
 
   void _loadMoreData() {
-    if (_isLoading) {
+    if (_isLoading || _loadingMore) {
       return;
     }
 
     setState(() {
-      _isLoading = true;
+      _loadingMore = true; // Defina _loadingMore como true aqui
     });
 
     _currentPage++;
@@ -189,7 +183,8 @@ class ExportarState extends State<ExportarPage> {
     buscarDadosEmTempoReal(); // Chame sua função de busca de dados aqui
 
     setState(() {
-      _isLoading = false;
+      _loadingMore =
+          false; // Defina _loadingMore de volta como false quando o carregamento estiver concluído
     });
   }
 
@@ -197,20 +192,19 @@ class ExportarState extends State<ExportarPage> {
     final databaseReference =
         FirebaseDatabase.instance.reference().child('imoveis');
 
-    // Calcular o índice inicial dos dados a buscar com base na página atual e itens por página
-    int startIndex = (_currentPage - 1) * _dataPerPage;
-
-    String startKey = _currentPage.toString();
+    // Calcular o índice inicial dos dados a buscar com base na última chave conhecida
+    Query query;
+    if (_lastKey == null) {
+      query = databaseReference.limitToFirst(_dataPerPage);
+    } else {
+      query = databaseReference
+          .orderByKey()
+          .startAfter([_lastKey]).limitToFirst(_dataPerPage);
+    }
 
     print('Iniciando busca de dados em tempo real...');
 
-    // Atualize a consulta para usar startAt() com a chave de início
-    Query query = databaseReference
-        .orderByKey()
-        .startAt(startKey)
-        .limitToFirst(_dataPerPage);
-
-    _dadosSubscription = databaseReference.onValue.listen((event) {
+    _dadosSubscription = query.onValue.listen((event) {
       final dataSnapshot = event.snapshot;
       final data = dataSnapshot.value;
 
@@ -295,7 +289,11 @@ class ExportarState extends State<ExportarPage> {
           }
 
           setState(() {
-            dados = dadosList;
+            if (_currentPage == 1) {
+              dados = dadosList;
+            } else {
+              dados.addAll(dadosList);
+            }
           });
 
           print('Dados buscados com sucesso: $dadosList');
@@ -676,25 +674,23 @@ class ExportarState extends State<ExportarPage> {
                 ),
               ),
               SizedBox(height: 10),
-              ElevatedButton.icon(
-                style: raisedButtonStyle,
-                icon: Icon(Icons.download),
-                onPressed: () => exportarCSV(dados, context),
-                label: Text('CSV'),
-              ),
-              SizedBox(height: 5),
-              ElevatedButton.icon(
-                style: raisedButtonStyle,
-                icon: Icon(Icons.download),
-                onPressed: () => exportarTXT(dados, context),
-                label: Text('TXT'),
-              ),
-              SizedBox(height: 5),
-              ElevatedButton.icon(
-                style: raisedButtonStyle,
-                icon: Icon(Icons.download),
-                onPressed: () => exportarXML(dados, context),
-                label: Text('XML'),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton.icon(
+                    style: raisedButtonStyle,
+                    icon: Icon(Icons.download),
+                    onPressed: () => exportarCSV(dados, context),
+                    label: Text('CSV'),
+                  ),
+                  SizedBox(width: 5),
+                  ElevatedButton.icon(
+                    style: raisedButtonStyle,
+                    icon: Icon(Icons.download),
+                    onPressed: () => exportarTXT(dados, context),
+                    label: Text('TXT'),
+                  ),
+                ],
               ),
               SizedBox(height: 10),
             ],
@@ -820,5 +816,3 @@ void exportarTXT(List<Dados> dados, BuildContext context) async {
     );
   }
 }
-
-void exportarXML(dados, BuildContext context) {}
