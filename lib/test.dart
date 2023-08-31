@@ -48,6 +48,12 @@ class _MyListViewState extends State<MyListView> {
         itemCount: imoveis.length,
         itemBuilder: (context, index) {
           return ListTile(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ImovelDetalhes(
+                    imovel: imoveis[index], onUpdate: atualizarImovel),
+              ));
+            },
             leading: Image.network(
               imoveis[index]['imageURL'],
               height: 100,
@@ -80,19 +86,6 @@ class _MyListViewState extends State<MyListView> {
                     ),
                   ],
                 ),
-                Container(
-                  constraints:
-                      BoxConstraints(maxWidth: 50), // Define a largura máxima
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ImovelDetalhes(
-                            imovel: imoveis[index], onUpdate: atualizarImovel),
-                      ));
-                    },
-                    icon: Icon(Icons.edit_square),
-                  ),
-                ),
               ],
             ),
           );
@@ -116,7 +109,8 @@ class ImovelDetalhes extends StatelessWidget {
       ),
       body: ConstrainedBox(
         constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height - kToolbarHeight),
+          maxHeight: MediaQuery.of(context).size.height - kToolbarHeight,
+        ),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
