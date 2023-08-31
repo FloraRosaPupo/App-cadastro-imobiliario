@@ -47,46 +47,54 @@ class _MyListViewState extends State<MyListView> {
       body: ListView.builder(
         itemCount: imoveis.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ImovelDetalhes(
-                    imovel: imoveis[index], onUpdate: atualizarImovel),
-              ));
-            },
-            leading: Image.network(
-              imoveis[index]['imageURL'],
-              height: 100,
-              width: 100,
-            ),
-            title: Text(
-              imoveis[index]['street'],
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black26, // Cor da borda
+                width: 0.5, // Largura da borda
               ),
             ),
-            subtitle: Text(
-              imoveis[index]['number'],
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
+            child: ListTile(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ImovelDetalhes(
+                      imovel: imoveis[index], onUpdate: atualizarImovel),
+                ));
+              },
+              leading: Image.network(
+                imoveis[index]['imageURL'],
+                height: 100,
+                width: 100,
               ),
-              textAlign: TextAlign.right,
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      imoveis[index]['owner'],
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
+              title: Text(
+                imoveis[index]['street'],
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
                 ),
-              ],
+              ),
+              subtitle: Text(
+                imoveis[index]['number'],
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.right,
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        imoveis[index]['owner'],
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
