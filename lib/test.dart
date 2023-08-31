@@ -1,23 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_prefeitura/functions.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class ListaImoveis extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ListView Example',
-      home: MyListView(),
-    );
-  }
+  _ListaImoveisState createState() => _ListaImoveisState();
 }
 
-class MyListView extends StatefulWidget {
-  @override
-  _MyListViewState createState() => _MyListViewState();
-}
-
-class _MyListViewState extends State<MyListView> {
+class _ListaImoveisState extends State<ListaImoveis> {
   List<Map<String, dynamic>> imoveis = List.generate(100, (index) {
     return {
       'imageURL':
@@ -41,9 +30,7 @@ class _MyListViewState extends State<MyListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('ListView Example'),
-      ),
+      appBar: appBarDinamica(),
       body: ListView.builder(
         itemCount: imoveis.length,
         itemBuilder: (context, index) {
@@ -112,9 +99,7 @@ class ImovelDetalhes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalhes do Imóvel'),
-      ),
+      appBar: appBarDinamica(),
       body: ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height - kToolbarHeight,
@@ -184,9 +169,7 @@ class _EditarImovelState extends State<EditarImovel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar Imóvel'),
-      ),
+      appBar: appBarDinamica(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
