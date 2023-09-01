@@ -66,10 +66,17 @@ class _ListaImoveisState extends State<ListaImoveis> {
 
           return Column(
             children: [
-              Text(
-                'Bloco $numero',
-                style: TextStyle(fontSize: 24),
+              Espacamento5(),
+              Container(
+                child: Text(
+                  'Bloco $numero',
+                  style: TextStyle(fontSize: 20),
+                ),
+                color: Colors.black12,
+                width: double.infinity,
+                height: 30,
               ),
+              Espacamento5(),
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
