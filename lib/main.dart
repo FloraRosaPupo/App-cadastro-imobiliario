@@ -14,6 +14,7 @@ import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
 import 'package:projeto_prefeitura/pages/forms/imovel.dart';
 import 'package:projeto_prefeitura/pages/painel.dart';
 import 'package:projeto_prefeitura/pages/quarteiroes.dart';
+import 'package:projeto_prefeitura/test.dart';
 
 import 'package:intl/intl.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [Locale('pt', 'BR')],
-      home: HomePage(),
+      home: ListaImoveis(),
       theme: ThemeData(
         //useMaterial3: true,
         fontFamily: 'Montserrat',
