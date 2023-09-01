@@ -29,9 +29,6 @@ class _ListaImoveisState extends State<ListaImoveis> {
     };
   });
 
-  int blocoAtual = 1; // Índice do bloco atual
-  int itensPorBloco = 10; // Número de itens por bloco
-
   void atualizarImovel(Map<String, dynamic> novoImovel) {
     int index = imoveis
         .indexWhere((imovel) => imovel['number'] == novoImovel['number']);
@@ -42,106 +39,98 @@ class _ListaImoveisState extends State<ListaImoveis> {
     }
   }
 
-  List<Map<String, dynamic>> getImoveisDoBloco(int bloco) {
-    final startIndex = (bloco - 1) * itensPorBloco;
-    final endIndex = startIndex + itensPorBloco;
-    return imoveis.sublist(startIndex, endIndex);
+  // Função para organizar os imóveis em blocos com base no índice do número
+  Map<String, List<Map<String, dynamic>>> organizarEmBlocos() {
+    Map<String, List<Map<String, dynamic>>> blocos = {};
+
+    for (int i = 0; i < imoveis.length; i++) {
+      String numero = imoveis[i]['number'];
+      if (!blocos.containsKey(numero)) {
+        blocos[numero] = [];
+      }
+      blocos[numero]!.add(imoveis[i]);
+    }
+
+    return blocos;
   }
 
   @override
   Widget build(BuildContext context) {
-    final imoveisDoBloco = getImoveisDoBloco(blocoAtual);
+    Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
 
     return Scaffold(
       appBar: appBarDinamica(),
-      body: Column(
-        children: [
-          // Botões de navegação entre os blocos
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: ListView(
+        children: blocos.keys.map((numero) {
+          List<Map<String, dynamic>> blocosImoveis = blocos[numero]!;
+
+          return Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (blocoAtual > 1) {
-                      blocoAtual--;
-                    }
-                  });
-                },
-                icon: Icon(Icons.arrow_back), // Ícone de seta para esquerda
+              Text(
+                'Bloco $numero',
+                style: TextStyle(fontSize: 24),
               ),
-              Text('Bloco $blocoAtual'),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (blocoAtual < (imoveis.length / itensPorBloco).ceil()) {
-                      blocoAtual++;
-                    }
-                  });
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: blocosImoveis.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black26,
+                        width: 0.5,
+                      ),
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ImovelDetalhes(
+                              imovel: blocosImoveis[index],
+                              onUpdate: atualizarImovel),
+                        ));
+                      },
+                      leading: Image.network(
+                        blocosImoveis[index]['imageURL'],
+                        height: 100,
+                        width: 100,
+                      ),
+                      title: Text(
+                        blocosImoveis[index]['street'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                      subtitle: Text(
+                        blocosImoveis[index]['number'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                blocosImoveis[index]['owner'],
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
-                icon: Icon(Icons.arrow_forward), // Ícone de seta para direita
               ),
             ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: imoveisDoBloco.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black26,
-                      width: 0.5,
-                    ),
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ImovelDetalhes(
-                            imovel: imoveisDoBloco[index],
-                            onUpdate: atualizarImovel),
-                      ));
-                    },
-                    leading: Image.network(
-                      imoveisDoBloco[index]['imageURL'],
-                      height: 100,
-                      width: 100,
-                    ),
-                    title: Text(
-                      imoveisDoBloco[index]['street'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                    subtitle: Text(
-                      imoveisDoBloco[index]['number'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              imoveisDoBloco[index]['owner'],
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+          );
+        }).toList(),
       ),
     );
   }
