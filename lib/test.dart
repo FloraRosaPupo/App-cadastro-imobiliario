@@ -50,8 +50,25 @@ class _ListaImoveisState extends State<ListaImoveis> {
     }
   }
 
+  // Função para organizar os imóveis em blocos com base no índice do número
+  Map<String, List<Map<String, dynamic>>> organizarEmBlocos() {
+    Map<String, List<Map<String, dynamic>>> blocos = {};
+
+    for (int i = 0; i < imoveis.length; i++) {
+      String numero = imoveis[i]['number'];
+      if (!blocos.containsKey(numero)) {
+        blocos[numero] = [];
+      }
+      blocos[numero]!.add(imoveis[i]);
+    }
+
+    return blocos;
+  }
+
   @override
   Widget build(BuildContext context) {
+    Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Imóveis'),
@@ -73,57 +90,82 @@ class _ListaImoveisState extends State<ListaImoveis> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: imoveis.length,
+              itemCount: blocos.length,
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black26,
-                      width: 0.5,
-                    ),
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ImovelDetalhes(
-                            imovel: imoveis[index], onUpdate: atualizarImovel),
-                      ));
-                    },
-                    leading: Image.network(
-                      imoveis[index]['imageURL'],
-                      height: 100,
-                      width: 100,
-                    ),
-                    title: Text(
-                      imoveis[index]['street'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                    subtitle: Text(
-                      imoveis[index]['number'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              imoveis[index]['owner'],
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
+                String numero = blocos.keys.elementAt(index);
+                List<Map<String, dynamic>> blocosImoveis = blocos[numero]!;
+
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Bloco $numero',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: blocosImoveis.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black26,
+                              width: 0.5,
+                            ),
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ImovelDetalhes(
+                                    imovel: blocosImoveis[index],
+                                    onUpdate: atualizarImovel),
+                              ));
+                            },
+                            leading: Image.network(
+                              blocosImoveis[index]['imageURL'],
+                              height: 100,
+                              width: 100,
+                            ),
+                            title: Text(
+                              blocosImoveis[index]['street'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            subtitle: Text(
+                              blocosImoveis[index]['number'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      blocosImoveis[index]['owner'],
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 );
               },
             ),
