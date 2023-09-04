@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ListView Example',
-      home: ListaImoveis(),
-    );
-  }
-}
-
 class ListaImoveis extends StatefulWidget {
   @override
   _ListaImoveisState createState() => _ListaImoveisState();
