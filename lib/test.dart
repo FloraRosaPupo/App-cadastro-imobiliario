@@ -1,17 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/functions.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ListView Example',
-      home: ListaImoveis(),
-    );
-  }
-}
 
 class ListaImoveis extends StatefulWidget {
   @override
@@ -36,6 +23,8 @@ class _ListaImoveisState extends State<ListaImoveis> {
     return imoveisParaIndex;
   }).expand((element) => element).toList();
 
+  TextEditingController indexController = TextEditingController();
+
   void atualizarImovel(Map<String, dynamic> novoImovel) {
     int index = imoveis
         .indexWhere((imovel) => imovel['number'] == novoImovel['number']);
@@ -46,105 +35,100 @@ class _ListaImoveisState extends State<ListaImoveis> {
     }
   }
 
-  // Função para organizar os imóveis em blocos com base no índice do número
-  Map<String, List<Map<String, dynamic>>> organizarEmBlocos() {
-    Map<String, List<Map<String, dynamic>>> blocos = {};
+  void filtrarPorIndex() {
+    String indexText = indexController.text;
+    int? selectedIndex = int.tryParse(indexText); // Altere para int?
 
-    for (int i = 0; i < imoveis.length; i++) {
-      String numero = imoveis[i]['number'];
-      if (!blocos.containsKey(numero)) {
-        blocos[numero] = [];
-      }
-      blocos[numero]!.add(imoveis[i]);
+    if (selectedIndex != null) {
+      List<Map<String, dynamic>> filteredImoveis = imoveis
+          .where((imovel) => imovel['number'] == selectedIndex.toString())
+          .toList();
+
+      setState(() {
+        imoveis = filteredImoveis;
+      });
     }
-
-    return blocos;
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
-
     return Scaffold(
-      appBar: appBarDinamica(),
-      body: ListView(
-        children: blocos.keys.map((numero) {
-          List<Map<String, dynamic>> blocosImoveis = blocos[numero]!;
-
-          return Column(
-            children: [
-              Espacamento5(),
-              Container(
-                child: Text(
-                  'Bloco $numero',
-                  style: TextStyle(fontSize: 20),
+      appBar: AppBar(
+        title: Text('Lista de Imóveis'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: indexController,
+              decoration: InputDecoration(
+                labelText: 'Filtrar por número do imóvel',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.filter_alt),
+                  onPressed: filtrarPorIndex,
                 ),
-                color: Colors.black12,
-                width: double.infinity,
-                height: 30,
               ),
-              Espacamento5(),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: blocosImoveis.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black26,
-                        width: 0.5,
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: imoveis.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black26,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ImovelDetalhes(
+                            imovel: imoveis[index], onUpdate: atualizarImovel),
+                      ));
+                    },
+                    leading: Image.network(
+                      imoveis[index]['imageURL'],
+                      height: 100,
+                      width: 100,
+                    ),
+                    title: Text(
+                      imoveis[index]['street'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
                       ),
                     ),
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ImovelDetalhes(
-                              imovel: blocosImoveis[index],
-                              onUpdate: atualizarImovel),
-                        ));
-                      },
-                      leading: Image.network(
-                        blocosImoveis[index]['imageURL'],
-                        height: 100,
-                        width: 100,
+                    subtitle: Text(
+                      imoveis[index]['number'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
                       ),
-                      title: Text(
-                        blocosImoveis[index]['street'],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                      subtitle: Text(
-                        blocosImoveis[index]['number'],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                blocosImoveis[index]['owner'],
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      textAlign: TextAlign.right,
                     ),
-                  );
-                },
-              ),
-            ],
-          );
-        }).toList(),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              imoveis[index]['owner'],
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -159,44 +143,39 @@ class ImovelDetalhes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarDinamica(),
-      body: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height - kToolbarHeight,
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Endereço: ${imovel['street']}',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  'Número: ${imovel['number']}',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  'Proprietário: ${imovel['owner']}',
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          EditarImovel(imovel: imovel, onUpdate: onUpdate),
-                    ));
-                    Navigator.of(context).popUntil(
-                        (route) => route.isFirst); // Volta para a tela inicial.
-                  },
-                  child: Text('Editar Imóvel'),
-                ),
-              ],
+      appBar: AppBar(
+        title: Text('Detalhes do Imóvel'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Endereço: ${imovel['street']}',
+              style: TextStyle(fontSize: 20),
             ),
-          ),
+            Text(
+              'Número: ${imovel['number']}',
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              'Proprietário: ${imovel['owner']}',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      EditarImovel(imovel: imovel, onUpdate: onUpdate),
+                ));
+                Navigator.of(context).popUntil(
+                    (route) => route.isFirst); // Volta para a tela inicial.
+              },
+              child: Text('Editar Imóvel'),
+            ),
+          ],
         ),
       ),
     );
@@ -229,7 +208,9 @@ class _EditarImovelState extends State<EditarImovel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarDinamica(),
+      appBar: AppBar(
+        title: Text('Editar Imóvel'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
