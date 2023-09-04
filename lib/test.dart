@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/functions.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ListView Example',
+      home: ListaImoveis(),
+    );
+  }
+}
 
 class ListaImoveis extends StatefulWidget {
   @override
@@ -36,8 +47,7 @@ class _ListaImoveisState extends State<ListaImoveis> {
     }
   }
 
-  void filtrarPorIndex() {
-    String indexText = indexController.text;
+  void filtrarPorIndex(String indexText) {
     int? selectedIndex = int.tryParse(indexText); // Altere para int?
 
     if (selectedIndex != null) {
@@ -66,27 +76,54 @@ class _ListaImoveisState extends State<ListaImoveis> {
     return blocos;
   }
 
+  Future<void> _exibirPopupFiltrar(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Filtrar por Bloco'),
+          content: TextField(
+            controller: indexController,
+            decoration: InputDecoration(
+              labelText: 'Número do Bloco',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Filtrar'),
+              onPressed: () {
+                filtrarPorIndex(indexController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
 
     return Scaffold(
-      appBar: appBarDinamica(),
+      appBar: AppBar(
+        title: Text('Lista de Imóveis'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_alt),
+            onPressed: () => _exibirPopupFiltrar(context),
+          ),
+        ],
+      ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: indexController,
-              decoration: InputDecoration(
-                labelText: 'Filtrar por número do imóvel',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.filter_alt),
-                  onPressed: filtrarPorIndex,
-                ),
-              ),
-            ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: blocos.length,
@@ -187,36 +224,43 @@ class ImovelDetalhes extends StatelessWidget {
       appBar: AppBar(
         title: Text('Detalhes do Imóvel'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Endereço: ${imovel['street']}',
-              style: TextStyle(fontSize: 20),
+      body: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height - kToolbarHeight,
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Endereço: ${imovel['street']}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text(
+                  'Número: ${imovel['number']}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text(
+                  'Proprietário: ${imovel['owner']}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          EditarImovel(imovel: imovel, onUpdate: onUpdate),
+                    ));
+                    Navigator.of(context).popUntil(
+                        (route) => route.isFirst); // Volta para a tela inicial.
+                  },
+                  child: Text('Editar Imóvel'),
+                ),
+              ],
             ),
-            Text(
-              'Número: ${imovel['number']}',
-              style: TextStyle(fontSize: 20),
-            ),
-            Text(
-              'Proprietário: ${imovel['owner']}',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      EditarImovel(imovel: imovel, onUpdate: onUpdate),
-                ));
-                Navigator.of(context).popUntil(
-                    (route) => route.isFirst); // Volta para a tela inicial.
-              },
-              child: Text('Editar Imóvel'),
-            ),
-          ],
+          ),
         ),
       ),
     );
