@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_prefeitura/functions.dart';
 
@@ -24,7 +25,8 @@ class _ListaImoveisState extends State<ListaImoveis> {
     return imoveisParaIndex;
   }).expand((element) => element).toList();
 
-  TextEditingController indexController = TextEditingController();
+  int minIndexSelecionado = 0;
+  int maxIndexSelecionado = 100;
 
   void atualizarImovel(Map<String, dynamic> novoImovel) {
     int index = imoveis
@@ -33,20 +35,6 @@ class _ListaImoveisState extends State<ListaImoveis> {
     if (index != -1) {
       imoveis[index] = novoImovel;
       setState(() {});
-    }
-  }
-
-  void filtrarPorIndex(String indexText) {
-    int? selectedIndex = int.tryParse(indexText);
-
-    if (selectedIndex != null) {
-      List<Map<String, dynamic>> filteredImoveis = imoveis
-          .where((imovel) => imovel['number'] == selectedIndex.toString())
-          .toList();
-
-      setState(() {
-        imoveis = filteredImoveis;
-      });
     }
   }
 
@@ -65,31 +53,61 @@ class _ListaImoveisState extends State<ListaImoveis> {
     return blocos;
   }
 
-  Future<void> _exibirPopupFiltrar(BuildContext context) async {
-    await showDialog(
+  void mostrarFiltro() {
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Filtrar por Bloco'),
-          content: TextField(
-            controller: indexController,
-            decoration: InputDecoration(
-              labelText: 'Número do Bloco',
-            ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          actions: <Widget>[
+          title: Text(
+            'Filtrar por número de Índice',
+            style: TextStyle(fontSize: 20),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Mínimo:',
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    minIndexSelecionado = int.tryParse(value) ?? 0;
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Máximo:',
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    maxIndexSelecionado = int.tryParse(value) ?? 100;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: [
             TextButton(
-              child: Text('Cancelar'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
+              child: Text(
+                'Cancelar',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-            TextButton(
-              child: Text('Filtrar'),
+            ElevatedButton(
               onPressed: () {
-                filtrarPorIndex(indexController.text);
-                Navigator.of(context).pop();
+                Navigator.pop(context);
+                setState(() {});
               },
+              child: Text('Filtrar'),
             ),
           ],
         );
@@ -102,96 +120,101 @@ class _ListaImoveisState extends State<ListaImoveis> {
     Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
 
     return Scaffold(
-      appBar: appBarDinamica(),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: blocos.length,
-              itemBuilder: (context, index) {
-                String numero = blocos.keys.elementAt(index);
-                List<Map<String, dynamic>> blocosImoveis = blocos[numero]!;
+      appBar: AppBar(
+        title: Text('Lista de Imóveis'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: mostrarFiltro,
+          ),
+        ],
+      ),
+      body: ListView(
+        children: blocos.keys.map((numero) {
+          List<Map<String, dynamic>> blocosImoveis = blocos[numero]!;
 
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Bloco $numero',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+          return Column(
+            children: [
+              SizedBox(height: 5),
+              Container(
+                child: Text(
+                  'Bloco $numero',
+                  style: TextStyle(fontSize: 20),
+                ),
+                color: Colors.black12,
+                width: double.infinity,
+                height: 30,
+              ),
+              SizedBox(height: 5),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: blocosImoveis.length,
+                itemBuilder: (context, index) {
+                  int indexNumber =
+                      int.tryParse(blocosImoveis[index]['number']) ?? -1;
+
+                  if (indexNumber >= minIndexSelecionado &&
+                      indexNumber <= maxIndexSelecionado) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black26,
+                          width: 0.5,
                         ),
                       ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: blocosImoveis.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black26,
-                              width: 0.5,
-                            ),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ImovelDetalhes(
+                                imovel: blocosImoveis[index],
+                                onUpdate: atualizarImovel),
+                          ));
+                        },
+                        leading: Image.network(
+                          blocosImoveis[index]['imageURL'],
+                          height: 100,
+                          width: 100,
+                        ),
+                        title: Text(
+                          blocosImoveis[index]['street'],
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
                           ),
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ImovelDetalhes(
-                                    imovel: blocosImoveis[index],
-                                    onUpdate: atualizarImovel),
-                              ));
-                            },
-                            leading: Image.network(
-                              blocosImoveis[index]['imageURL'],
-                              height: 100,
-                              width: 100,
-                            ),
-                            title: Text(
-                              blocosImoveis[index]['street'],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                            ),
-                            subtitle: Text(
-                              blocosImoveis[index]['number'],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                              textAlign: TextAlign.right,
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
+                        ),
+                        subtitle: Text(
+                          blocosImoveis[index]['number'],
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      blocosImoveis[index]['owner'],
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  ],
+                                Text(
+                                  blocosImoveis[index]['owner'],
+                                  style: TextStyle(fontSize: 20),
                                 ),
                               ],
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => _exibirPopupFiltrar(context),
-            child: Text('Filtrar por Bloco'),
-          ),
-        ],
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink(); // Oculta os itens fora do filtro.
+                  }
+                },
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
