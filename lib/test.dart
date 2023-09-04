@@ -20,14 +20,21 @@ class ListaImoveis extends StatefulWidget {
 
 class _ListaImoveisState extends State<ListaImoveis> {
   List<Map<String, dynamic>> imoveis = List.generate(100, (index) {
-    return {
-      'imageURL':
-          'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp',
-      'street': 'Rua Joaquim Lopes $index',
-      'number': '$index',
-      'owner': 'Fulano da Silva $index',
-    };
-  });
+    List<Map<String, dynamic>> imoveisParaIndex = [];
+
+    // Adicione mais exemplos para cada índice
+    for (int i = 0; i < 5; i++) {
+      imoveisParaIndex.add({
+        'imageURL':
+            'https://empreenderdinheiro.com.br/wp-content/uploads/2019/06/comprar-terreno-2-1024x683.jpg.webp',
+        'street': 'Rua Joaquim Lopes $index - Exemplo $i',
+        'number': '$index',
+        'owner': 'Fulano da Silva $index - Exemplo $i',
+      });
+    }
+
+    return imoveisParaIndex;
+  }).expand((element) => element).toList();
 
   void atualizarImovel(Map<String, dynamic> novoImovel) {
     int index = imoveis
