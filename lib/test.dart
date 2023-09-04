@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_prefeitura/functions.dart';
 
 class ListaImoveis extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _ListaImoveisState extends State<ListaImoveis> {
   }
 
   void filtrarPorIndex(String indexText) {
-    int? selectedIndex = int.tryParse(indexText); // Altere para int?
+    int? selectedIndex = int.tryParse(indexText);
 
     if (selectedIndex != null) {
       List<Map<String, dynamic>> filteredImoveis = imoveis
@@ -103,12 +104,6 @@ class _ListaImoveisState extends State<ListaImoveis> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Imóveis'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.filter_alt),
-            onPressed: () => _exibirPopupFiltrar(context),
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -193,6 +188,10 @@ class _ListaImoveisState extends State<ListaImoveis> {
                 );
               },
             ),
+          ),
+          ElevatedButton(
+            onPressed: () => _exibirPopupFiltrar(context),
+            child: Text('Filtrar por Bloco'),
           ),
         ],
       ),
