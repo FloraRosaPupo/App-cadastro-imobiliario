@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_prefeitura/functions.dart';
 
 class ListaImoveis extends StatefulWidget {
   @override
@@ -70,9 +71,7 @@ class _ListaImoveisState extends State<ListaImoveis> {
     Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lista de Imóveis'),
-      ),
+      appBar: appBarDinamica(),
       body: Column(
         children: [
           Padding(
