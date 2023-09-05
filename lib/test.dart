@@ -54,20 +54,25 @@ class _ListaImoveisState extends State<ListaImoveis> {
   }
 
   void mostrarFiltro() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          title: Text(
-            'Filtrar por número de Índice',
-            style: TextStyle(fontSize: 20),
-          ),
-          content: Column(
+        return Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                'Filtrar por número de Índice',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(height: 10),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Mínimo:',
@@ -79,6 +84,7 @@ class _ListaImoveisState extends State<ListaImoveis> {
                   });
                 },
               ),
+              SizedBox(height: 10),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Máximo:',
@@ -90,26 +96,17 @@ class _ListaImoveisState extends State<ListaImoveis> {
                   });
                 },
               ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.pop(context);
+                  setState(() {});
+                },
+                child: Text('Filtrar'),
+              ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                'Cancelar',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {});
-              },
-              child: Text('Filtrar'),
-            ),
-          ],
         );
       },
     );
@@ -120,15 +117,7 @@ class _ListaImoveisState extends State<ListaImoveis> {
     Map<String, List<Map<String, dynamic>>> blocos = organizarEmBlocos();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lista de Imóveis'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: mostrarFiltro,
-          ),
-        ],
-      ),
+      appBar: appBarDinamica(),
       body: ListView(
         children: blocos.keys.map((numero) {
           List<Map<String, dynamic>> blocosImoveis = blocos[numero]!;
@@ -215,6 +204,11 @@ class _ListaImoveisState extends State<ListaImoveis> {
             ],
           );
         }).toList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: mostrarFiltro,
+        backgroundColor: Color.fromARGB(190, 7, 62, 77), // Cor do círculo
+        child: Icon(Icons.filter_list),
       ),
     );
   }
