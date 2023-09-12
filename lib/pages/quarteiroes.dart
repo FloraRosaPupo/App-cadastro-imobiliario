@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto_prefeitura/functions.dart';
 import '../dados.dart';
 import 'dart:async';
 
@@ -10,6 +12,9 @@ class Quarteiroes extends StatefulWidget {
 }
 
 class _QuarteiroesState extends State<Quarteiroes> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String nome = '';
+  String email = '';
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   late DatabaseReference _imoveisRef;
 
@@ -84,9 +89,8 @@ class _QuarteiroesState extends State<Quarteiroes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lista de Imóveis Firebase'),
-      ),
+      appBar: appBarDinamica(),
+      drawer: menuLateralDinamico(nome, email),
       body: ListView.builder(
         itemCount: imoveis.length,
         itemBuilder: (context, index) {
@@ -100,5 +104,13 @@ class _QuarteiroesState extends State<Quarteiroes> {
         },
       ),
     );
+  }
+
+  void chamarUsuario() {
+    final User? user = _firebaseAuth.currentUser;
+    if (user != null) {
+      nome = user.displayName ?? '';
+      email = user.email ?? '';
+    }
   }
 }
