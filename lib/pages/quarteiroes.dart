@@ -37,6 +37,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
   void _carregarImoveis() {
     _imoveisRef.once().then((DatabaseEvent event) {
       if (event.snapshot.value != null) {
+        print("Conteúdo do Snapshot: ${event.snapshot.value}");
         final dynamic data = event.snapshot.value;
         if (data is Map<dynamic, dynamic>) {
           imoveis.clear();
