@@ -29,48 +29,47 @@ class _QuarteiroesState extends State<Quarteiroes> {
     _carregarImoveis();
   }
 
-  void _carregarImoveis(){
-    _imoveisRef.onValue.listen((event) {
-      final data = event.snapshot.value;
-
-      if (data != null) {
-        Map<dynamic, dynamic> values = event.snapshot.value;
-
-        values.forEach((key, value) {
-          // Converte os dados do Firebase em objetos da classe Dados e os adiciona à lista de imóveis.
-          imoveis.add(Dados(
-            SIAT: value['SIAT'],
-            nome: value['nome'],
-            cpf: value['cpf'],
-            caracterizacao: value['caracterizacao'],
-            celular: value['celular'],
-            cobertura: value['cobertura'],
-            contribuinte: value['contribuinte'],
-            coordenadas: value['coordenadas'],
-            data1: value['data1'],
-            data2: value['data2'],
-            data3: value['data3'],
-            dataNascimento: value['dataNascimento'],
-            fotoAerea: value['fotoAerea'],
-            fotoFrontal: value['fotoFrontal'],
-            horario1: value['horario1'],
-            horario2: value['horario2'],
-            horario3: value['horario3'],
-            numero: value['numero'],
-            numPavimentos: value['numPavimentos'],
-            observacao: value['observacao'],
-            piso: value['piso'],
-            quarteirao: value['quarteirao'],
-            responsavelCadastro: value['responsavelCadastro'],
-            rua: value['rua'],
-            situacao: value['situacao'],
-            visita: value['visita'],
-            id: value['id'],
-          ));
-        });
-        setState(() {});
+  void _carregarImoveis() {
+    _imoveisRef.once().then((DatabaseEvent event) {
+      if (event.snapshot.value != null) {
+        final dynamic data = event.snapshot.value;
+        if (data is Map<dynamic, dynamic>) {
+          imoveis.clear();
+          data.forEach((key, value) {
+            imoveis.add(Dados(
+              SIAT: value['SIAT'],
+              nome: value['nome'],
+              cpf: value['cpf'],
+              caracterizacao: value['caracterizacao'],
+              celular: value['celular'],
+              cobertura: value['cobertura'],
+              contribuinte: value['contribuinte'],
+              coordenadas: value['coordenadas'],
+              data1: value['data1'],
+              data2: value['data2'],
+              data3: value['data3'],
+              dataNascimento: value['dataNascimento'],
+              fotoAerea: value['fotoAerea'],
+              fotoFrontal: value['fotoFrontal'],
+              horario1: value['horario1'],
+              horario2: value['horario2'],
+              horario3: value['horario3'],
+              numero: value['numero'],
+              numPavimentos: value['numPavimentos'],
+              observacao: value['observacao'],
+              piso: value['piso'],
+              quarteirao: value['quarteirao'],
+              responsavelCadastro: value['responsavelCadastro'],
+              rua: value['rua'],
+              situacao: value['situacao'],
+              visita: value['visita'],
+              id: value['id'],
+            ));
+          });
+          setState(() {});
+        }
       }
-    }, onError: (error) {
+    }).catchError((error) {
       print("Erro ao carregar imóveis: $error");
     });
   }
