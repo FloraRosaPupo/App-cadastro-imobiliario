@@ -26,6 +26,7 @@ class _QuarteiroesState extends State<Quarteiroes> {
   void initState() {
     super.initState();
     _initializeFirebase();
+    chamarUsuario();
   }
 
   Future<void> _initializeFirebase() async {
