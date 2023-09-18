@@ -15,77 +15,15 @@ class _QuarteiroesState extends State<Quarteiroes> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
-  final FirebaseDatabase _database = FirebaseDatabase.instance;
   late DatabaseReference _imoveisRef;
 
-  List<Dados> imoveis = []; // Agora a lista contém objetos da classe Dados
-  StreamSubscription<DatabaseEvent>?
-      _dadosSubscription; // Correção: Defina _dadosSubscription aqui
+  List<Dados> imoveis = [];
 
   @override
   void initState() {
     super.initState();
-    _initializeFirebase();
-    chamarUsuario();
-  }
-
-  Future<void> _initializeFirebase() async {
-    await Firebase.initializeApp();
     _imoveisRef = FirebaseDatabase.instance.reference().child('imoveis');
-    _carregarImoveis();
-  }
-
-  void _carregarImoveis() {
-    _imoveisRef.once().then((DatabaseEvent event) {
-      if (event.snapshot.value != null) {
-        print("Conteúdo do Snapshot: ${event.snapshot.value}");
-        final dynamic data = event.snapshot.value;
-        if (data is Map<dynamic, dynamic>) {
-          imoveis.clear();
-          data.forEach((key, value) {
-            imoveis.add(Dados(
-              SIAT: value['Inscrição Siat'],
-              nome: value['Nome'],
-              cpf: value['CPF'],
-              caracterizacao: value['Caracterização'],
-              celular: value['Celular'],
-              cobertura: value['Cobertura'],
-              contribuinte: value['Contribuinte'],
-              coordenadas: value['Coordenadas'],
-              data1: value['Data 1'],
-              data2: value['Data 2'],
-              data3: value['Data 3'],
-              dataNascimento: value['Data de Nascimento'],
-              fotoAerea: value['Foto Aérea'],
-              fotoFrontal: value['Foto Frontal'],
-              horario1: value['Horario 1'],
-              horario2: value['Horario 2'],
-              horario3: value['Horario 3'],
-              numero: value['Nº'],
-              numPavimentos: value['Nº de Pavimentos'],
-              observacao: value['Observação'],
-              piso: value['Piso'],
-              quarteirao: value['Quarteirão'],
-              responsavelCadastro: value['Responsavel Cadastro'],
-              rua: value['Rua'],
-              situacao: value['Situação'],
-              visita: value['Visita'],
-              id: value['id'],
-            ));
-          });
-          setState(() {});
-        }
-      }
-    }).catchError((error) {
-      print("Erro ao carregar imóveis: $error");
-    });
-  }
-
-  @override
-  void dispose() {
-    // Certifique-se de cancelar a inscrição ao sair da tela.
-    _dadosSubscription?.cancel();
-    super.dispose();
+    chamarUsuario();
   }
 
   @override
@@ -93,18 +31,60 @@ class _QuarteiroesState extends State<Quarteiroes> {
     return Scaffold(
       appBar: appBarDinamica(),
       drawer: menuLateralDinamico(nome, email),
-      body: ListView.builder(
-        itemCount: imoveis.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-                'Rua: ${imoveis[index].rua}'), // Acesse as propriedades diretamente do objeto Dados
-            subtitle: Text('Nº: ${imoveis[index].numero}'),
-            trailing: Text('Quarteirão: ${imoveis[index].quarteirao}'),
-            // Você pode adicionar mais informações aqui conforme necessário.
-          );
+      body: FutureBuilder(
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return _buildList();
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Erro ao inicializar o Firebase'));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         },
       ),
+    );
+  }
+
+  Widget _buildList() {
+    return StreamBuilder<DatabaseEvent>(
+      stream: _imoveisRef.onValue,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+              child: Text('Erro ao carregar imóveis: ${snapshot.error}'));
+        }
+
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final data = snapshot.data!.snapshot.value;
+        imoveis.clear();
+
+        if (data != null && data is Map<dynamic, dynamic>) {
+          data.forEach((key, value) {
+            imoveis.add(Dados(
+              SIAT: value['Inscrição Siat'] ?? '',
+              nome: value['Nome'] ?? '',
+              cpf: value['CPF'] ?? '',
+              // Mapeie todos os campos aqui
+            ));
+          });
+        }
+
+        return ListView.separated(
+          itemCount: imoveis.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text('Rua: ${imoveis[index].rua}'),
+              subtitle: Text('Nº: ${imoveis[index].numero}'),
+              trailing: Text('Quarteirão: ${imoveis[index].quarteirao}'),
+            );
+          },
+          separatorBuilder: (context, index) => Divider(),
+        );
+      },
     );
   }
 
