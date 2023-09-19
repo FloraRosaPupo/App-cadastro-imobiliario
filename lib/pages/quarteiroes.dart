@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projeto_prefeitura/functions.dart';
 import '../dados.dart';
 import 'dart:async';
@@ -47,45 +48,23 @@ class _QuarteiroesState extends State<Quarteiroes> {
   }
 
   Widget _buildList() {
-    return StreamBuilder<DatabaseEvent>(
-      stream: _imoveisRef.onValue,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-              child: Text('Erro ao carregar imóveis: ${snapshot.error}'));
-        }
+    return Obx(() {
+      if (imoveis.isEmpty) {
+        return Center(child: CircularProgressIndicator());
+      }
+      return ListView.builder(
+        itemCount: imoveis.length,
+        itemBuilder: (context, index) {
+          final imovel = imoveis[index];
 
-        if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        final data = snapshot.data!.snapshot.value;
-        imoveis.clear();
-
-        if (data != null && data is Map<dynamic, dynamic>) {
-          data.forEach((key, value) {
-            imoveis.add(Dados(
-              SIAT: value['Inscrição Siat'] ?? '',
-              nome: value['Nome'] ?? '',
-              cpf: value['CPF'] ?? '',
-              // Mapeie todos os campos aqui
-            ));
-          });
-        }
-
-        return ListView.separated(
-          itemCount: imoveis.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text('Rua: ${imoveis[index].rua}'),
-              subtitle: Text('Nº: ${imoveis[index].numero}'),
-              trailing: Text('Quarteirão: ${imoveis[index].quarteirao}'),
-            );
-          },
-          separatorBuilder: (context, index) => Divider(),
-        );
-      },
-    );
+          return ListTile(
+            title: Text('Rua: ${imovel.rua}'),
+            subtitle: Text('Nº: ${imovel.numero}'),
+            trailing: Text('Quarteirão: ${imovel.quarteirao}'),
+          );
+        },
+      );
+    });
   }
 
   void chamarUsuario() {
