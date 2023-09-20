@@ -48,23 +48,21 @@ class _QuarteiroesState extends State<Quarteiroes> {
   }
 
   Widget _buildList() {
-    return Obx(() {
-      if (imoveis.isEmpty) {
-        return Center(child: CircularProgressIndicator());
-      }
-      return ListView.builder(
-        itemCount: imoveis.length,
-        itemBuilder: (context, index) {
-          final imovel = imoveis[index];
+    if (imoveis.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+    return ListView.builder(
+      itemCount: imoveis.length,
+      itemBuilder: (context, index) {
+        final imovel = imoveis[index];
 
-          return ListTile(
-            title: Text('Rua: ${imovel.rua}'),
-            subtitle: Text('Nº: ${imovel.numero}'),
-            trailing: Text('Quarteirão: ${imovel.quarteirao}'),
-          );
-        },
-      );
-    });
+        return ListTile(
+          title: Text('Rua: ${imovel.rua}'),
+          subtitle: Text('Nº: ${imovel.numero}'),
+          trailing: Text('Quarteirão: ${imovel.quarteirao}'),
+        );
+      },
+    );
   }
 
   void chamarUsuario() {
