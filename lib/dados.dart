@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+
 class Dados {
   final String SIAT;
   final String nome;
@@ -119,4 +121,60 @@ class Dados {
         visita: visita ?? this.visita,
         id: id ?? this.id,
       );
+
+  // Método para converter um mapa em um objeto Dados
+  factory Dados.fromMap(Map<dynamic, dynamic> map) {
+    return Dados(
+      SIAT: map['SIAT'] as String,
+      nome: map['nome'] as String,
+      cpf: map['cpf'] as String,
+      caracterizacao: map['caracterizacao'] as String,
+      celular: map['celular'] as String,
+      cobertura: map['cobertura'] as String,
+      contribuinte: map['contribuinte'] as String,
+      coordenadas: map['coordenadas'] as String,
+      data1: map['data1'] as String,
+      data2: map['data2'] as String,
+      data3: map['data3'] as String,
+      dataNascimento: map['dataNascimento'] as String,
+      fotoAerea: map['fotoAerea'] as String,
+      fotoFrontal: map['fotoFrontal'] as String,
+      horario1: map['horario1'] as String,
+      horario2: map['horario2'] as String,
+      horario3: map['horario3'] as String,
+      numero: map['numero'] as String,
+      numPavimentos: map['numPavimentos'] as String,
+      observacao: map['observacao'] as String,
+      piso: map['piso'] as String,
+      quarteirao: map['quarteirao'] as String,
+      responsavelCadastro: map['responsavelCadastro'] as String,
+      rua: map['rua'] as String,
+      //sequencia: map['sequencia'] as int,
+      situacao: map['situacao'] as String,
+      visita: map['visita'] as String,
+      id: map['id'] as String,
+    );
+  }
+}
+
+class FirebaseDataManager {
+  final DatabaseReference _imoveisRef =
+      FirebaseDatabase.instance.reference().child('imoveis');
+
+  Stream<List<Dados>> buscarDadosImoveis() {
+    return _imoveisRef.onValue.map((event) {
+      if (event.snapshot.value != null) {
+        final dynamic values = event.snapshot.value;
+        if (values is Map<String, dynamic>) {
+          List<Dados> imoveis = [];
+          values.forEach((key, value) {
+            imoveis.add(Dados.fromMap(
+                value)); // Certifique-se de que Dados.fromMap está configurado corretamente
+          });
+          return imoveis;
+        }
+      }
+      return <Dados>[];
+    });
+  }
 }
