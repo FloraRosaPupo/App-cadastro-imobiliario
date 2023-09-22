@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projeto_prefeitura/functions.dart';
@@ -19,12 +18,16 @@ class _QuarteiroesState extends State<Quarteiroes> {
   late DatabaseReference _imoveisRef;
 
   List<Dados> imoveis = [];
+  final FirebaseDataManager _firebaseDataManager = FirebaseDataManager(); // Crie uma instância do FirebaseDataManager
 
   @override
   void initState() {
     super.initState();
-    _imoveisRef = FirebaseDatabase.instance.reference().child('imoveis');
-    chamarUsuario();
+    Firebase.initializeApp().then((_) {
+      // Inicialize o Firebase
+      _carregarDadosImoveis(); // Carregue os dados
+      chamarUsuario();
+    });
   }
 
   @override
@@ -71,5 +74,13 @@ class _QuarteiroesState extends State<Quarteiroes> {
       nome = user.displayName ?? '';
       email = user.email ?? '';
     }
+  }
+
+  void _carregarDadosImoveis() {
+    _firebaseDataManager.buscarDadosImoveis().listen((dados) {
+      setState(() {
+        imoveis = dados;
+      });
+    });
   }
 }
