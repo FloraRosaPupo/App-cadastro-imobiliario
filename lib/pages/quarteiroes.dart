@@ -84,14 +84,12 @@ class _QuarteiroesState extends State<Quarteiroes> {
   void _carregarDadosImoveis() {
     _imoveisRef.onValue.listen((event) {
       if (event.snapshot.value != null) {
-        Map<dynamic, dynamic> map = event.snapshot.value;
+        Map<dynamic, dynamic> map =
+            (event.snapshot.value as Map<dynamic, dynamic>);
         imoveis.clear();
         map.forEach((key, value) {
-          if (value is Map<dynamic, dynamic>) {
-            // Verifique se o valor é um mapa
-            var dados = Dados.fromMap(value);
-            imoveis.add(dados);
-          }
+          var dados = Dados.fromMap(value);
+          imoveis.add(dados);
         });
         setState(() {});
       }
