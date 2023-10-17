@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projeto_prefeitura/functions.dart';
@@ -18,13 +19,17 @@ class _QuarteiroesState extends State<Quarteiroes> {
   late DatabaseReference _imoveisRef;
 
   List<Dados> imoveis = [];
-  final FirebaseDataManager _firebaseDataManager = FirebaseDataManager(); // Crie uma instância do FirebaseDataManager
+  final FirebaseDataManager _firebaseDataManager =
+      FirebaseDataManager(); // Crie uma instância do FirebaseDataManager
 
   @override
   void initState() {
     super.initState();
     Firebase.initializeApp().then((_) {
       // Inicialize o Firebase
+      _imoveisRef = FirebaseDatabase.instance
+          .reference()
+          .child('imoveis'); // Substitua 'imoveis' pelo nome da sua referência
       _carregarDadosImoveis(); // Carregue os dados
       chamarUsuario();
     });
@@ -77,10 +82,19 @@ class _QuarteiroesState extends State<Quarteiroes> {
   }
 
   void _carregarDadosImoveis() {
-    _firebaseDataManager.buscarDadosImoveis().listen((dados) {
-      setState(() {
-        imoveis = dados;
-      });
+    _imoveisRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> map = event.snapshot.value;
+        imoveis.clear();
+        map.forEach((key, value) {
+          if (value is Map<dynamic, dynamic>) {
+            // Verifique se o valor é um mapa
+            var dados = Dados.fromMap(value);
+            imoveis.add(dados);
+          }
+        });
+        setState(() {});
+      }
     });
   }
 }
