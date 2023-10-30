@@ -10,4 +10,4 @@ Todas as referências a "[App-cadastro-imobiliario]" devem incluir uma atribuiç
 
 Este código é fornecido "COMO ESTÁ" e SEM GARANTIAS DE QUALQUER TIPO, EXPRESSAS OU IMPLÍCITAS. EM NENHUMA CIRCUNSTÂNCIA, O DETENTOR DOS DIREITOS AUTORAIS SERÁ RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, QUER EM UMA AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTE, FORA DE OU EM CONEXÃO COM ESTE CÓDIGO OU O USO DO MESMO.
 
-Esta declaração de propriedade intelectual é uma versão mais restritiva e protege os direitos autorais de forma mais rigorosa, exigindo permissão explícita para qualquer uso, com uma clara atribuição ao detentor dos direitos autorais, no caso de autorização concedida. Certifique-se de substituir "[Nome do Código]" pelo nome real do seu código.
+Esta declaração de propriedade intelectual é uma versão mais restritiva e protege os direitos autorais de forma mais rigorosa, exigindo permissão explícita para qualquer uso, com uma clara atribuição ao detentor dos direitos autorais, no caso de autorização concedida. 
