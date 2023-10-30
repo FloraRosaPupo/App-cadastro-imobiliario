@@ -1,6 +1,6 @@
 /*Declaração de Propriedade Intelectual
 
-Eu, Flora Rosa Pupo, declaro que sou o detentor dos direitos autorais do código [Nome do Código] e de todas as contribuições que fiz para o mesmo. 
+Eu, Flora Rosa Pupo, declaro que sou o detentor dos direitos autorais do código e de todas as contribuições que fiz para o mesmo. 
 
 Eu afirmo que detenho todos os direitos de propriedade intelectual, incluindo direitos autorais, sobre este código. Qualquer uso não autorizado, reprodução, distribuição ou modificação do código, no todo ou em parte, sem minha permissão expressa por escrito, é estritamente proibido.
 */
