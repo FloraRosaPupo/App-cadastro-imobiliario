@@ -1,4 +1,3 @@
-// ignore_for_file: unused_import, duplicate_import
 /*Declaração de Propriedade Intelectual
 
 Eu, Flora Rosa Pupo, declaro que sou o detentor dos direitos autorais do código [Nome do Código] e de todas as contribuições que fiz para o mesmo. 
