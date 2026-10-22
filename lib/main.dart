@@ -1,6 +1,6 @@
 /*Declaração de Propriedade Intelectual
 
-Eu, Flora Rosa Pupo, declaro que sou o detentor dos direitos autorais do código e de todas as contribuições que fiz para o mesmo. 
+Eu, Flora Rosa Pupo, declaro que sou o detentor dos direitos autorais do código e de todas as contribuições que fiz para o mesmo.
 
 Eu afirmo que detenho todos os direitos de propriedade intelectual, incluindo direitos autorais, sobre este código. Qualquer uso não autorizado, reprodução, distribuição ou modificação do código, no todo ou em parte, sem minha permissão expressa por escrito, é estritamente proibido.
 */
@@ -43,7 +43,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  ); 
+  );
   runApp(const MyApp());
 }
 
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         //primarySwatch: Colors.white10,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        errorColor: Colors.red,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue).copyWith(error: Colors.red),
         hoverColor: Colors.redAccent,
       ),
     );

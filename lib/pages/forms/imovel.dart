@@ -31,7 +31,7 @@ class _ImovelState extends State<Imovel> {
   String nome = '';
   String email = '';
 
-  
+
   @override
   initState() {
     chamarUsuario();
@@ -364,8 +364,8 @@ class _ImovelState extends State<Imovel> {
                   alignment: Alignment.topCenter,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      onPrimary: Color.fromARGB(221, 0, 0, 0),
-                      primary: Color.fromARGB(255, 255, 255, 255),
+                      foregroundColor: Color.fromARGB(221, 0, 0, 0),
+                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
                       minimumSize: Size(150, 50),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
