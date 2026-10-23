@@ -1,26 +1,41 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:projeto_prefeitura/pages/loginpage.dart';
-
-// ignore: unused_import
-import 'package:projeto_prefeitura/main.dart';
-
+import 'package:projeto_prefeitura/features/properties/domain/dados.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(LoginPage());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  test('edição preserva os demais dados do imóvel', () {
+    final original = Dados.fromMap({
+      'SIAT': '1',
+      'nome': 'Flora',
+      'cpf': '1',
+      'caracterizacao': '1',
+      'celular': '1',
+      'cobertura': '1',
+      'contribuinte': '1',
+      'coordenadas': '1',
+      'data1': '1',
+      'data2': '1',
+      'data3': '1',
+      'dataNascimento': '1',
+      'fotoAerea': '1',
+      'fotoFrontal': '1',
+      'horario1': '1',
+      'horario2': '1',
+      'horario3': '1',
+      'numero': '1',
+      'numPavimentos': '1',
+      'observacao': '1',
+      'piso': '1',
+      'quarteirao': '1',
+      'responsavelCadastro': '1',
+      'rua': '1',
+      'situacao': '1',
+      'visita': '1',
+      'id': '1'
+    });
+    final edited = original.copy(nome: 'Outro nome');
+    expect(edited.nome, 'Outro nome');
+    expect(original.nome, 'Flora');
+    expect(edited.id, original.id);
+    expect(edited.rua, original.rua);
   });
 }

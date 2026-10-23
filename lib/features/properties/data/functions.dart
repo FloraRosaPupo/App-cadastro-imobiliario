@@ -4,15 +4,15 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/pages/galeria.dart';
-import 'package:projeto_prefeitura/pages/loginpage.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/quarteiroes.dart';
-import 'package:projeto_prefeitura/pages/registerpage.dart';
-import 'package:projeto_prefeitura/pages/exportar.dart';
-import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
-import 'package:projeto_prefeitura/pages/forms/imovel.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
+import 'package:projeto_prefeitura/features/photos/presentation/galeria.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/loginpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/quarteiroes.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/registerpage.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/exportar.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/forms/contribuinte.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/forms/imovel.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
 
 import 'package:flutter/src/material/icon_button.dart';
 
@@ -133,8 +133,8 @@ class _DropdownPisoState extends State<DropdownPiso> {
 }
 
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  onPrimary: Color.fromARGB(221, 255, 255, 255),
-  primary: Color.fromARGB(191, 18, 108, 133),
+  foregroundColor: Color.fromARGB(221, 255, 255, 255),
+  backgroundColor: Color.fromARGB(191, 18, 108, 133),
   minimumSize: Size(100, 50),
   padding: EdgeInsets.symmetric(horizontal: 16),
   shape: const RoundedRectangleBorder(

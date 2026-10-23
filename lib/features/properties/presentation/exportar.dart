@@ -1,11 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../functions.dart';
+import '../data/functions.dart';
 import 'dart:async';
 import 'package:csv/csv.dart';
 import 'dart:io';
-import '../dados.dart';
+import '../domain/dados.dart';
 
 class ExportarPage extends StatefulWidget {
   const ExportarPage({Key? key}) : super(key: key);
@@ -213,8 +213,8 @@ class ExportarState extends State<ExportarPage> {
                       icon: Icon(Icons.import_export),
                       label: Text('Exportar'),
                       style: ElevatedButton.styleFrom(
-                        onPrimary: Color.fromARGB(221, 255, 255, 255),
-                        primary: Color.fromARGB(191, 18, 108, 133),
+                        foregroundColor: Color.fromARGB(221, 255, 255, 255),
+                        backgroundColor: Color.fromARGB(191, 18, 108, 133),
                         minimumSize: Size(100, 45),
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         shape: const RoundedRectangleBorder(

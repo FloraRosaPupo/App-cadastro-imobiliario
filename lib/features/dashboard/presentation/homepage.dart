@@ -4,8 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/loginpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/loginpage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -9,13 +9,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
 
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/previewpage.dart';
-import 'package:projeto_prefeitura/pages/registerpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/photos/presentation/previewpage.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/registerpage.dart';
 
 import 'package:camera_camera/camera_camera.dart';
 
@@ -31,7 +31,6 @@ class _ImovelState extends State<Imovel> {
   String nome = '';
   String email = '';
 
-  
   @override
   initState() {
     chamarUsuario();
@@ -364,8 +363,8 @@ class _ImovelState extends State<Imovel> {
                   alignment: Alignment.topCenter,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      onPrimary: Color.fromARGB(221, 0, 0, 0),
-                      primary: Color.fromARGB(255, 255, 255, 255),
+                      foregroundColor: Color.fromARGB(221, 0, 0, 0),
+                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
                       minimumSize: Size(150, 50),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -397,6 +396,7 @@ class _ImovelState extends State<Imovel> {
       ),
     );
   }
+
   chamarUsuario() async {
     User? usuario = await _firebaseAuth.currentUser;
     if (usuario != null) {
