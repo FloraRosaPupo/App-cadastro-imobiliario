@@ -1,11 +1,28 @@
-# Cadastro imobiliário
+# Cadastro Imobiliário
 
-Aplicativo de cadastro de contribuintes e imóveis, com autenticação e recursos de exportação.
+## Descrição
 
-## Stack e organização
+Aplicativo Flutter para cadastrar contribuintes e imóveis, consultar dados por quadra, registrar fotos e exportar informações. Autenticação e persistência dependem da configuração do Firebase; câmera e exportação precisam ser validadas na plataforma de destino.
+
+## Stack e bibliotecas
+
 Flutter/Dart, Firebase, GetX, câmera, intl e exportação CSV.
 
-Arquivos reunidos em features auth/properties/photos/dashboard. Modelos e funções de dados ficam junto da funcionalidade correspondente. GetX existente foi mantido para preservar navegação e controllers; a recomendação de Cubit não exige trocar tecnologia onde isso não resolve um defeito específico.
+Dependências e versões declaradas: [pubspec.yaml](pubspec.yaml).
+
+## Funcionalidades
+
+- Cadastro de contribuintes e imóveis.
+- Consulta por quadra.
+- Fotos e exportação.
+
+## Licença
+
+Consulte [LICENSE.md](LICENSE.md) para a declaração de direitos e as restrições de uso adotadas neste projeto. Este README não altera esses termos.
+
+## Validação e limites
+
+Cópia do modelo de cadastro e análise de todo o código. Autenticação, regras Firebase, câmera e exportação em dispositivo requerem integração configurada.
 
 ## Executar
 Use a versão de Flutter registrada em `.github/workflows/ci.yml`.
@@ -25,17 +42,6 @@ A CI verifica erros de análise e os testes. Avisos e sugestões continuam visí
 
 ## Contribuir
 Abra uma branch por alteração, descreva o comportamento esperado e inclua testes para regras ou regressões. Mantenha credenciais e arquivos gerados fora do Git.
-
-## Licença
-Consulte [LICENSE.md](LICENSE.md), que contém a declaração de direitos e as restrições de uso do projeto.
-
-
-## Funcionalidades
-
-- Cadastro de contribuintes e imóveis.
-- consulta por quadra.
-- fotos e exportação.
-
 
 ## Organização e manutenção
 
