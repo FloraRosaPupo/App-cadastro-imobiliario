@@ -5,22 +5,21 @@ Eu, Flora Rosa Pupo, declaro que sou o detentor dos direitos autorais do código
 Eu afirmo que detenho todos os direitos de propriedade intelectual, incluindo direitos autorais, sobre este código. Qualquer uso não autorizado, reprodução, distribuição ou modificação do código, no todo ou em parte, sem minha permissão expressa por escrito, é estritamente proibido.
 */
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:projeto_prefeitura/pages/loginpage.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/realtime.dart';
-import 'package:projeto_prefeitura/pages/registerpage.dart';
-import 'package:projeto_prefeitura/pages/homepage.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/loginpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/realtime.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/registerpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/homepage.dart';
 
-import 'package:projeto_prefeitura/pages/exportar.dart';
-import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
-import 'package:projeto_prefeitura/pages/forms/imovel.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/quarteiroes.dart';
-import 'package:projeto_prefeitura/test.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/exportar.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/forms/contribuinte.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/forms/imovel.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/quarteiroes.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/cadastro_demo.dart';
 
 import 'package:intl/intl.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -67,7 +66,8 @@ class MyApp extends StatelessWidget {
         //primarySwatch: Colors.white10,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue).copyWith(error: Colors.red),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue)
+            .copyWith(error: Colors.red),
         hoverColor: Colors.redAccent,
       ),
     );

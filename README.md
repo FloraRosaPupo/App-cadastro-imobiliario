@@ -3,7 +3,9 @@
 Aplicativo de cadastro de contribuintes e imóveis, com autenticação e recursos de exportação.
 
 ## Stack e organização
-Flutter/Dart, Firebase, GetX, câmera e CSV. As telas estão em `lib/pages/`. Configure seu projeto Firebase e suas regras de acesso antes de executar; as configurações históricas não garantem acesso a um backend ativo.
+Flutter/Dart, Firebase, GetX, câmera, intl e exportação CSV.
+
+Arquivos reunidos em features auth/properties/photos/dashboard. Modelos e funções de dados ficam junto da funcionalidade correspondente. GetX existente foi mantido para preservar navegação e controllers; a recomendação de Cubit não exige trocar tecnologia onde isso não resolve um defeito específico.
 
 ## Executar
 Use a versão de Flutter registrada em `.github/workflows/ci.yml`.
@@ -25,4 +27,18 @@ A CI verifica erros de análise e os testes. Avisos e sugestões continuam visí
 Abra uma branch por alteração, descreva o comportamento esperado e inclua testes para regras ou regressões. Mantenha credenciais e arquivos gerados fora do Git.
 
 ## Licença
-Não há licença de distribuição definida neste repositório.
+Consulte [LICENSE.md](LICENSE.md), que contém a declaração de direitos e as restrições de uso do projeto.
+
+
+## Funcionalidades
+
+- Cadastro de contribuintes e imóveis.
+- consulta por quadra.
+- fotos e exportação.
+
+
+## Organização e manutenção
+
+Arquivos reunidos em features auth/properties/photos/dashboard. Modelos e funções de dados ficam junto da funcionalidade correspondente. GetX existente foi mantido para preservar navegação e controllers; a recomendação de Cubit não exige trocar tecnologia onde isso não resolve um defeito específico.
+
+Veja [a revisão de desenvolvimento](docs/REVISAO.md) para decisões, testes e limites, e [o guia de contribuição](CONTRIBUTING.md) para o fluxo de manutenção.

@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projeto_prefeitura/functions.dart';
-import '../dados.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
+import '../domain/dados.dart';
 import 'dart:async';
 
 class Quarteiroes extends StatefulWidget {

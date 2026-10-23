@@ -6,11 +6,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:projeto_prefeitura/main.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/pages/homepage.dart';
-import 'package:projeto_prefeitura/pages/loginpage.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/exportar.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/homepage.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/loginpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/exportar.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

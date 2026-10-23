@@ -10,10 +10,10 @@ import 'package:intl/intl.dart';
 import 'package:projeto_prefeitura/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/registerpage.dart';
-import 'package:projeto_prefeitura/pages/exportar.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/registerpage.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/exportar.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../functions.dart';
+import '../data/functions.dart';
 import 'dart:async';
 import 'package:csv/csv.dart';
 import 'dart:io';
-import '../dados.dart';
+import '../domain/dados.dart';
 
 class ExportarPage extends StatefulWidget {
   const ExportarPage({Key? key}) : super(key: key);

@@ -4,15 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
-import 'package:projeto_prefeitura/pages/exportar.dart';
-import 'package:projeto_prefeitura/pages/forms/contribuinte.dart';
-import 'package:projeto_prefeitura/pages/galeria.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/exportar.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/forms/contribuinte.dart';
+import 'package:projeto_prefeitura/features/photos/presentation/galeria.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:projeto_prefeitura/pages/forms/imovel.dart';
-import 'package:projeto_prefeitura/pages/quarteiroes.dart';
-import 'package:projeto_prefeitura/pages/galeria.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/forms/imovel.dart';
+import 'package:projeto_prefeitura/features/properties/presentation/quarteiroes.dart';
+import 'package:projeto_prefeitura/features/photos/presentation/galeria.dart';
 
 class Painel extends StatefulWidget {
   const Painel({super.key});

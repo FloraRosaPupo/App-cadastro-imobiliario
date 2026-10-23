@@ -9,13 +9,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
 import 'package:projeto_prefeitura/main.dart';
 
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/previewpage.dart';
-import 'package:projeto_prefeitura/pages/registerpage.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/photos/presentation/previewpage.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/registerpage.dart';
 
 import 'package:camera_camera/camera_camera.dart';
 
@@ -30,7 +30,6 @@ class _ImovelState extends State<Imovel> {
   final _firebaseAuth = FirebaseAuth.instance;
   String nome = '';
   String email = '';
-
 
   @override
   initState() {
@@ -397,6 +396,7 @@ class _ImovelState extends State<Imovel> {
       ),
     );
   }
+
   chamarUsuario() async {
     User? usuario = await _firebaseAuth.currentUser;
     if (usuario != null) {

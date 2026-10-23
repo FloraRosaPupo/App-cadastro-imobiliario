@@ -5,9 +5,9 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:projeto_prefeitura/main.dart';
 
 import 'package:flutter/material.dart';
-import 'package:projeto_prefeitura/pages/painel.dart';
-import 'package:projeto_prefeitura/pages/registerpage.dart';
-import 'package:projeto_prefeitura/functions.dart';
+import 'package:projeto_prefeitura/features/dashboard/presentation/painel.dart';
+import 'package:projeto_prefeitura/features/auth/presentation/registerpage.dart';
+import 'package:projeto_prefeitura/features/properties/data/functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //import 'package:intl/date_symbol_data_local.dart';
